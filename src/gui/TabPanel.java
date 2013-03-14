@@ -11,7 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+
+import data.Server;
+import data.User;
 
 public class TabPanel extends JPanel {
 	
@@ -22,7 +26,9 @@ public class TabPanel extends JPanel {
 		//Lager alle faner med tilhørende panels
 		JTabbedPane tabbedPane = new JTabbedPane();
 		
-		JComponent panel = new WeekCalendarPanel();
+		JComponent panel = new WeekPanel();
+		JScrollPane weekPane = new JScrollPane();
+		weekPane.setPreferredSize(new Dimension(650,200));
 		tabbedPane.addTab("Week", panel);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
@@ -61,6 +67,9 @@ public class TabPanel extends JPanel {
 	}
 	
 	public static void main(String[] args){
+		Server server = new Server();
+		server.getPersons().add(new User());
+		System.out.println(server.getPersons());
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame frame = new JFrame("Tabtest");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
