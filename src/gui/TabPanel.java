@@ -39,7 +39,7 @@ public class TabPanel extends JPanel {
 		
 		JComponent panel2 = new NotificationPanel();
 		tabbedPane.addTab("Day", panel2);
-		panel2.setPreferredSize(new Dimension(500,100));
+		//panel2.setPreferredSize(new Dimension(500,100));
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
 		JComponent panel3 = new NotificationPanel();
@@ -53,6 +53,9 @@ public class TabPanel extends JPanel {
 		JComponent panel5 = new NotificationPanel();
 		tabbedPane.addTab("Notifications", panel5);
 		tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
+		
+		tabbedPane.setPreferredSize(new Dimension(850,600));
+		//setPreferredSize(new Dimension(1000,1000));
 		
 		//Plasserer fanevinduet
 		mainC.gridx = 1;
