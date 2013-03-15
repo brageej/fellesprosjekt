@@ -284,7 +284,7 @@ public class NewAppointmentPanel extends JPanel{
 		personsPanel.add(listScroll, pc);
 		
 		plusPerson = new JButton("+");
-		plusPerson.setPreferredSize(new Dimension(33, 29));
+		//plusPerson.setPreferredSize(new Dimension(33, 29));
 		GridBagConstraints ppc = new GridBagConstraints();
 		ppc.gridx = 2;
 		ppc.gridy = 3;
@@ -294,7 +294,7 @@ public class NewAppointmentPanel extends JPanel{
 		personsPanel.add(plusPerson, ppc);
 		
 		minusPerson = new JButton("-");
-		minusPerson.setPreferredSize(new Dimension(33, 29));
+		//minusPerson.setPreferredSize(new Dimension(33, 29));
 		GridBagConstraints mpc = new GridBagConstraints();
 		mpc.gridx = 2;
 		mpc.gridy = 4;
@@ -333,7 +333,7 @@ public class NewAppointmentPanel extends JPanel{
 		groupPanel.add(groupListScroll, gc);
 		
 		plusGroup = new JButton("+");
-		plusGroup.setPreferredSize(new Dimension(33, 29));
+		//plusGroup.setPreferredSize(new Dimension(33, 29));
 		GridBagConstraints pgc = new GridBagConstraints();
 		pgc.gridx = 2;
 		pgc.gridy = 3;
@@ -343,7 +343,7 @@ public class NewAppointmentPanel extends JPanel{
 		groupPanel.add(plusGroup, pgc);
 		
 		minusGroup = new JButton("-");
-		minusGroup.setPreferredSize(new Dimension(33, 29));
+		//minusGroup.setPreferredSize(new Dimension(33, 29));
 		GridBagConstraints mgc = new GridBagConstraints();
 		mgc.gridx = 2;
 		mgc.gridy = 4;

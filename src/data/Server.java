@@ -11,7 +11,11 @@ public class Server {
 	
 	
 	public ArrayList<User> getPersons(){
-		return Persons;
+		return this.Persons;
+	}
+	
+	public ArrayList<Group> getGroups(){
+		return this.Groups;
 	}
 	
 	

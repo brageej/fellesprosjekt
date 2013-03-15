@@ -10,11 +10,15 @@ import javax.swing.JFrame;
 public class Main {
 	
 	Server server = new Server();
-
+	User thisUser;
 	
 	public ArrayList<User> getPersons(){
 		return server.getPersons();
 		
+	}
+	
+	public ArrayList<Group> getGroups(){
+		return server.getGroups();
 	}
 	
 	public void newUser(String username, String password, String name){
