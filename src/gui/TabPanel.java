@@ -14,19 +14,24 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import data.Main;
 import data.Server;
 import data.User;
 
 public class TabPanel extends JPanel {
 	
-	public TabPanel(){
+	private Main main;
+	private JTabbedPane tabbedPane;
+	
+	public TabPanel(Main main){
+		this.main = main;
 		setLayout(new GridBagLayout());
 		GridBagConstraints mainC = new GridBagConstraints();
 		
 		//Lager alle faner med tilhørende panels
-		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane = new JTabbedPane();
 		
-		JComponent panel = new WeekPanel();
+		JComponent panel = new WeekPanel(this.main);
 		JScrollPane weekPane = new JScrollPane();
 		weekPane.setPreferredSize(new Dimension(650,200));
 		tabbedPane.addTab("Week", panel);
@@ -48,6 +53,8 @@ public class TabPanel extends JPanel {
 		JComponent panel5 = new NotificationPanel();
 		tabbedPane.addTab("Notifications", panel5);
 		tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
+		
+		//Plasserer fanevinduet
 		mainC.gridx = 1;
 		mainC.gridy = 2;
 		add(tabbedPane,mainC);
@@ -66,18 +73,5 @@ public class TabPanel extends JPanel {
 		
 	}
 	
-	public static void main(String[] args){
-		Server server = new Server();
-		server.getPersons().add(new User());
-		System.out.println(server.getPersons());
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		JFrame frame = new JFrame("Tabtest");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JComponent contentPane = new TabPanel();
-		contentPane.setOpaque(true);
-		frame.getContentPane().add(contentPane);
-		frame.pack();
-		frame.setVisible(true);
-	}
 
 }

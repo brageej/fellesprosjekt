@@ -22,10 +22,14 @@ import org.omg.CORBA.Bounds;
 
 public class NotificationPanel extends JPanel {
 	
+	private GridBagLayout mainLayout;
+	private GridBagConstraints mainC;
+	
 	public NotificationPanel(){
-		GridBagLayout mainLayout = new GridBagLayout();
+		mainLayout = new GridBagLayout();
 		setLayout(mainLayout);
-		GridBagConstraints mainC = new GridBagConstraints();
+		mainC = new GridBagConstraints();
+		
 		JPanel Panel1 = new JPanel(false);
 		Panel1.setLayout(new GridBagLayout());
 		GridBagConstraints Panel1C = new GridBagConstraints();

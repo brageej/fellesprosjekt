@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class User {
 	
-	private String username;
+	private String username;;
 	
 	private String password;
 	private String name;
@@ -15,15 +15,21 @@ public class User {
 	private ArrayList<Participant> appointments;
 	private ArrayList<Member> groups;
 	
+	
+	public User(String username, String password, String name){
+		this.username = username;
+		this.name = name;
+		this.password = password;
+		
+	}
+	
 	public String getName(){
 		return this.name;
 	}
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password
-				+ ", name=" + name + ", owner=" + owner + ", leader=" + leader
-				+ ", appointments=" + appointments + ", groups=" + groups + "]";
+		return name;
 	}
 	
 	

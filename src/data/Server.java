@@ -13,4 +13,10 @@ public class Server {
 	public ArrayList<User> getPersons(){
 		return Persons;
 	}
+	
+	
+	//Legge til brukere i brukerlista ArrayList<User> Persons
+	public void addUser(User user){
+		Persons.add(user);
+	}
 }
