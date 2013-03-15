@@ -20,8 +20,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
+import javax.swing.SpinnerModel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import data.Appointment;
 
 public class NewAppointmentPanel extends JPanel{
 	
@@ -73,6 +76,8 @@ public class NewAppointmentPanel extends JPanel{
 	
 	private JButton saveButton;
 	private JButton cancelButton;
+	
+	private Appointment model;
 	
 	public NewAppointmentPanel() {
 		createPanels();
