@@ -7,5 +7,9 @@
 	<classpathentry kind="var" path="JCalJars/jgoodies-common-1.2.0.jar"/>
 	<classpathentry kind="var" path="JCalJars/jgoodies-looks-2.4.1.jar"/>
 	<classpathentry kind="var" path="JCalJars/junit-4.6.jar"/>
+	<classpathentry kind="var" path="CalJar/lib/jgoodies-common-1.2.0.jar"/>
+	<classpathentry kind="var" path="CalJar/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="var" path="CalJar/lib/jgoodies-looks-2.4.1.jar"/>
+	<classpathentry kind="var" path="CalJar/lib/junit-4.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
