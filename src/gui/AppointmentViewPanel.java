@@ -12,6 +12,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import data.Appointment;
+import data.Room;
+import data.User;
 
 public class AppointmentViewPanel extends JPanel{
 	
@@ -218,11 +220,11 @@ public class AppointmentViewPanel extends JPanel{
 	}
 	
 	private void addHourSpinnerModel() {
-		alarmHour.setModel(new SpinnerNumberModel(model.getAlarmHour(), 0, 23, 1));
+		alarmHour.setModel(new SpinnerNumberModel(Integer.parseInt(model.getAlarmHour()), 0, 23, 1));
 	}
 	
 	private void addMinuteSpinnerModel() {
-		alarmMinute.setModel(new SpinnerNumberModel(model.getAlarmMinute(), 0, 59, 1));
+		alarmMinute.setModel(new SpinnerNumberModel(Integer.parseInt(model.getAlarmMinute()), 0, 59, 1));
 	}
 	
 	private void createPersonsPanel() {
@@ -305,72 +307,56 @@ public class AppointmentViewPanel extends JPanel{
 	}
 	
 	private void updateComponents() {
-		addHourSpinnerModel();
-		addMinuteSpinnerModel();
+		if (this.model != null) {
+			addHourSpinnerModel();
+			addMinuteSpinnerModel();
+			this.titleField.setText(model.getTitle());
+			this.descriptionArea.setText(model.getDescription());
+			setTimeField();
+			this.roomField.setText(model.getRoom().toString());
+//			addPersonListModel();
+			
+			
+		}
 	}
+	
+	private void setTimeField() {
+		String total =  model.getStartHour() + ":" + model.getStartMinute() + " - " + model.getFinishedHour() + ":" + model.getFinishedMinute();
+		this.timeField.setText(total);
+	}
+	
+	
 	
 	public JTextField getTitleField() {
 		return titleField;
-	}
-
-	public void setTitleField(JTextField titleField) {
-		this.titleField = titleField;
 	}
 
 	public JTextArea getDescriptionArea() {
 		return descriptionArea;
 	}
 
-	public void setDescriptionArea(JTextArea descriptionArea) {
-		this.descriptionArea = descriptionArea;
-	}
-
 	public JTextField getTimeField() {
 		return timeField;
-	}
-
-	public void setTimeField(JTextField timeField) {
-		this.timeField = timeField;
 	}
 
 	public JTextField getRoomField() {
 		return roomField;
 	}
 
-	public void setRoomField(JTextField roomField) {
-		this.roomField = roomField;
-	}
-
 	public JDateChooser getAlarmTime() {
 		return alarmTime;
-	}
-
-	public void setAlarmTime(JDateChooser alarmTime) {
-		this.alarmTime = alarmTime;
 	}
 
 	public JSpinner getAlarmHour() {
 		return alarmHour;
 	}
 
-	public void setAlarmHour(JSpinner alarmHour) {
-		this.alarmHour = alarmHour;
-	}
-
 	public JSpinner getAlarmMinute() {
 		return alarmMinute;
 	}
 
-	public void setAlarmMinute(JSpinner alarmMinute) {
-		this.alarmMinute = alarmMinute;
-	}
-
 	public JList getPersonsList() {
 		return personsList;
-	}
-
-	public void setPersonsList(JList personsList) {
-		this.personsList = personsList;
 	}
 
 	public Appointment getModel() {
@@ -382,8 +368,10 @@ public class AppointmentViewPanel extends JPanel{
 	}
 
 	public static void main(String[] args) {
-		Appointment m = new Appointment();
-		m.setAlarmTime(1045);
+		Appointment m = new Appointment("Tittle", 1005, 1109, new User("u", "pass", "Torgeir"));
+		m.setDescription("Dette er en description! ¾¿lpdlfaŒsodjfn¾ksndv¿jkabnsd¿jvbas¿¾odjb");
+		m.setAlarmTime(1001);
+		m.setRoom(new Room("345"));
 		
 		JFrame frame = new JFrame("TestYo!");
 		frame.getContentPane().add(new AppointmentViewPanel(m));
