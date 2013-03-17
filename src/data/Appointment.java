@@ -11,21 +11,20 @@ public class Appointment {
 	
 	private String title;
 	private String description;
-	private int startTime;
-	private int finishTime;
-	private int alarmTime; 
+	private Calendar startTime;
+	private Calendar finishTime;
+	private Calendar alarmTime; 
 	private Room room;
 	private User owner;
 	
 	private ArrayList<Participant> participants;
 	
-	public Appointment(String title, int startTime, int finishTime, User owner) {
+	public Appointment(String title, Calendar startTime, Calendar finishTime, User owner) {
 		this.title = title;
 		this.startTime = startTime;
 		this.finishTime = finishTime;
 		this.owner = owner;
 	}
-	
 	
 	public String getTitle() {
 		return title;
@@ -43,19 +42,19 @@ public class Appointment {
 		this.description = description;
 	}
 
-	public int getStartTime() {
+	public Calendar getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(int startTime) {
+	public void setStartTime(Calendar startTime) {
 		this.startTime = startTime;
 	}
 
-	public int getFinishTime() {
+	public Calendar getFinishTime() {
 		return finishTime;
 	}
 
-	public void setFinishTime(int finishTime) {
+	public void setFinishTime(Calendar finishTime) {
 		this.finishTime = finishTime;
 	}
 
@@ -79,59 +78,59 @@ public class Appointment {
 		return owner;
 	}
 	
-	public int getAlarmTime() {
+	public Calendar getAlarmTime() {
 		return this.alarmTime;
 	}
 	
-	public String getStartHour() {
-		String hour = this.startTime + "";
-		if (hour.length() != 4) {
-			return "0";
+	public int getStartHour() {
+		if (this.startTime == null) {
+			return 0;
 		}
-		return hour.substring(0, 2);
+		int hour = this.startTime.get(Calendar.HOUR_OF_DAY);
+		return hour;
 	}
 	
-	public String getStartMinute() {
-		String minute = this.startTime + "";
-		if (minute.length() != 4) {
-			return "0";
+	public int getStartMinute() {
+		if (this.startTime == null) {
+			return 0;
 		}
-		return minute.substring(2, 4);
+		int minute = this.startTime.get(Calendar.MINUTE);
+		return minute;
 	}
 	
-	public String getFinishedHour() {
-		String hour = this.finishTime + "";
-		if (hour.length() != 4) {
-			return "0";
+	public int getFinishedHour() {
+		if (this.finishTime == null) {
+			return 0;
 		}
-		return hour.substring(0, 2);
+		int hour = this.finishTime.get(Calendar.HOUR_OF_DAY);
+		return hour;
 	}
 	
-	public String getFinishedMinute() {
-		String minute = this.finishTime + "";
-		if (minute.length() != 4) {
-			return "0";
+	public int getFinishedMinute() {
+		if (this.finishTime == null) {
+			return 0;
 		}
-		return minute.substring(2, 4);
+		int minute = this.finishTime.get(Calendar.MINUTE);
+		return minute;
 	}
 	
-	public String getAlarmHour() {
-		String alarm = this.alarmTime + "";
-		if (alarm.length() != 4) {
-			return "0";
+	public int getAlarmHour() {
+		if (this.alarmTime == null) {
+			return 0;
 		}
-		return alarm.substring(0, 2);
+		int alarm = this.alarmTime.get(Calendar.HOUR_OF_DAY);
+		return alarm;
 	}
 	
-	public String getAlarmMinute() {
-		String alarm = this.alarmTime + "";
-		if (alarm.length() != 4) {
-			return "0";
+	public int getAlarmMinute() {
+		if (this.alarmTime == null) {
+			return 0;
 		}
-		return alarm.substring(2, 4);
+		int alarm = this.alarmTime.get(Calendar.MINUTE);
+		return alarm;
 	}
 	
-	public void setAlarmTime(int alarmTime) {
+	public void setAlarmTime(Calendar alarmTime) {
 		this.alarmTime = alarmTime;
 	}
 	

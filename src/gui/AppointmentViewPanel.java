@@ -7,6 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -55,6 +60,7 @@ public class AppointmentViewPanel extends JPanel{
 	private JPanel jointTimeRoomAlarmPanel;
 	
 	private Appointment model;
+	private DecimalFormat df = new DecimalFormat("00");
 	
 	public AppointmentViewPanel(Appointment model) {
 		this.model = model;
@@ -153,6 +159,7 @@ public class AppointmentViewPanel extends JPanel{
 		descPanel = new JPanel(new BorderLayout());
 		descLab = new JLabel("Description");
 		descriptionArea = new JTextArea(5, 30);
+		descriptionArea.setLineWrap(true);
 		descriptionArea.setWrapStyleWord(true);
 		descriptionArea.setEditable(false);
 		JScrollPane scroll = new JScrollPane(descriptionArea);
@@ -218,15 +225,7 @@ public class AppointmentViewPanel extends JPanel{
 		minuteC.anchor = GridBagConstraints.LINE_START;
 		alarmPanel.add(alarmMinute, minuteC);
 	}
-	
-	private void addHourSpinnerModel() {
-		alarmHour.setModel(new SpinnerNumberModel(Integer.parseInt(model.getAlarmHour()), 0, 23, 1));
-	}
-	
-	private void addMinuteSpinnerModel() {
-		alarmMinute.setModel(new SpinnerNumberModel(Integer.parseInt(model.getAlarmMinute()), 0, 59, 1));
-	}
-	
+
 	private void createPersonsPanel() {
 		personsPanel = new JPanel(new GridBagLayout());
 		
@@ -282,9 +281,30 @@ public class AppointmentViewPanel extends JPanel{
 		buttonPanel.add(cancelButton, cbc);
 	}
 	
+	private void showWarningPane() {
+		URL warningIconURL = getClass().getResource("/warning.png");
+		Object options[] = {"Yes", "No"};
+		String optionText = "Do you really want to delete this appointment?";
+		String optionTitle = "Delete appointment?";
+		ImageIcon icon = new ImageIcon(warningIconURL);
+		
+		int answer = JOptionPane.showOptionDialog(this,
+			    optionText,
+			    optionTitle,
+			    JOptionPane.YES_NO_OPTION,
+			    JOptionPane.WARNING_MESSAGE,
+			    icon,
+			    options,  //the titles of buttons
+			    options[1]); //default button title
+		
+		if (answer == JOptionPane.YES_OPTION) {
+			System.out.println("delete this!");
+		}
+	}
+	
 	private class deleteListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("Delete!");
+			showWarningPane();
 		}
 	}
 	
@@ -308,8 +328,9 @@ public class AppointmentViewPanel extends JPanel{
 	
 	private void updateComponents() {
 		if (this.model != null) {
-			addHourSpinnerModel();
-			addMinuteSpinnerModel();
+			addHourSpinnerModelAndDisplay();
+			addMinuteSpinnerModelAndDisplay();
+			alarmTime.setDate(model.getAlarmTime().getTime());
 			this.titleField.setText(model.getTitle());
 			this.descriptionArea.setText(model.getDescription());
 			setTimeField();
@@ -320,8 +341,24 @@ public class AppointmentViewPanel extends JPanel{
 		}
 	}
 	
+	private void addHourSpinnerModelAndDisplay() {
+//		alarmHour.setEditor(new JSpinner.NumberEditor(alarmHour, "00"));
+		alarmHour.setModel(new SpinnerNumberModel(model.getAlarmHour(), 0, 23, 1));
+		
+		
+//		alarmHour.getModel().setValue(model.getAlarmHour());
+
+		System.out.println(model.getAlarmHour());
+		
+	}
+	
+	private void addMinuteSpinnerModelAndDisplay() {
+//		alarmMinute.setEditor(new JSpinner.NumberEditor(alarmMinute, "00"));
+		alarmMinute.setModel(new SpinnerNumberModel(model.getAlarmMinute(), 00, 59, 1));
+	}
+	
 	private void setTimeField() {
-		String total =  model.getStartHour() + ":" + model.getStartMinute() + " - " + model.getFinishedHour() + ":" + model.getFinishedMinute();
+		String total =  df.format(model.getStartHour()) + ":" + df.format(model.getStartMinute()) + " - " + df.format(model.getFinishedHour()) + ":" + df.format(model.getFinishedMinute());
 		this.timeField.setText(total);
 	}
 	
@@ -368,9 +405,22 @@ public class AppointmentViewPanel extends JPanel{
 	}
 
 	public static void main(String[] args) {
-		Appointment m = new Appointment("Tittle", 1005, 1109, new User("u", "pass", "Torgeir"));
+		Date start = new Date(2013, 4, 02, 12, 41);
+		Date end = new Date(2013, 10, 30, 9, 00);
+		Date alarm = new Date(2013, 3, 1, 12, 01);
+		
+		Calendar s = GregorianCalendar.getInstance();
+		s.setTime(start);
+		
+		Calendar e = GregorianCalendar.getInstance();
+		e.setTime(end);
+		
+		Calendar a = GregorianCalendar.getInstance();
+		a.setTime(alarm);
+		
+		Appointment m = new Appointment("Tittle", s, e, new User("u", "pass", "Torgeir"));
 		m.setDescription("Dette er en description! ¾¿lpdlfaŒsodjfn¾ksndv¿jkabnsd¿jvbas¿¾odjb");
-		m.setAlarmTime(1001);
+		m.setAlarmTime(a);
 		m.setRoom(new Room("345"));
 		
 		JFrame frame = new JFrame("TestYo!");
