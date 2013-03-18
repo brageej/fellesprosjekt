@@ -3,6 +3,7 @@ package gui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.beans.PropertyChangeSupport;
 
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
@@ -10,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import data.Main;
 import data.User;
@@ -22,10 +25,15 @@ public class ListPanel extends JPanel{
 	private DefaultListSelectionModel selectionModel;
 	private DefaultListModel listModel;
 	private JLabel label;
+	private DayCalendarPanel dayCalendarPanel;
+	private PropertyChangeSupport pcs;
+	public final static String Name_Property = "List";
 	
 	
 	
-	public ListPanel(Main main,String type){
+	public ListPanel(Main main,String type, DayCalendarPanel dayCalendarPanel){
+		pcs = new PropertyChangeSupport(this);
+		this.dayCalendarPanel = dayCalendarPanel;
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		this.main = main;
@@ -33,6 +41,7 @@ public class ListPanel extends JPanel{
 		selectionModel = new DefaultListSelectionModel();
 		list = new JList(listModel);
 		list.setSelectionModel(selectionModel);
+		list.addListSelectionListener(new listListener());
 		pane = new JScrollPane(list);
 		pane.setPreferredSize(new Dimension(150,150));
 		if(type == "person"){
@@ -64,6 +73,17 @@ public class ListPanel extends JPanel{
 		for(int i = 0; i<main.getGroups().size(); i++){
 			listModel.addElement(main.getGroups().get(i));
 		}
+	}
+	
+	public class listListener implements ListSelectionListener{
+
+		public void valueChanged(ListSelectionEvent arg0) {
+			Object object = list.getSelectedValue();
+			pcs.firePropertyChange(Name_Property, object,object);
+			
+			
+		}
+		
 	}
 	
 	

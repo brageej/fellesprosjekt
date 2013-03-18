@@ -40,6 +40,10 @@ public class User {
 		return name;
 	}
 	
+	public String getUserName(){
+		return this.username;
+	}
+	
 //	public ArrayList<Appointment> getOwner(){
 //		return;
 //		

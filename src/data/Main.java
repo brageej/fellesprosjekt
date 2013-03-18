@@ -25,6 +25,14 @@ public class Main {
 		server.addUser(new User(username, password, name, main));
 	}
 	
+	public User getUser(){
+		return this.thisUser;
+	}
+	
+	public void setUser(User user){
+		this.thisUser = user;
+	}
+	
 //	//public ArrayList<Appointment> getMyAppointments(){
 //		ArrayList<Appointment> appointments = server.getAppointments();
 //		ArrayList<Appointment> myAppointments = new ArrayList<Appointment>();
@@ -38,6 +46,7 @@ public class Main {
 	public static void main(String[] args){
 		Main main= new Main();
 		main.newUser("Brageej","passord","Brage E Jarhen",main );
+		main.setUser(new User("brageej","passord","Brage E Jahren",main));
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame frame = new JFrame("CalFifty");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
