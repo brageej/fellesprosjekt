@@ -35,7 +35,8 @@ public class TabPanel extends JPanel {
 		tabbedPane.addTab("Week", panel);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
-		JComponent panel2 = new DayCalendarPanel(this.main);
+		DayCalendarPanel dayCalendarPanel = new DayCalendarPanel(this.main);
+		JComponent panel2 = dayCalendarPanel;
 		tabbedPane.addTab("Day", panel2);
 		//panel2.setPreferredSize(new Dimension(500,100));
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);

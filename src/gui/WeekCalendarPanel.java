@@ -2,12 +2,14 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,6 +25,13 @@ public class WeekCalendarPanel extends JPanel {
 	private CalendarModel model;
 	private JTable table;
 	private JScrollPane calendarPane;
+	private JPanel mon;
+	private JPanel tue;
+	private JPanel wed;
+	private JPanel thu;
+	private JPanel fri;
+	private JPanel sat;
+	private JPanel sun;
 	Main main;
 	
 	
@@ -30,14 +39,16 @@ public class WeekCalendarPanel extends JPanel {
 		this.main = main;
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
-		DayPanel mon = (DayPanel) new DayPanel("Mon");
-		DayPanel tue = (DayPanel) new DayPanel("Tue");
-		DayPanel wed = (DayPanel) new DayPanel("Wed");
-		DayPanel thu = (DayPanel) new DayPanel("Thu");
-		DayPanel fri = (DayPanel) new DayPanel("Fri");
-		DayPanel sat = (DayPanel) new DayPanel("Sat");
-		DayPanel sun = (DayPanel) new DayPanel("Sun");
+		mon = (DayPanel) new DayPanel("Mon");
+		tue = (DayPanel) new DayPanel("Tue");
+		wed = (DayPanel) new DayPanel("Wed");
+		thu = (DayPanel) new DayPanel("Thu");
+		fri = (DayPanel) new DayPanel("Fri");
+		sat = (DayPanel) new DayPanel("Sat");
+		sun = (DayPanel) new DayPanel("Sun");
 		TimePanel time = new TimePanel();
+		
+
 		//addAppointments();
 		
 		c.gridx = 0;
@@ -70,5 +81,22 @@ public class WeekCalendarPanel extends JPanel {
 //	private void addAppointments(){
 //		for(int i = 0; i<main.getUser().get)
 //	}
+	
+	public void addDayPanel(String string){
+		JPanel dayPanel = new JPanel();
+		setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		JPanel mainPanel = new JPanel();
+		mainPanel.setPreferredSize(new Dimension(75,600));
+		setPreferredSize(new Dimension(75,650));
+		mainPanel.setBackground(Color.WHITE);
+		mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		c.gridx = 0;
+		c.gridy = 0;
+		dayPanel.add(new JLabel(string),c);
+		c.gridx = 0;
+		c.gridy = 1;
+		dayPanel.add(mainPanel,c);
+	}
 
 }
