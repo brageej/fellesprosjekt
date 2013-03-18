@@ -23,7 +23,12 @@ public class Room {
 	}
 	
 	public void addAppointment(Appointment newAppointment){
-		this.appointments.add(newAppointment);
+		if (!this.appointments.contains(newAppointment)){
+			this.appointments.add(newAppointment);			
+		}
+	}
+	public void removeAppointment(Appointment delAppointment){
+		this.appointments.remove(delAppointment);
 	}
 
 	public String getRoomNumber() {
