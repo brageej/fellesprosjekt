@@ -14,10 +14,14 @@ public class Subgroup {
 	 * 
 	 */
 
-	// legge relasjonen i liste over subgrupper og parentgrupper
-	// add- og sub- metodene i Group bør sørge for at dette ikke skjer gjentagende
-	subGroup.addParentGroup(this);
-	parentGroup.addSubGroup(this);
+	public Subgroup(Group parentGroup, Group subGroup){
+		this.parentGroup = parentGroup;
+		this.subGroup = subGroup;
+		
+		// legge relasjonen i liste over subgrupper og parentgrupper
+		// add- og sub- metodene i Group bør sørge for at dette ikke skjer gjentagende
+		subGroup.addParentGroup(this);
+		parentGroup.addSubGroup(this);
 		
 	}
 	
