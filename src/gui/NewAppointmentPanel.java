@@ -4,9 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,13 +25,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import javax.swing.SpinnerModel;
-import javax.swing.border.Border;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListDataListener;
+
+import customModels.UserComboBoxModel;
 
 import data.Appointment;
+import data.Server;
+import data.User;
 
 public class NewAppointmentPanel extends JPanel{
 	
@@ -78,6 +87,7 @@ public class NewAppointmentPanel extends JPanel{
 	private JButton cancelButton;
 	
 	private Appointment model;
+	private Server server;
 	
 	public NewAppointmentPanel() {
 		this(null);
@@ -85,15 +95,42 @@ public class NewAppointmentPanel extends JPanel{
 	
 	public NewAppointmentPanel(Appointment appointment) {
 		createPanels();
-		if (appointment == null) {
-			
+		this.server = new Server();
+		if (appointment != null) {
+			this.model = appointment;
+			updateGUI();
 		}
-		this.model = appointment;
-		updateGUI();
-		
 	}
 	
 	private void updateGUI() {
+		titleField.setText(model.getTitle());
+		descriptionField.setText(model.getDescription());
+		startTime.setDate(model.getStartTime().getTime());
+		endTime.setDate(model.getFinishTime().getTime());
+		setSpinnerModelsNotNull();
+		setComboBoxModelNotNull();
+	}
+	
+	private void setComboBoxModelNotNull() {
+//		ArrayList<User> users = server.getPersons();
+		
+		ArrayList<User> users = new ArrayList<User>();
+		users.add(new User("lol", "pass", "navnulf"));
+		users.add(new User("fwa", "asdf", "lolstein"));
+		UserComboBoxModel mod = new UserComboBoxModel(users);
+		
+		personsCombo.setModel(mod);
+		
+		
+		
+	}
+	
+	private void setSpinnerModelsNotNull() {
+		startHourSpinner.setModel(new SpinnerNumberModel(model.getStartHour(), 00, 23, 1));
+		startMinuteSpinner.setModel(new SpinnerNumberModel(model.getStartMinute(), 00, 59, 1));
+		
+		endHourSpinner.setModel(new SpinnerNumberModel(model.getFinishedHour(), 00, 23, 1));
+		endMinuteSpinner.setModel(new SpinnerNumberModel(model.getFinishedMinute(), 00, 59, 1));
 		
 	}
 	
@@ -134,6 +171,7 @@ public class NewAppointmentPanel extends JPanel{
 		descLab = new JLabel("Description");
 		descriptionField = new JTextArea(5, 30);
 		descriptionField.setWrapStyleWord(true);
+		descriptionField.setLineWrap(true);
 		JScrollPane scroll = new JScrollPane(descriptionField);
 		descriptionPanel.add(descLab, BorderLayout.NORTH);
 		descriptionPanel.add(scroll, BorderLayout.SOUTH);
@@ -389,12 +427,14 @@ public class NewAppointmentPanel extends JPanel{
 		buttonPanel = new JPanel(new GridBagLayout());
 		
 		saveButton = new JButton("Save");
+		saveButton.addActionListener(new saveButtonListener());
 		saveButton.setPreferredSize(new Dimension(100, 30));
 		GridBagConstraints sbc = new GridBagConstraints();
 		sbc.insets = new Insets(5, 0, 5, 5);
 		buttonPanel.add(saveButton, sbc);
 		
 		cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new cancelButtonListener());
 		cancelButton.setPreferredSize(new Dimension(100, 30));
 		GridBagConstraints cbc = new GridBagConstraints();
 		cbc.gridx = 1;
@@ -403,9 +443,35 @@ public class NewAppointmentPanel extends JPanel{
 		
 	}
 	
+	private class saveButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Save");
+		}
+	}
+	
+	private class cancelButtonListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("Cancel");
+		}
+	}
+	
 	public static void main(String[] args) {
+		Date start = new Date(2013, 4, 02, 12, 41);
+		Date end = new Date(2013, 10, 30, 9, 00);
+		
+		Calendar s = GregorianCalendar.getInstance();
+		s.setTime(start);
+		
+		Calendar e = GregorianCalendar.getInstance();
+		e.setTime(end);
+		
+		User t = new User("u", "pass", "Torgeir");
+		
+		Appointment m = new Appointment("Tittle", s, e, t);
+		m.setDescription("Description babyasdffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd!");
+		
 		JFrame frame = new JFrame("Fabuloussss!");
-		frame.getContentPane().add(new NewAppointmentPanel());
+		frame.getContentPane().add(new NewAppointmentPanel(m));
 		System.out.println(frame.getContentPane().getHeight());
 		frame.pack();
 		frame.setResizable(false);
