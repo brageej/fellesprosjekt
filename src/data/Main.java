@@ -9,12 +9,19 @@ import javax.swing.JFrame;
 
 public class Main {
 	
-	Server server = new Server();
-
+	private Server server;
+	private User user;
+	
+	public Main() {
+		server = new Server();
+	}
 	
 	public ArrayList<User> getPersons(){
-		return server.getPersons();
-		
+		return server.getPersons();		
+	}
+	
+	public User getUser() {
+		return this.user;
 	}
 	
 	public void newUser(String username, String password, String name){

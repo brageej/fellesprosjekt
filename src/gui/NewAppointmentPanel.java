@@ -80,8 +80,20 @@ public class NewAppointmentPanel extends JPanel{
 	private Appointment model;
 	
 	public NewAppointmentPanel() {
+		this(null);
+	}
+	
+	public NewAppointmentPanel(Appointment appointment) {
 		createPanels();
+		if (appointment == null) {
+			
+		}
+		this.model = appointment;
+		updateGUI();
 		
+	}
+	
+	private void updateGUI() {
 		
 	}
 	

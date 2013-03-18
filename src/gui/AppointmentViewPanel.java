@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -17,10 +19,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import data.Appointment;
+import data.Participant;
 import data.Room;
 import data.User;
 
-public class AppointmentViewPanel extends JPanel{
+public class AppointmentViewPanel extends JPanel implements PropertyChangeListener{
 	
 	private JLabel titleLab;
 	private JTextField titleField;
@@ -59,13 +62,25 @@ public class AppointmentViewPanel extends JPanel{
 	private JPanel jointTitleDescPanel;
 	private JPanel jointTimeRoomAlarmPanel;
 	
+	private DefaultListModel listModel;
+	
 	private Appointment model;
+	private Participant participant;
+	
 	private DecimalFormat df = new DecimalFormat("00");
 	
-	public AppointmentViewPanel(Appointment model) {
+	public AppointmentViewPanel(Appointment model, Participant participant) {
 		this.model = model;
+		this.participant = participant;
+		
 		createPanels();
-		updateComponents();
+		
+		if (this.model != null) {
+			updateComponents();
+			model.addPropertyChangeListener(this);
+		}
+		
+		
 	}
 	
 	private void createPanels() {
@@ -235,7 +250,9 @@ public class AppointmentViewPanel extends JPanel{
 		rlc.insets = new Insets(10, 10, 5, 0);
 		personsPanel.add(personsLab, rlc);
 		
-		personsList = new JList(new DefaultListModel());
+		personsList = new JList();
+		listModel = new DefaultListModel();
+		personsList.setModel(listModel);
 		JScrollPane personListScroll = new JScrollPane(personsList);
 		personListScroll.setPreferredSize(new Dimension(150, 190));
 		GridBagConstraints rc = new GridBagConstraints();
@@ -327,42 +344,42 @@ public class AppointmentViewPanel extends JPanel{
 	}
 	
 	private void updateComponents() {
-		if (this.model != null) {
-			addHourSpinnerModelAndDisplay();
-			addMinuteSpinnerModelAndDisplay();
-			alarmTime.setDate(model.getAlarmTime().getTime());
-			this.titleField.setText(model.getTitle());
-			this.descriptionArea.setText(model.getDescription());
-			setTimeField();
-			this.roomField.setText(model.getRoom().toString());
-//			addPersonListModel();
-			
-			
+		addHourSpinnerModelAndDisplay();
+		addMinuteSpinnerModelAndDisplay();
+		alarmTime.setDate(participant.getAlarmTime().getTime());
+		this.titleField.setText(model.getTitle());
+		this.descriptionArea.setText(model.getDescription());
+		setTimeField();
+		this.roomField.setText(model.getRoom().toString());
+		fillPersonListModel();
+	}
+	
+	private void fillPersonListModel() {
+		for (int i = 0; i < model.getParticipantLength(); i++) {
+			listModel.addElement(model.getParticipant(i));
 		}
+		System.out.println(model.getParticipant(0));
+		
 	}
 	
 	private void addHourSpinnerModelAndDisplay() {
 //		alarmHour.setEditor(new JSpinner.NumberEditor(alarmHour, "00"));
-		alarmHour.setModel(new SpinnerNumberModel(model.getAlarmHour(), 0, 23, 1));
-		
-		
-//		alarmHour.getModel().setValue(model.getAlarmHour());
-
-		System.out.println(model.getAlarmHour());
+		alarmHour.setModel(new SpinnerNumberModel(participant.getAlarmHour(), 0, 23, 1));
 		
 	}
 	
 	private void addMinuteSpinnerModelAndDisplay() {
 //		alarmMinute.setEditor(new JSpinner.NumberEditor(alarmMinute, "00"));
-		alarmMinute.setModel(new SpinnerNumberModel(model.getAlarmMinute(), 00, 59, 1));
+		alarmMinute.setModel(new SpinnerNumberModel(participant.getAlarmMinute(), 00, 59, 1));
 	}
 	
 	private void setTimeField() {
-		String total =  df.format(model.getStartHour()) + ":" + df.format(model.getStartMinute()) + " - " + df.format(model.getFinishedHour()) + ":" + df.format(model.getFinishedMinute());
+		String total =  df.format(model.getStartHour()) + ":" 
+				+ df.format(model.getStartMinute()) + " - " 
+				+ df.format(model.getFinishedHour()) + ":" 
+				+ df.format(model.getFinishedMinute());
 		this.timeField.setText(total);
 	}
-	
-	
 	
 	public JTextField getTitleField() {
 		return titleField;
@@ -395,13 +412,20 @@ public class AppointmentViewPanel extends JPanel{
 	public JList getPersonsList() {
 		return personsList;
 	}
-
-	public Appointment getModel() {
-		return model;
-	}
-
-	public void setModel(Appointment model) {
-		this.model = model;
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent e) {
+		if (e.getPropertyName() == Appointment.DESC_PROP) {
+			descriptionArea.setText(model.getDescription());
+		}else if (e.getPropertyName() == Appointment.FINISH_TIME_PROP || e.getPropertyName() == Appointment.START_TIME_PROP) {
+			setTimeField();
+		}else if (e.getPropertyName() == Appointment.PARTICIPANT_PROP) {
+			fillPersonListModel();
+		}else if (e.getPropertyName() == Appointment.ROOM_PROP) {
+			roomField.setText(model.getRoom().toString());
+		}else if (e.getPropertyName() == Appointment.TITLE_PROP) {
+			titleField.setText(model.getTitle());
+		} 
 	}
 
 	public static void main(String[] args) {
@@ -418,16 +442,34 @@ public class AppointmentViewPanel extends JPanel{
 		Calendar a = GregorianCalendar.getInstance();
 		a.setTime(alarm);
 		
-		Appointment m = new Appointment("Tittle", s, e, new User("u", "pass", "Torgeir"));
-		m.setDescription("Dette er en description! ¾¿lpdlfaŒsodjfn¾ksndv¿jkabnsd¿jvbas¿¾odjb");
-		m.setAlarmTime(a);
-		m.setRoom(new Room("345"));
+		User t = new User("u", "pass", "Torgeir");
+		User l = new User("p", "pass", "Bjarne");
+		User o = new User("a", "pass", "Lol");
+		User q = new User("c", "pass", "asfadsf");
+		Appointment m = new Appointment("Tittle", s, e, t);
+		Participant pa = new Participant(m, t);
+		Participant pl = new Participant(m, l);
+		Participant po = new Participant(m, o);
+		Participant pq = new Participant(m, q);
 		
+		
+		m.addParticipant(pa);
+		m.addParticipant(po);
+		m.addParticipant(pq);
+		m.addParticipant(pl);
+		
+		m.setDescription("Dette er en description! ¾¿lpdlfaŒsodjfn¾ksndv¿jkabnsd¿jvbas¿¾odjb");
+		pa.setAlarmTime(a);
+		m.setRoom(new Room("345"));
 		JFrame frame = new JFrame("TestYo!");
-		frame.getContentPane().add(new AppointmentViewPanel(m));
+		frame.getContentPane().add(new AppointmentViewPanel(m, pa));
 		frame.pack();
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
+		
+		m.setTitle("Ny tittle!");
 	}
+
+	
 }
