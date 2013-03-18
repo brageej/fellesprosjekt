@@ -49,13 +49,13 @@ public class WeekPanel extends JPanel {
 		JPanel weekCalendarPanel = new JPanel();
 		setLayout(new GridBagLayout());
 		GridBagConstraints weekC = new GridBagConstraints();
-		mon = addDayPanel("Mon");
-		tue = addDayPanel("Tue");
-		wed = addDayPanel("Wed");
-		thu = addDayPanel("Thu");
-		fri = addDayPanel("Fri");
-		sat = addDayPanel("Sat");
-		sun = addDayPanel("Sun");
+		mon = new DayPanel("Mon");
+		tue = new DayPanel("Tue");
+		wed = new DayPanel("Wed");
+		thu = new DayPanel("Thu");
+		fri = new DayPanel("Fri");
+		sat = new DayPanel("Sat");
+		sun = new DayPanel("Sun");
 		TimePanel time = new TimePanel();
 		
 		weekC.gridx = 0;

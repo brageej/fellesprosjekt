@@ -44,11 +44,15 @@ public class DayCalendarPanel extends JPanel{
 	private DefaultListSelectionModel personSelectionModel;
 	private DefaultListSelectionModel groupSelectionModel;
 	private JPanel dayCalendarPanel;
+	private ArrayList<Object> selectedUsers;
+	private ArrayList<DayPanel> dayPanels;
 	
 	
 	
 	public DayCalendarPanel(Main main){
 		this.main = main;
+		selectedUsers = new ArrayList<Object>();
+		dayPanels = new ArrayList<DayPanel>();
 		System.out.println(this.main);
 
 		userDayPanel = new JPanel();
@@ -58,7 +62,11 @@ public class DayCalendarPanel extends JPanel{
 		paneC.gridx = 0;
 		paneC.gridy = 1;
 		userDayPanel.add(this.timePanel,paneC);
-		addDayPanel(main.getUser());
+		DayPanel user = new DayPanel(main.getUser());
+		//addDayPanel(main.getUser());
+		paneC.gridx=1;
+		paneC.gridy=1;
+		userDayPanel.add(user,paneC);
 
 		calendarPane = new JScrollPane(userDayPanel);
 		calendarPane.setPreferredSize(new Dimension(650,500));
@@ -76,6 +84,7 @@ public class DayCalendarPanel extends JPanel{
 		GridBagConstraints personC = new GridBagConstraints();
 		personListModel = new DefaultListModel();
 		personSelectionModel = new DefaultListSelectionModel();
+		
 		list = new JList(personListModel);
 		list.setSelectionModel(personSelectionModel);
 		list.addListSelectionListener(new SelectionListener());
@@ -140,25 +149,35 @@ public class DayCalendarPanel extends JPanel{
 	}
 	
 	public void addDayPanel(Object object){
+		if(object != main.getUser()){
+			selectedUsers.add(object);
+		}
+		System.out.println(selectedUsers);
+		
 		if(object != null){
 			if(object instanceof User){
-				JPanel dayPanel = new JPanel();
-				setLayout(new GridBagLayout());
-				GridBagConstraints dayC = new GridBagConstraints();
-				JPanel mainPanel = new JPanel();
-				mainPanel.setPreferredSize(new Dimension(75,600));
-				dayPanel.setPreferredSize(new Dimension(75,650));
-				mainPanel.setBackground(Color.WHITE);
-				mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-				dayC.gridx = 0;
-				dayC.gridy = 0;
-				dayPanel.add(new JLabel(((User) object).getUserName()),dayC);
-				dayC.gridx = 0;
-				dayC.gridy = 1;
-				dayPanel.add(mainPanel,dayC);
+				DayPanel dayPanel = new DayPanel((User) object);
+				dayPanels.add(dayPanel);
 				paneC.gridx ++;
 				paneC.gridy = 0;
 				userDayPanel.add(dayPanel,paneC);
+//				JPanel dayPanel = new JPanel();
+//				setLayout(new GridBagLayout());
+//				GridBagConstraints dayC = new GridBagConstraints();
+//				JPanel mainPanel = new JPanel();
+//				mainPanel.setPreferredSize(new Dimension(75,600));
+//				dayPanel.setPreferredSize(new Dimension(75,650));
+//				mainPanel.setBackground(Color.WHITE);
+//				mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//				dayC.gridx = 0;
+//				dayC.gridy = 0;
+//				dayPanel.add(new JLabel(((User) object).getUserName()),dayC);
+//				dayC.gridx = 0;
+//				dayC.gridy = 1;
+//				dayPanel.add(mainPanel,dayC);
+//				paneC.gridx ++;
+//				paneC.gridy = 0;
+//				userDayPanel.add(dayPanel,paneC);
 				validate();
 
 			}
@@ -170,6 +189,7 @@ public class DayCalendarPanel extends JPanel{
 	
 	private void addPersons(){
 		for(int i = 0; i<main.getPersons().size(); i++){
+			
 			personListModel.addElement(main.getPersons().get(i));
 		}
 		}
@@ -185,10 +205,9 @@ public class DayCalendarPanel extends JPanel{
 			
 			if(evt.getValueIsAdjusting()){
 				addDayPanel(list.getSelectedValue());
-				for(int i=0; i<personListModel.size();i++){
-					if(list.get)
-				}
-				userDayPanel.remove(list.get)
+
+
+				
 
 			}
 			
