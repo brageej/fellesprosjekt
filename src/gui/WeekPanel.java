@@ -24,7 +24,7 @@ public class WeekPanel extends JPanel {
 		GridBagConstraints mainC = new GridBagConstraints();
 		
 		JPanel calendarPanePanel = new JPanel();
-		calendarPanel = new WeekCalendarPanel();
+		calendarPanel = new WeekCalendarPanel(this.main);
 		calendarPane = new JScrollPane(calendarPanel);
 		calendarPane.setPreferredSize(new Dimension(650,500));
 		calendarPanePanel.add(calendarPane);

@@ -18,6 +18,10 @@ public class Server {
 		return this.Groups;
 	}
 	
+	public ArrayList<Appointment> getAppointments(){
+		return this.Appointments;
+	}
+	
 	
 	//Legge til brukere i brukerlista ArrayList<User> Persons
 	public void addUser(User user){

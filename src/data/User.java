@@ -10,18 +10,26 @@ public class User {
 	private String password;
 	private String name;
 	
+	private ArrayList<Appointment> myAppointments;
 	private ArrayList<Appointment> owner;
 	private ArrayList<Group> leader;
 	private ArrayList<Participant> appointments;
 	private ArrayList<Member> groups;
+	private Main main;
 	
 	
-	public User(String username, String password, String name){
+	public User(String username, String password, String name, Main main){
 		this.username = username;
 		this.name = name;
 		this.password = password;
+		this.main = main;
+		//setMyAppointments();
 		
 	}
+	
+//	private void setMyAppointments(){
+//		myAppointments = main.getMyAppointments();
+//	}
 	
 	public String getName(){
 		return this.name;
@@ -31,6 +39,11 @@ public class User {
 	public String toString() {
 		return name;
 	}
+	
+//	public ArrayList<Appointment> getOwner(){
+//		return;
+//		
+//	}
 	
 	
 
