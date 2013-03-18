@@ -24,15 +24,32 @@ public class Main {
 		return this.user;
 	}
 	
-	public void newUser(String username, String password, String name){
-		server.addUser(new User(username, password, name));
+	public ArrayList<Group> getGroups(){
+		return server.getGroups();
 	}
+	
+	public void newUser(String username, String password, String name,Main main){
+		server.addUser(new User(username, password, name, main));
+	}
+	
+	public void setUser(User user){
+		this.user = user;
+	}
+	
+//	//public ArrayList<Appointment> getMyAppointments(){
+//		ArrayList<Appointment> appointments = server.getAppointments();
+//		ArrayList<Appointment> myAppointments = new ArrayList<Appointment>();
+//		for(int i = 0; i<appointments.size();i++){
+//			//if(appointment)
+//		}
+//	}
 	
 
 	
 	public static void main(String[] args){
 		Main main= new Main();
-		main.newUser("Brageej","passord","Brage E Jarhen" );
+		main.newUser("Brageej","passord","Brage E Jarhen",main );
+		main.setUser(new User("brageej","passord","Brage E Jahren",main));
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame frame = new JFrame("CalFifty");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -11,7 +11,16 @@ public class Server {
 	
 	
 	public ArrayList<User> getPersons(){
+
 		return users;
+	}
+	
+	public ArrayList<Group> getGroups(){
+		return groups;
+	}
+	
+	public ArrayList<Appointment> getAppointments(){
+		return appointments;
 	}
 	
 	

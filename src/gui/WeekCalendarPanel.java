@@ -16,14 +16,18 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import data.Main;
+
 public class WeekCalendarPanel extends JPanel {
 	
 	private CalendarModel model;
 	private JTable table;
 	private JScrollPane calendarPane;
+	Main main;
 	
 	
-	public WeekCalendarPanel(){
+	public WeekCalendarPanel(Main main){
+		this.main = main;
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		DayPanel mon = (DayPanel) new DayPanel("Mon");
@@ -34,6 +38,7 @@ public class WeekCalendarPanel extends JPanel {
 		DayPanel sat = (DayPanel) new DayPanel("Sat");
 		DayPanel sun = (DayPanel) new DayPanel("Sun");
 		TimePanel time = new TimePanel();
+		//addAppointments();
 		
 		c.gridx = 0;
 		c.gridy = 1;
@@ -61,5 +66,9 @@ public class WeekCalendarPanel extends JPanel {
 		c.gridy = 1;
 		add(sun,c);
 	}
+	
+//	private void addAppointments(){
+//		for(int i = 0; i<main.getUser().get)
+//	}
 
 }
