@@ -35,10 +35,10 @@ public class User {
 		return this.name;
 	}
 
-//	@Override
-//	public String toString() {
-//		return name;
-//	}
+	@Override
+	public String toString() {
+		return name;
+	}
 	
 	public String getUserName(){
 		return this.username;

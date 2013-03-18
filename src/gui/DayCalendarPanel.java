@@ -43,6 +43,7 @@ public class DayCalendarPanel extends JPanel{
 	private JPanel groupListPanel;
 	private DefaultListSelectionModel personSelectionModel;
 	private DefaultListSelectionModel groupSelectionModel;
+	private JPanel dayCalendarPanel;
 	
 	
 	
@@ -61,7 +62,7 @@ public class DayCalendarPanel extends JPanel{
 
 		calendarPane = new JScrollPane(userDayPanel);
 		calendarPane.setPreferredSize(new Dimension(650,500));
-		JPanel dayCalendarPanel = new JPanel();
+		dayCalendarPanel = new JPanel();
 		dayCalendarPanel.add(calendarPane);
 		
 		JPanel listAndCalendarPanel = new JPanel();
@@ -158,6 +159,8 @@ public class DayCalendarPanel extends JPanel{
 				paneC.gridx ++;
 				paneC.gridy = 0;
 				userDayPanel.add(dayPanel,paneC);
+				validate();
+
 			}
 		}
 
@@ -181,9 +184,11 @@ public class DayCalendarPanel extends JPanel{
 		public void valueChanged(ListSelectionEvent evt) {
 			
 			if(evt.getValueIsAdjusting()){
-				System.out.println("det skjer noe");
-				System.out.println(list.getSelectedValue());
 				addDayPanel(list.getSelectedValue());
+				for(int i=0; i<personListModel.size();i++){
+					if(list.get)
+				}
+				userDayPanel.remove(list.get)
 
 			}
 			
