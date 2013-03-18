@@ -27,5 +27,7 @@ public class DayPanel extends JPanel{
 		c.gridy = 1;
 		add(mainPanel,c);
 	}
+	
+	
 
 }
