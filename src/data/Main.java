@@ -45,8 +45,8 @@ public class Main {
 	
 	public static void main(String[] args){
 		Main main= new Main();
-		main.newUser("Brageej","passord","Brage E Jarhen",main );
-		main.newUser("Orienterik","passord","Erik",main );
+		main.newUser("Torgerhaa","passord","Torgeir",main );
+		main.newUser("Erikgu","passord","Erik",main );
 		main.setUser(new User("Brageej","passord","Brage E Jahren",main));
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame frame = new JFrame("CalFifty");
