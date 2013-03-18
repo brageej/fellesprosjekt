@@ -428,48 +428,48 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 		} 
 	}
 
-	public static void main(String[] args) {
-		Date start = new Date(2013, 4, 02, 12, 41);
-		Date end = new Date(2013, 10, 30, 9, 00);
-		Date alarm = new Date(2013, 3, 1, 12, 01);
-		
-		Calendar s = GregorianCalendar.getInstance();
-		s.setTime(start);
-		
-		Calendar e = GregorianCalendar.getInstance();
-		e.setTime(end);
-		
-		Calendar a = GregorianCalendar.getInstance();
-		a.setTime(alarm);
-		
-		User t = new User("u", "pass", "Torgeir");
-		User l = new User("p", "pass", "Bjarne");
-		User o = new User("a", "pass", "Lol");
-		User q = new User("c", "pass", "asfadsf");
-		Appointment m = new Appointment("Tittle", s, e, t);
-		Participant pa = new Participant(m, t);
-		Participant pl = new Participant(m, l);
-		Participant po = new Participant(m, o);
-		Participant pq = new Participant(m, q);
-		
-		
-		m.addParticipant(pa);
-		m.addParticipant(po);
-		m.addParticipant(pq);
-		m.addParticipant(pl);
-		
-		m.setDescription("Dette er en description! ¾¿lpdlfaŒsodjfn¾ksndv¿jkabnsd¿jvbas¿¾odjb");
-		pa.setAlarmTime(a);
-		m.setRoom(new Room("345"));
-		JFrame frame = new JFrame("TestYo!");
-		frame.getContentPane().add(new AppointmentViewPanel(m, pa));
-		frame.pack();
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		
-		m.setTitle("Ny tittle!");
-	}
+//	public static void main(String[] args) {
+//		Date start = new Date(2013, 4, 02, 12, 41);
+//		Date end = new Date(2013, 10, 30, 9, 00);
+//		Date alarm = new Date(2013, 3, 1, 12, 01);
+//		
+//		Calendar s = GregorianCalendar.getInstance();
+//		s.setTime(start);
+//		
+//		Calendar e = GregorianCalendar.getInstance();
+//		e.setTime(end);
+//		
+//		Calendar a = GregorianCalendar.getInstance();
+//		a.setTime(alarm);
+//		
+//		User t = new User("u", "pass", "Torgeir");
+//		User l = new User("p", "pass", "Bjarne");
+//		User o = new User("a", "pass", "Lol");
+//		User q = new User("c", "pass", "asfadsf");
+//		Appointment m = new Appointment("Tittle", s, e, t);
+//		Participant pa = new Participant(m, t);
+//		Participant pl = new Participant(m, l);
+//		Participant po = new Participant(m, o);
+//		Participant pq = new Participant(m, q);
+//		
+//		
+//		m.addParticipant(pa);
+//		m.addParticipant(po);
+//		m.addParticipant(pq);
+//		m.addParticipant(pl);
+//		
+//		m.setDescription("Dette er en description! ¾¿lpdlfaŒsodjfn¾ksndv¿jkabnsd¿jvbas¿¾odjb");
+//		pa.setAlarmTime(a);
+//		m.setRoom(new Room("345"));
+//		JFrame frame = new JFrame("TestYo!");
+//		frame.getContentPane().add(new AppointmentViewPanel(m, pa));
+//		frame.pack();
+//		frame.setResizable(false);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setVisible(true);
+//		
+//		m.setTitle("Ny tittle!");
+//	}
 
 	
 }

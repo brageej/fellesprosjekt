@@ -9,17 +9,12 @@ import javax.swing.JFrame;
 
 public class Main {
 	
-<<<<<<< HEAD
 	private Server server;
 	private User user;
 	
 	public Main() {
 		server = new Server();
 	}
-=======
-	Server server = new Server();
-	User thisUser;
->>>>>>> df884f1a9e13b589e19d0a2324558da2c13c4ec3
 	
 	public ArrayList<User> getPersons(){
 		return server.getPersons();		
@@ -37,12 +32,8 @@ public class Main {
 		server.addUser(new User(username, password, name, main));
 	}
 	
-	public User getUser(){
-		return this.thisUser;
-	}
-	
 	public void setUser(User user){
-		this.thisUser = user;
+		this.user = user;
 	}
 	
 //	//public ArrayList<Appointment> getMyAppointments(){

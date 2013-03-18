@@ -10,7 +10,6 @@ public class Room {
 	private ArrayList<Appointment> appointments;
 	
 	
-<<<<<<< HEAD
 	public Room(String roomNumber) {
 		this.roomNumber = roomNumber;
 	}
@@ -18,7 +17,7 @@ public class Room {
 	public String toString() {
 		return this.roomNumber;
 	}
-=======
+
 	public Room(String roomNumber, int size){
 		this.roomNumber = roomNumber;
 		this.size = size;
@@ -51,10 +50,4 @@ public class Room {
 	public ArrayList<Appointment> getAppointments() {
 		return appointments;
 	}
-
-	
-	
-	
-
->>>>>>> df884f1a9e13b589e19d0a2324558da2c13c4ec3
 }
