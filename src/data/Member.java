@@ -29,8 +29,5 @@ public class Member {
 		user.removeGroup(this);
 	}
 	
-	public User getUser(){
-		return this.user;
-	}
 
 }
