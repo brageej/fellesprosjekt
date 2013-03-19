@@ -65,7 +65,6 @@ public class Main {
 	
 	public static void main(String[] args){
 		Main main= new Main();
-
 		main.newUser("Brageej","passord","Brage E Jarhen",main );
 		main.setUser(new User("brageej","passord","Brage E Jahren"));
 //		JFrame.setDefaultLookAndFeelDecorated(true);
@@ -77,7 +76,9 @@ public class Main {
 //		frame.pack();
 //		frame.setVisible(true);
 
+
 		main.newUser("Torgerhaa","passord","Torgeir",main );
+
 		main.newUser("torgeha","lol","Torgeir",main );
 		main.newUser("Erikgu","passord","Erik",main );
 		main.setUser(new User("Brageej","passord","Brage E Jahren"));

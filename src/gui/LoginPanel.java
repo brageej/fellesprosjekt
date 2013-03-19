@@ -122,16 +122,11 @@ public class LoginPanel extends JPanel{
 	
 	private class LoginListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-
-//			Login();
-			System.out.println("Pressed");
-
 			String pass = String.valueOf(passwordField.getPassword());
 			if (main.authenticateUser(usernameField.getText(), pass)) {
 				mainGui.showTabPanel();
+				mainGui.loginFrame.dispose();
 			}
-			
-
 		}
 	}
 	
