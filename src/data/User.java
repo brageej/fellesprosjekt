@@ -90,6 +90,10 @@ public class User {
 		return false;
 	}
 	
+	
+	public ArrayList<Participant> getAppointments(){
+		return appointments;
+	}
 	/* 
 	 * Laget constructor med brukernavn, passord og navn. Laget metoder for å legge til
 	 * medlemskap i gruppe, leder i gruppe, eier av avtale og deltager i avtale. 

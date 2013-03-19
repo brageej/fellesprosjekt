@@ -1,6 +1,7 @@
 package gui;
 
-import gui.ListPanel.listListener;
+import gui.DayCalendarPanel.SelectionListener;
+import gui.DayCalendarPanel.myMouseListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,29 +14,24 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.toedter.calendar.JCalendar;
 
-import data.Group;
 import data.Main;
 import data.Participant;
 import data.User;
 
-public class DayCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener{
-	
+public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener {
 	private GridBagConstraints mainC;
 	private Main main;
 	private Date date;
@@ -73,7 +69,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	private ArrayList<DayPanel> dayPanels;
 	
 	
-	public DayCalendarPanel(Main main){
+	public GroupCalendarPanel(Main main){
 		this.main = main; 
 		selectedUsers = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
@@ -117,7 +113,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		personSelectionModel = new DefaultListSelectionModel();
 		personList = new JList(personListModel);
 		personList.setSelectionModel(personSelectionModel);
-		personList.addListSelectionListener(new SelectionListener());
 		personPane = new JScrollPane(personList);
 		personPane.setPreferredSize(new Dimension(150,150));
 		userLabel = new JLabel("Users");
@@ -139,6 +134,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		groupSelectionModel = new DefaultListSelectionModel();
 		groupList = new JList(groupListModel);
 		groupList.setSelectionModel(groupSelectionModel);
+		groupList.addListSelectionListener(new SelectionListener());
 		groupPane = new JScrollPane(groupList);
 		groupPane.setPreferredSize(new Dimension(150,150));
 		groups = new JLabel("Groups");
@@ -336,6 +332,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 }
