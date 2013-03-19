@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 public class Appointment {
@@ -72,58 +73,34 @@ public class Appointment {
 		return null;
 	}
 	
-	public String getTitle() {
-		return title;
-	}
-
 	public void setTitle(String title) {
 		String oldTitle = this.title;
 		this.title = title;
 		pcs.firePropertyChange(TITLE_PROP, oldTitle, title);
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
+	
 	public void setDescription(String description) {
 		String oldDesc = this.description;
 		this.description = description;
 		pcs.firePropertyChange(DESC_PROP, oldDesc, description);
 	}
-
-	public Calendar getStartTime() {
-		return startTime;
-	}
-
+	
 	public void setStartTime(Calendar startTime) {
 		Calendar oldTime = this.startTime;
 		this.startTime = startTime;
 		pcs.firePropertyChange(START_TIME_PROP, oldTime, startTime);
 	}
-
-	public Calendar getFinishTime() {
-		return finishTime;
-	}
-
+	
 	public void setFinishTime(Calendar finishTime) {
 		Calendar oldTime = this.finishTime;
 		this.finishTime = finishTime;
 		pcs.firePropertyChange(FINISH_TIME_PROP, oldTime, finishTime);
 	}
-
-	public Room getRoom() {
-		return room;
-	}
-
+	
 	public void setRoom(Room room) {
 		Room oldRoom = this.room;
 		this.room = room;
 		pcs.firePropertyChange(ROOM_PROP, oldRoom, room);
-	}
-
-	public User getOwner() {
-		return owner;
 	}
 	
 	public int getStartHour() {
@@ -163,4 +140,47 @@ public class Appointment {
 //		a.setAlarmTime(1045);
 //		System.out.println(a.getAlarmMinute());
 //	}
+	
+	public Appointment(int appointmentId, String title, String description, long startTime, long finishTime, Room room, User owner) {
+		this.appointmentId = appointmentId;
+		this.title = title;
+		this.description = description;
+		this.startTime = new GregorianCalendar();
+		this.startTime.setTimeInMillis(startTime);
+		this.finishTime = new GregorianCalendar();
+		this.finishTime.setTimeInMillis(finishTime);
+		this.room = room;
+		this.owner = owner;
+		participants = new ArrayList<Participant>();
+		pcs = new PropertyChangeSupport(this);
+	}
+	
+	public int getAppointmentId() {
+		return appointmentId;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public Calendar getStartTime() {
+		return startTime;
+	}
+	
+	public Calendar getFinishTime() {
+		return finishTime;
+	}
+	
+	public Room getRoom() {
+		return room;
+	}
+	
+	public User getOwner() {
+		return owner;
+	}
+
 }
