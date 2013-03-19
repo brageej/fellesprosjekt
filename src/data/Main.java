@@ -13,7 +13,7 @@ public class Main {
 	private User user;
 	
 	public Main() {
-		server = new Server();
+		server = new Server(this);
 	}
 	
 	public ArrayList<User> getPersons(){
@@ -36,12 +36,17 @@ public class Main {
 		this.user = user;
 	}
 	
+<<<<<<< HEAD
 	public boolean authenticateUser(String userName, String password) {
 		if (user.correctPassword(password)) {
 			this.user = user;
 			return true;
 		}
 		return false;
+=======
+	void connectionLost() {
+		
+>>>>>>> 07d3d86d46b73d4e9efc1f406392a41cce0234a9
 	}
 	
 //	//public ArrayList<Appointment> getMyAppointments(){

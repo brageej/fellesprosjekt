@@ -1,6 +1,7 @@
 package data;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 
@@ -15,8 +16,17 @@ public class Participant {
 	public Participant(Appointment appointment, User user) {
 		this.appointment = appointment;
 		this.user = user;
-		
+		this.alarmTime = new GregorianCalendar();
+		this.alarmTime.setTimeInMillis(0);
 		this.status = "No answer";
+	}
+	
+	public Participant(Appointment appointment, User user, long alarm, String status) {
+		this.appointment = appointment;
+		this.user = user;
+		this.alarmTime = new GregorianCalendar();
+		this.alarmTime.setTimeInMillis(alarm);
+		this.status = status;
 	}
 	
 	public int getAlarmHour() {
@@ -63,4 +73,9 @@ public class Participant {
 	public String toString() {
 		return user.getName() + " - " + status;
 	}
+	
+	public Calendar getAlarm() {
+		return alarmTime;
+	}
+
 }

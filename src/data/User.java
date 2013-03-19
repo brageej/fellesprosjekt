@@ -18,11 +18,10 @@ public class User {
 	private Main main;
 	
 	
-	public User(String username, String password, String name, Main main){
+	public User(String username, String password, String name){
 		this.username = username;
 		this.name = name;
 		this.password = password;
-		this.main = main;
 		//setMyAppointments();
 		
 		this.groups = new ArrayList<Member>();
@@ -67,10 +66,6 @@ public class User {
 //		myAppointments = main.getMyAppointments();
 //	}
 	
-	public String getName(){
-		return this.name;
-	}
-
 	@Override
 	public String toString() {
 		return name;
@@ -104,5 +99,17 @@ public class User {
 	 * Getters for navn og brukernavn.
 	 * 
 	 */
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public String getName() {
+		return name;
+	}
 
 }

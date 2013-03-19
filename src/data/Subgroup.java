@@ -29,4 +29,12 @@ public class Subgroup {
 		parentGroup.removeSubGroup(this);
 		subGroup.removeParentGroup(this);
 	}
+	
+	public Group getParentGroup() {
+		return parentGroup;
+	}
+	
+	public Group getSubgroup() {
+		return subGroup;
+	}
 }
