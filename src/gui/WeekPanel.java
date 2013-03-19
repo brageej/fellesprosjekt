@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -46,6 +47,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 	private User thisUser;
 	private Date date;
 	private JCalendar calendar;
+	private ArrayList<DayPanel> weekdays;
 	
 	public WeekPanel(Main main){
 		this.main = main; 
@@ -58,12 +60,20 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		setLayout(new GridBagLayout());
 		GridBagConstraints weekC = new GridBagConstraints();
 		mon = new DayPanel("Mon");
+		weekdays.add((DayPanel) mon);
 		tue = new DayPanel("Tue");
+		weekdays.add((DayPanel) tue);
 		wed = new DayPanel("Wed");
+		weekdays.add((DayPanel) wed);
 		thu = new DayPanel("Thu");
+		weekdays.add((DayPanel) thu);
 		fri = new DayPanel("Fri");
+		weekdays.add((DayPanel) fri);
 		sat = new DayPanel("Sat");
+		weekdays.add((DayPanel) sat);
 		sun = new DayPanel("Sun");
+		weekdays.add((DayPanel) sun);
+		
 		TimePanel time = new TimePanel();
 		
 		weekC.gridx = 0;
@@ -102,6 +112,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		calendar.setPreferredSize(new Dimension(150,150));
 		calendar.addPropertyChangeListener(this);
 		date = calendar.getDate();
+		addAppointments(getStartDate(),weekdays);
 		dateChooser.add(calendar);	
 		personListPanel = new JPanel();
 		personListPanel.setLayout(new GridBagLayout());
@@ -206,17 +217,32 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		}
 	}
 	
-	public void addAppointments(){
-		
-		for (int i = 0; i< thisUser.getAppointments().size();i++){
-			//if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().)
+	public Date getStartDate(){
+		Date startDate;
+		int dayOfMonth = date.getDate();
+		int day = date.getDay();
+		if(day!=0){
+			startDate = new Date(date.getYear(),date.getMonth(),dayOfMonth-(day-1));
 		}
+		else{
+			startDate = new Date(date.getYear(),date.getMonth(),dayOfMonth-6);
+		}
+		return startDate;
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		date = calendar.getDate();
-		System.out.println(date);
+		addAppointments(getStartDate(), weekdays);
+	}
+	
+	private void addAppointments(Date date, ArrayList<DayPanel> weekdays){
+		for(int i=0; i<thisUser.getAppointments().size();i++){
+			if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime() == date){
+				
+			}
+			
+		}
 	}
 	
 

@@ -14,6 +14,7 @@ public class Main {
 	
 	public Main() {
 		server = new Server(this);
+		
 	}
 	
 	public ArrayList<User> getPersons(){
@@ -53,77 +54,16 @@ public class Main {
 		System.out.println("lost");
 	}
 	
-//	//public ArrayList<Appointment> getMyAppointments(){
-//		ArrayList<Appointment> appointments = server.getAppointments();
-//		ArrayList<Appointment> myAppointments = new ArrayList<Appointment>();
-//		for(int i = 0; i<appointments.size();i++){
-//			//if(appointment)
-//		}
-//	}
+
 	
 
 	
-<<<<<<< HEAD
-//	public static void main(String[] args){
-//		Main main= new Main();
-//		main.newUser("Torgerhaa","passord","Torgeir",main );
-//		main.newUser("Erikgu","passord","Erik",main );
-//		main.setUser(new User("Brageej","passord","Brage E Jahren",main));
-=======
-	public static void main(String[] args){
-		Main main= new Main();
-<<<<<<< HEAD
-=======
-		main.newUser("Brageej","passord","Brage E Jarhen",main );
-		main.setUser(new User("brageej","passord","Brage E Jahren"));
->>>>>>> master
-//		JFrame.setDefaultLookAndFeelDecorated(true);
-//		JFrame frame = new JFrame("CalFifty");
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		JComponent contentPane = new TabPanel(main);
-//		contentPane.setOpaque(true);
-//		frame.getContentPane().add(contentPane);
-//		frame.pack();
-//		frame.setVisible(true);
-<<<<<<< HEAD
-//	}
+
+
 	
 	public static void main(String[] args) {
 		new Main();
-=======
 
-
->>>>>>> master
-		main.newUser("Torgerhaa","passord","Torgeir",main );
-
-		main.newUser("torgeha","lol","Torgeir",main );
-		main.newUser("Erikgu","passord","Erik",main );
-		main.setUser(new User("Brageej","passord","Brage E Jahren"));
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		JFrame frame = new JFrame("CalFifty");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		JComponent contentPane = new TabPanel(main);
-		contentPane.setOpaque(true);
-		frame.getContentPane().add(contentPane);
-		frame.pack();
-		frame.setVisible(true);
-		System.out.println(frame.getPreferredSize());
-<<<<<<< HEAD
-=======
-
-		main.newUser("Brageej","passord","Brage E Jarhen",main );
-		main.setUser(new User("brageej","passord","Brage E Jahren"));
-//		JFrame.setDefaultLookAndFeelDecorated(true);
-//		JFrame frame = new JFrame("CalFifty");
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		JComponent contentPane = new TabPanel(main);
-//		contentPane.setOpaque(true);
-//		frame.getContentPane().add(contentPane);
-//		frame.pack();
-//		frame.setVisible(true);
-
->>>>>>> master
->>>>>>> master
 	}
 
 	
