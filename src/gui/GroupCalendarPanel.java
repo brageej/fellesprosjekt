@@ -1,7 +1,7 @@
 package gui;
 
 import gui.DayCalendarPanel.SelectionListener;
-import gui.DayCalendarPanel.myMouseListener;
+
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,7 +32,7 @@ import data.Main;
 import data.Participant;
 import data.User;
 
-public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener {
+public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener, MouseListener {
 	private GridBagConstraints mainC;
 	private Main main;
 	private Date date;
@@ -244,6 +244,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		}
 		for(int k = 0; k<2; k++){
 			JPanel appPanel2 = new JPanel();
+			appPanel2.addMouseListener(this);
 			appPanel2.setBackground(Color.BLUE);
 			dayPanel.addPanel(appPanel2);
 		}
@@ -291,6 +292,38 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		date = calendar.getDate();
+		
+	}
+	
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("mouse was clicked");
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }

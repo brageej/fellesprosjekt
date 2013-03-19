@@ -34,8 +34,9 @@ public class Member {
 		return group;
 	}
 	
-//	public User getUser() {
-//		return user;
+	public User getUser() {
+		return user;
+	}
 //=======
 //	public User getUser(){
 //		return this.user;
