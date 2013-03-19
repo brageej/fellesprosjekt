@@ -13,7 +13,7 @@ public class Main {
 	private User user;
 	
 	public Main() {
-		server = new Server();
+		server = new Server(this);
 	}
 	
 	public ArrayList<User> getPersons(){
@@ -29,11 +29,15 @@ public class Main {
 	}
 	
 	public void newUser(String username, String password, String name,Main main){
-		server.addUser(new User(username, password, name, main));
+		server.addUser(new User(username, password, name));
 	}
 	
 	public void setUser(User user){
 		this.user = user;
+	}
+	
+	void connectionLost() {
+		
 	}
 	
 //	//public ArrayList<Appointment> getMyAppointments(){
@@ -48,10 +52,21 @@ public class Main {
 	
 	public static void main(String[] args){
 		Main main= new Main();
-<<<<<<< HEAD
+
+		main.newUser("Brageej","passord","Brage E Jarhen",main );
+		main.setUser(new User("brageej","passord","Brage E Jahren"));
+//		JFrame.setDefaultLookAndFeelDecorated(true);
+//		JFrame frame = new JFrame("CalFifty");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		JComponent contentPane = new TabPanel(main);
+//		contentPane.setOpaque(true);
+//		frame.getContentPane().add(contentPane);
+//		frame.pack();
+//		frame.setVisible(true);
+
 		main.newUser("Torgerhaa","passord","Torgeir",main );
 		main.newUser("Erikgu","passord","Erik",main );
-		main.setUser(new User("Brageej","passord","Brage E Jahren",main));
+		main.setUser(new User("Brageej","passord","Brage E Jahren"));
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame frame = new JFrame("CalFifty");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,9 +76,9 @@ public class Main {
 		frame.pack();
 		frame.setVisible(true);
 		System.out.println(frame.getPreferredSize());
-=======
+
 		main.newUser("Brageej","passord","Brage E Jarhen",main );
-		main.setUser(new User("brageej","passord","Brage E Jahren",main));
+		main.setUser(new User("brageej","passord","Brage E Jahren"));
 //		JFrame.setDefaultLookAndFeelDecorated(true);
 //		JFrame frame = new JFrame("CalFifty");
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +87,7 @@ public class Main {
 //		frame.getContentPane().add(contentPane);
 //		frame.pack();
 //		frame.setVisible(true);
->>>>>>> master
+
 	}
 
 	

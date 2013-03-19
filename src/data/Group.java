@@ -71,6 +71,5 @@ public class Group {
 	public String getGroupName(){
 		return this.groupName;
 	}
-	
-	
+
 }
