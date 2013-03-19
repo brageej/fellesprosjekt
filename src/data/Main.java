@@ -13,7 +13,7 @@ public class Main {
 	private User user;
 	
 	public Main() {
-		server = new Server();
+		server = new Server(this);
 	}
 	
 	public ArrayList<User> getPersons(){
@@ -34,6 +34,10 @@ public class Main {
 	
 	public void setUser(User user){
 		this.user = user;
+	}
+	
+	void connectionLost() {
+		
 	}
 	
 //	//public ArrayList<Appointment> getMyAppointments(){
