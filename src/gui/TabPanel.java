@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
@@ -21,10 +23,15 @@ import data.User;
 public class TabPanel extends JPanel {
 	
 	private Main main;
+	private MainGUI mainGui;
 	private JTabbedPane tabbedPane;
+	private JButton logout;
 	
-	public TabPanel(Main main){
+	private JButton newAppointment;
+	
+	public TabPanel(Main main, MainGUI mainGui){
 		this.main = main;
+		this.mainGui = mainGui;
 		setLayout(new GridBagLayout());
 		GridBagConstraints mainC = new GridBagConstraints();
 		
@@ -63,17 +70,31 @@ public class TabPanel extends JPanel {
 		
 		//Lager NewAppointment-knapp og Log out knapp:
 		
-		JButton newAppointment = new JButton("New Appointment");
+		newAppointment = new JButton("New Appointment");
+		newAppointment.addActionListener(new newAppointmentListener());
 		mainC.gridx = 0;
 		mainC.gridy = 0;
 		add(newAppointment,mainC);
 		
-		JButton Logout = new JButton("Log out");
+		logout = new JButton("Log out");
+		logout.addActionListener(new logoutListener());
 		mainC.gridx = 2;
 		mainC.gridy= 0;
-		add(Logout,mainC);
+		add(logout,mainC);
 		
 	}
 	
+	private class newAppointmentListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			mainGui.showNewAppointmentNullPanel();
+		}
+	}
+	
+	private class logoutListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			mainGui.showLoginPanel();
+			mainGui.tabFrame.dispose();
+		}
+	}
 
 }

@@ -56,6 +56,10 @@ public class Appointment {
 		return participants.size();
 	}
 	
+	public void setParticipants(ArrayList<Participant> participants) {
+		this.participants = participants;
+	}
+	
 	public void removeParticipant(Participant p) {
 		participants.remove(p);
 		pcs.firePropertyChange(PARTICIPANT_PROP, p, null);

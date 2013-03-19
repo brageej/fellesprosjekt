@@ -34,35 +34,15 @@ public class Server implements Runnable {
 		subgroups = new ArrayList<Subgroup>();
 		users = new HashMap<String, User>();
 
-		try {
-			socket = new Socket("192.168.1.2", 50039);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			int port = Integer.parseInt(reader.readLine());
-			socket.close();
-			socket = new Socket("192.168.1.2", port);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writer = new PrintWriter(socket.getOutputStream(), true);
-			new Thread(this).start();
-			writer.println("select");
-		} catch (Exception e) {
-			try {
-				socket.close();
-			} catch (Exception f) {
-				f.printStackTrace();
-			}
-			main.connectionLost();
-			e.printStackTrace();
-		}
-
-		
-//		bare test!
-		users.put("torgeha", new User("torgeha", "lol", "Torgeir"));
-		
 //		try {
-//			socket = new Socket("127.0.0.1", 50039);
+//			socket = new Socket("192.168.1.2", 50039);
+//			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			int port = Integer.parseInt(reader.readLine());
+//			socket.close();
+//			socket = new Socket("192.168.1.2", port);
 //			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 //			writer = new PrintWriter(socket.getOutputStream(), true);
-//			new Thread(this).run();
+//			new Thread(this).start();
 //			writer.println("select");
 //		} catch (Exception e) {
 //			try {
@@ -73,6 +53,14 @@ public class Server implements Runnable {
 //			main.connectionLost();
 //			e.printStackTrace();
 //		}
+
+		
+//		bare test!
+		User t = new User("torgeha", "lol", "Torgeir");
+		
+		users.put("torgeha", t);
+		rooms.put("rom1", new Room("rom1"));
+		groups.put("gr1", new Group("gr1", t));
 
 	}
 	
