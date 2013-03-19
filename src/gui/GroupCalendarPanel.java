@@ -82,16 +82,12 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		users = new JPanel();
 		setLayout(new GridBagLayout());
 		userC = new GridBagConstraints();
-		thisUser = new DayPanel(main.getUser());
 		timePanel = new TimePanel();
 		
 		userC.gridx = 0;
 		userC.gridy = 1;
 		users.add(timePanel,userC);
 		
-		userC.gridx = 1;
-		userC.gridy = 1;
-		users.add(thisUser,userC);
 
 		userPane = new JScrollPane(users);
 		userPane.setPreferredSize(new Dimension(650,500));
