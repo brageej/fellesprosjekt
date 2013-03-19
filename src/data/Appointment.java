@@ -38,6 +38,15 @@ public class Appointment {
 		pcs = new PropertyChangeSupport(this);
 	}
 	
+	public Appointment(String title, Calendar startTime, Calendar finishTime, User owner, ArrayList<Participant> participants) {
+		this.title = title;
+		this.startTime = startTime;
+		this.finishTime = finishTime;
+		this.owner = owner;
+		this.participants = participants;
+		pcs = new PropertyChangeSupport(this);
+	}
+	
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
