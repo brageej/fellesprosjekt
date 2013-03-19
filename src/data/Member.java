@@ -29,12 +29,17 @@ public class Member {
 		user.removeGroup(this);
 	}
 	
+
 	public Group getGroup() {
 		return group;
 	}
 	
-	public User getUser() {
-		return user;
-	}
+//	public User getUser() {
+//		return user;
+//=======
+//	public User getUser(){
+//		return this.user;
+//>>>>>>> origin/Brage5
+//	}
 
 }
