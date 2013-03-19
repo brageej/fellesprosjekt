@@ -17,7 +17,7 @@ public class Main {
 	}
 	
 	public ArrayList<User> getPersons(){
-		return server.getPersons();		
+		return new ArrayList<User>(server.getUsers().values());		
 	}
 	
 	public User getUser() {
@@ -25,7 +25,7 @@ public class Main {
 	}
 	
 	public ArrayList<Group> getGroups(){
-		return server.getGroups();
+		return new ArrayList<Group>(server.getGroups().values());
 	}
 	
 	public void newUser(String username, String password, String name,Main main){
@@ -59,6 +59,7 @@ public class Main {
 		frame.getContentPane().add(contentPane);
 		frame.pack();
 		frame.setVisible(true);
+		System.out.println(frame.getPreferredSize());
 	}
 
 	

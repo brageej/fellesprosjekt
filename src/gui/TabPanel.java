@@ -41,7 +41,7 @@ public class TabPanel extends JPanel {
 		//panel2.setPreferredSize(new Dimension(500,100));
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
-		JComponent panel3 = new NotificationPanel();
+		JComponent panel3 = new GroupCalendarPanel(this.main);
 		tabbedPane.addTab("Group", panel3);
 		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 		
