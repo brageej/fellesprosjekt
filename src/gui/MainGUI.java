@@ -23,7 +23,7 @@ public class MainGUI {
 	
 	public void showLoginPanel() {
 		loginFrame = new JFrame("CalFifty - Login");
-		loginFrame.getContentPane().add(new LoginPanel());
+		loginFrame.getContentPane().add(new LoginPanel(this.main, this));
 		establishFrame(loginFrame);
 	}
 	
@@ -36,13 +36,13 @@ public class MainGUI {
 	
 	public void showNewAppointmentNullPanel() {
 		newAppointmentFrame = new JFrame("CalFifty - New Appointment");
-		newAppointmentFrame.getContentPane().add(new NewAppointmentPanel());
+		newAppointmentFrame.getContentPane().add(new NewAppointmentPanel(this.main));
 		establishFrame(newAppointmentFrame);
 	}
 	
 	public void showNewAppointmentEditPanel(Appointment appointment) {
 		newAppointmentFrame = new JFrame("CalFifty - Edit Appointment");
-		newAppointmentFrame.getContentPane().add(new NewAppointmentPanel(appointment));
+		newAppointmentFrame.getContentPane().add(new NewAppointmentPanel(appointment, this.main));
 		establishFrame(newAppointmentFrame);
 	}
 	
@@ -62,7 +62,7 @@ public class MainGUI {
 	public static void main(String[] args) {
 		MainGUI m = new MainGUI(new Main());
 		
-		m.showTabPanel();
+		m.showLoginPanel();
 	}
 
 }

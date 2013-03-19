@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import data.Main;
+
 public class LoginPanel extends JPanel{
 	
 	private JLabel userLabel;
@@ -24,8 +26,15 @@ public class LoginPanel extends JPanel{
 	private JButton exitButton;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
+
+	private Main main;
+	private MainGUI mainGui;
 	
-	public LoginPanel() {
+	public LoginPanel(Main main, MainGUI mainGui) {
+		this.main = main;
+		this.mainGui = mainGui;
+		
+
 		setLayout(new GridBagLayout());
 		
 		initUserLabel();
@@ -113,8 +122,11 @@ public class LoginPanel extends JPanel{
 	
 	private class LoginListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-//			Login();
-			System.out.println("Pressed");
+			String pass = String.valueOf(passwordField.getPassword());
+			if (main.authenticateUser(usernameField.getText(), pass)) {
+				mainGui.showTabPanel();
+				mainGui.loginFrame.dispose();
+			}
 		}
 	}
 	

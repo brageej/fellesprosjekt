@@ -92,7 +92,6 @@ public class NewAppointmentPanel extends JPanel{
 	private JButton cancelButton;
 	
 	private Appointment model;
-	private Server server;
 	
 	private UserComboBoxModel userComboModel;
 	private GroupComboBoxModel groupComboModel;
@@ -101,14 +100,15 @@ public class NewAppointmentPanel extends JPanel{
 	private DefaultListModel roomListModel;
 	
 	private boolean isNull = true;
+	private Main main;
 	
-	public NewAppointmentPanel() {
-		this(null);
+	public NewAppointmentPanel(Main main) {
+		this(null, main);
 	}
 	
-	public NewAppointmentPanel(Appointment appointment) {
+	public NewAppointmentPanel(Appointment appointment, Main main) {
 		createPanels();
-		this.server = new Server();
+		this.main = main;
 		if (appointment != null) {
 			this.isNull = false;
 			this.model = appointment;
@@ -188,11 +188,11 @@ public class NewAppointmentPanel extends JPanel{
 	private void setComboBoxModelNotNull() {
 //		for testing
 		ArrayList<User> users = new ArrayList<User>();
-		users.add(new User("username", "pass", "navnleif", new Main()));
-		users.add(new User("sdf¿lj", "pass", "lolstein", new Main()));
-		users.add(new User("ahhaa", "pass", "torger", new Main()));
-		users.add(new User("asdf", "pass", "fdssa", new Main()));
-		users.add(new User("qwerty", "pass", "ytrewq", new Main()));
+		users.add(new User("username", "pass", "navnleif"));
+		users.add(new User("sdf¿lj", "pass", "lolstein"));
+		users.add(new User("ahhaa", "pass", "torger"));
+		users.add(new User("asdf", "pass", "fdssa"));
+		users.add(new User("qwerty", "pass", "ytrewq"));
 		ArrayList<Group> groups = new ArrayList<Group>();
 		
 		
@@ -570,14 +570,14 @@ public class NewAppointmentPanel extends JPanel{
 		Calendar e = GregorianCalendar.getInstance();
 		e.setTime(end);
 		
-		User t = new User("u", "pass", "Torgeir", new Main());
+		User t = new User("u", "pass", "Torgeir");
 		
 		Appointment m = new Appointment("Tittle", s, e, t);
 		m.setDescription("Description babyasdffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd!");
 		m.addParticipant(new Participant(m, t));
 		
 		JFrame frame = new JFrame("Fabuloussss!");
-		frame.getContentPane().add(new NewAppointmentPanel(m));
+		frame.getContentPane().add(new NewAppointmentPanel(m, new Main()));
 		System.out.println(frame.getContentPane().getHeight());
 		frame.pack();
 		frame.setResizable(false);

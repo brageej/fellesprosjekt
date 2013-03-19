@@ -29,7 +29,7 @@ public class DayPanel extends JPanel{
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		c.gridx = 0;
 		c.gridy = 0;
-		add(new JLabel(user.getUserName()),c);
+		add(new JLabel(user.getUserName()), c);
 		c.gridx = 0;
 		c.gridy = 1;
 		add(mainPanel,c);

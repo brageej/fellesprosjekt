@@ -16,7 +16,7 @@ public class Server implements Runnable {
 	private ArrayList<Participant> participants;
 	private Map<String, Room> rooms;
 	private ArrayList<Subgroup> subgroups;
-	private Map<String, User> users = new HashMap<String, User>();
+	private Map<String, User> users;
 	
 	private Socket socket;
 	private Main main;
@@ -24,7 +24,7 @@ public class Server implements Runnable {
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
-	Server(Main main) {
+	public Server(Main main) {
 		this.main = main;
 		appointments = new HashMap<Integer, Appointment>();
 		groups = new HashMap<String, Group>();
@@ -33,11 +33,16 @@ public class Server implements Runnable {
 		rooms = new HashMap<String, Room>();
 		subgroups = new ArrayList<Subgroup>();
 		users = new HashMap<String, User>();
+<<<<<<< HEAD
 		try {
 			socket = new Socket("127.0.0.1", 50039);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			int port = Integer.parseInt(reader.readLine());
+			socket.close();
+			socket = new Socket("127.0.0.1", port);
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new PrintWriter(socket.getOutputStream(), true);
-			new Thread(this).run();
+			new Thread(this).start();
 			writer.println("select");
 		} catch (Exception e) {
 			try {
@@ -48,6 +53,27 @@ public class Server implements Runnable {
 			main.connectionLost();
 			e.printStackTrace();
 		}
+=======
+		
+//		bare test!
+		users.put("torgeha", new User("torgeha", "lol", "Torgeir"));
+		
+//		try {
+//			socket = new Socket("127.0.0.1", 50039);
+//			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			writer = new PrintWriter(socket.getOutputStream(), true);
+//			new Thread(this).run();
+//			writer.println("select");
+//		} catch (Exception e) {
+//			try {
+//				socket.close();
+//			} catch (Exception f) {
+//				f.printStackTrace();
+//			}
+//			main.connectionLost();
+//			e.printStackTrace();
+//		}
+>>>>>>> master
 	}
 	
 	public void run() {
@@ -63,8 +89,18 @@ public class Server implements Runnable {
 					for (int i = 0; i < objects.size(); i++) {
 						if (objects.get(i) instanceof Appointment) {
 							appointments.put(((Appointment) objects.get(i)).getAppointmentId(), (Appointment) objects.get(i));
+						} else if(objects.get(i) instanceof Group) {
+							groups.put(((Group) objects.get(i)).getGroupName(), (Group) objects.get(i));
+						} else if(objects.get(i) instanceof Member) {
+							members.add((Member) objects.get(i));
 						} else if (objects.get(i) instanceof Participant) {
 							participants.add((Participant) objects.get(i));
+						} else if(objects.get(i) instanceof Room) {
+							rooms.put(((Room) objects.get(i)).getRoomNumber(), (Room) objects.get(i));
+						} else if(objects.get(i) instanceof Subgroup) {
+							subgroups.add((Subgroup) objects.get(i));
+						} else if(objects.get(i) instanceof User) {
+							users.put(((User) objects.get(i)).getUsername(), (User) objects.get(i));
 						}
 					}
 				} else if (cmd.equals("insert")) {

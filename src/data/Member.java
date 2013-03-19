@@ -28,11 +28,15 @@ public class Member {
 		group.removeMember(this);
 		user.removeGroup(this);
 	}
+<<<<<<< HEAD
 	
+=======
+>>>>>>> master
 
 	public Group getGroup() {
 		return group;
 	}
+<<<<<<< HEAD
 	
 	public User getUser() {
 		return user;
@@ -42,5 +46,7 @@ public class Member {
 //		return this.user;
 //>>>>>>> origin/Brage5
 //	}
+=======
+>>>>>>> master
 
 }
