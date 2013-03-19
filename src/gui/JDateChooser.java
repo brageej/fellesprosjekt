@@ -365,11 +365,11 @@ public class JDateChooser extends JPanel implements ActionListener, PropertyChan
 	
 	
 //	main for Œ teste panelet separat.
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("DateChooser");
-		frame.getContentPane().add(new JDateChooser());
-		frame.pack();
-		frame.setResizable(false);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		JFrame frame = new JFrame("DateChooser");
+//		frame.getContentPane().add(new JDateChooser());
+//		frame.pack();
+//		frame.setResizable(false);
+//		frame.setVisible(true);
+//	}
 }

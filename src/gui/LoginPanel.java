@@ -126,13 +126,13 @@ public class LoginPanel extends JPanel{
 	
 //	Main for testing purposes!
 //	
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("Fabulous!");
-		frame.getContentPane().add(new LoginPanel());
-		frame.pack();
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		JFrame frame = new JFrame("Fabulous!");
+//		frame.getContentPane().add(new LoginPanel());
+//		frame.pack();
+//		frame.setResizable(false);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setVisible(true);
+//	}
 	
 }
