@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import data.Main;
+
 public class LoginPanel extends JPanel{
 	
 	private JLabel userLabel;
@@ -24,8 +26,11 @@ public class LoginPanel extends JPanel{
 	private JButton exitButton;
 	private JTextField usernameField;
 	private JPasswordField passwordField;
+	private Main main;
 	
-	public LoginPanel() {
+	public LoginPanel(Main main) {
+		this.main = main;
+		
 		setLayout(new GridBagLayout());
 		
 		initUserLabel();
@@ -113,8 +118,10 @@ public class LoginPanel extends JPanel{
 	
 	private class LoginListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-//			Login();
+			String pass = String.valueOf(passwordField.getPassword());
+			main.authenticateUser(usernameField.getText(), pass);
 			System.out.println("Pressed");
+			System.out.println(passwordField.getPassword().toString());
 		}
 	}
 	
@@ -128,7 +135,7 @@ public class LoginPanel extends JPanel{
 //	
 //	public static void main(String[] args) {
 //		JFrame frame = new JFrame("Fabulous!");
-//		frame.getContentPane().add(new LoginPanel());
+//		frame.getContentPane().add(new LoginPanel(new Main()));
 //		frame.pack();
 //		frame.setResizable(false);
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
