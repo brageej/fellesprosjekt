@@ -33,13 +33,13 @@ public class Server implements Runnable {
 		rooms = new HashMap<String, Room>();
 		subgroups = new ArrayList<Subgroup>();
 		users = new HashMap<String, User>();
-<<<<<<< HEAD
+
 		try {
-			socket = new Socket("127.0.0.1", 50039);
+			socket = new Socket("192.168.1.2", 50039);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			int port = Integer.parseInt(reader.readLine());
 			socket.close();
-			socket = new Socket("127.0.0.1", port);
+			socket = new Socket("192.168.1.2", port);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer = new PrintWriter(socket.getOutputStream(), true);
 			new Thread(this).start();
@@ -53,7 +53,7 @@ public class Server implements Runnable {
 			main.connectionLost();
 			e.printStackTrace();
 		}
-=======
+
 		
 //		bare test!
 		users.put("torgeha", new User("torgeha", "lol", "Torgeir"));
@@ -73,7 +73,7 @@ public class Server implements Runnable {
 //			main.connectionLost();
 //			e.printStackTrace();
 //		}
->>>>>>> master
+
 	}
 	
 	public void run() {

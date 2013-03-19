@@ -132,7 +132,7 @@ public class LoginPanel extends JPanel{
 	
 	private class ExitListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("exit!");
+			System.exit(0);
 		}
 	}
 	
