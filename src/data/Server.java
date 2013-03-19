@@ -1,31 +1,44 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Server {
 	
-	private ArrayList<User> users = new ArrayList<User>();
-	private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
-	private ArrayList<Group> groups = new ArrayList<Group>();
-	private ArrayList<Room> rooms = new ArrayList<Room>();
+	private Map<Integer, Appointment> appointments;
+	private Map<String, Group> groups;
+	private ArrayList<Member> members;
+	private ArrayList<Participant> participants;
+	private Map<String, Room> rooms;
+	private ArrayList<Subgroup> subgroups;
+	private Map<String, User> users;
 	
-	
-	public ArrayList<User> getPersons(){
-
-		return users;
-	}
-	
-	public ArrayList<Group> getGroups(){
-		return groups;
-	}
-	
-	public ArrayList<Appointment> getAppointments(){
+	Map<Integer, Appointment> getAppointments() {
 		return appointments;
 	}
 	
-	
-	//Legge til brukere i brukerlista ArrayList<User> Persons
-	public void addUser(User user){
-		users.add(user);
+	Map<String, Group> getGroups() {
+		return groups;
 	}
+	
+	ArrayList<Member> getMembers() {
+		return members;
+	}
+	
+	ArrayList<Participant> getParticipants() {
+		return participants;
+	}
+	
+	Map<String, Room> getRooms() {
+		return rooms;
+	}
+	
+	ArrayList<Subgroup> getSubgroups() {
+		return subgroups;
+	}
+	
+	Map<String, User> getUsers() {
+		return users;
+	}
+
 }
