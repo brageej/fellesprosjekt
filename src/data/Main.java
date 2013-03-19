@@ -48,6 +48,18 @@ public class Main {
 	
 	public static void main(String[] args){
 		Main main= new Main();
+<<<<<<< HEAD
+		main.newUser("Brageej","passord","Brage E Jarhen",main );
+		main.setUser(new User("brageej","passord","Brage E Jahren",main));
+//		JFrame.setDefaultLookAndFeelDecorated(true);
+//		JFrame frame = new JFrame("CalFifty");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		JComponent contentPane = new TabPanel(main);
+//		contentPane.setOpaque(true);
+//		frame.getContentPane().add(contentPane);
+//		frame.pack();
+//		frame.setVisible(true);
+=======
 		main.newUser("Torgerhaa","passord","Torgeir",main );
 		main.newUser("Erikgu","passord","Erik",main );
 		main.setUser(new User("Brageej","passord","Brage E Jahren",main));
@@ -60,6 +72,7 @@ public class Main {
 		frame.pack();
 		frame.setVisible(true);
 		System.out.println(frame.getPreferredSize());
+>>>>>>> 02f3b3f695cb9bc1481eef2c5c7c72739ef7741e
 	}
 
 	

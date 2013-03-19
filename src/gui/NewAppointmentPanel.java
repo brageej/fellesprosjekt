@@ -29,9 +29,14 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
+import customModels.GroupComboBoxModel;
 import customModels.UserComboBoxModel;
 
 import data.Appointment;
+import data.Group;
+import data.Main;
+import data.Participant;
+import data.Room;
 import data.Server;
 import data.User;
 
@@ -89,6 +94,14 @@ public class NewAppointmentPanel extends JPanel{
 	private Appointment model;
 	private Server server;
 	
+	private UserComboBoxModel userComboModel;
+	private GroupComboBoxModel groupComboModel;
+	private DefaultListModel personListModel;
+	private DefaultListModel groupListModel;
+	private DefaultListModel roomListModel;
+	
+	private boolean isNull = true;
+	
 	public NewAppointmentPanel() {
 		this(null);
 	}
@@ -97,31 +110,99 @@ public class NewAppointmentPanel extends JPanel{
 		createPanels();
 		this.server = new Server();
 		if (appointment != null) {
+			this.isNull = false;
 			this.model = appointment;
 			updateGUI();
 		}
 	}
 	
 	private void updateGUI() {
-		titleField.setText(model.getTitle());
-		descriptionField.setText(model.getDescription());
-		startTime.setDate(model.getStartTime().getTime());
-		endTime.setDate(model.getFinishTime().getTime());
-		setSpinnerModelsNotNull();
-		setComboBoxModelNotNull();
+		if (!isNull) {
+			titleField.setText(model.getTitle());
+			descriptionField.setText(model.getDescription());
+			startTime.setDate(model.getStartTime().getTime());
+			endTime.setDate(model.getFinishTime().getTime());
+			setSpinnerModelsNotNull();
+			setComboBoxModelNotNull();
+			setButtonListeners();
+			addListModels();
+		}
+		
+	}
+	
+	private void removeGroupFromAppointment() {
+		Group selected = (Group) groupList.getSelectedValue();
+		groupListModel.removeElement(selected);
+	}
+	
+	private void addGroupToAppointment() {
+		Group selected = (Group) groupComboModel.getSelectedItem();
+		groupListModel.addElement(selected);
+	}
+	
+	private void removePersonFromAppointment() {
+		Participant selected = (Participant) personsList.getSelectedValue();
+		personListModel.removeElement(selected);
+	}
+	
+	private void addPersonToAppointment() {
+		User selected = (User) userComboModel.getSelectedItem();
+		personListModel.addElement(new Participant(model, selected));
+	}
+	
+	private void addListModels() {
+		personListModel = new DefaultListModel();
+		groupListModel = new DefaultListModel();
+		roomListModel = new DefaultListModel();
+		
+		personsList.setModel(personListModel);
+		groupList.setModel(groupListModel);
+		roomList.setModel(roomListModel);
+		
+//		fyll inn personlisten med participants
+		for (int i = 0; i < model.getParticipantLength(); i ++) {
+			personListModel.addElement(model.getParticipant(i));
+		}
+		
+//		ArrayList<Room> rooms = server.getRooms();
+		ArrayList<Room> rooms = new ArrayList<Room>();
+		rooms.add(new Room("8008"));
+		rooms.add(new Room("9876"));
+		rooms.add(new Room("1337"));
+		rooms.add(new Room("7654"));
+		rooms.add(new Room("3erg5"));
+		
+		for (int i = 0; i < rooms.size(); i++) {
+			roomListModel.addElement(rooms.get(i));
+		}
+		
+	}
+	
+	private void setButtonListeners() {
+		plusPerson.addActionListener(new plusPersonListener());
+		minusPerson.addActionListener(new minusPersonListener());
+		plusGroup.addActionListener(new plusGroupListener());
+		minusGroup.addActionListener(new minusGroupListener());
 	}
 	
 	private void setComboBoxModelNotNull() {
-//		ArrayList<User> users = server.getPersons();
-		
+//		for testing
 		ArrayList<User> users = new ArrayList<User>();
-		users.add(new User("lol", "pass", "navnulf"));
-		users.add(new User("fwa", "asdf", "lolstein"));
-		UserComboBoxModel mod = new UserComboBoxModel(users);
+		users.add(new User("username", "pass", "navnleif", new Main()));
+		users.add(new User("sdf¿lj", "pass", "lolstein", new Main()));
+		users.add(new User("ahhaa", "pass", "torger", new Main()));
+		users.add(new User("asdf", "pass", "fdssa", new Main()));
+		users.add(new User("qwerty", "pass", "ytrewq", new Main()));
+		ArrayList<Group> groups = new ArrayList<Group>();
 		
-		personsCombo.setModel(mod);
 		
+//		ArrayList<User> users = server.getPersons();
+		userComboModel = new UserComboBoxModel(users);
+		personsCombo.setModel(userComboModel);
 		
+//		ArrayList<Group> groups = server.getGroups();
+		groupComboModel = new GroupComboBoxModel(groups);
+		groupCombo.setModel(groupComboModel);
 		
 	}
 	
@@ -455,6 +536,30 @@ public class NewAppointmentPanel extends JPanel{
 		}
 	}
 	
+	private class plusPersonListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			addPersonToAppointment();
+		}
+	}
+	
+	private class minusPersonListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			removePersonFromAppointment();
+		}
+	}
+	
+	private class plusGroupListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			addGroupToAppointment();
+		}
+	}
+	
+	private class minusGroupListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			removeGroupFromAppointment();
+		}
+	}
+	
 	public static void main(String[] args) {
 		Date start = new Date(2013, 4, 02, 12, 41);
 		Date end = new Date(2013, 10, 30, 9, 00);
@@ -465,10 +570,11 @@ public class NewAppointmentPanel extends JPanel{
 		Calendar e = GregorianCalendar.getInstance();
 		e.setTime(end);
 		
-		User t = new User("u", "pass", "Torgeir");
+		User t = new User("u", "pass", "Torgeir", new Main());
 		
 		Appointment m = new Appointment("Tittle", s, e, t);
 		m.setDescription("Description babyasdffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd!");
+		m.addParticipant(new Participant(m, t));
 		
 		JFrame frame = new JFrame("Fabuloussss!");
 		frame.getContentPane().add(new NewAppointmentPanel(m));
