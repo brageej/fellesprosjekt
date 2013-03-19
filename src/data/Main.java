@@ -72,6 +72,8 @@ public class Main {
 =======
 	public static void main(String[] args){
 		Main main= new Main();
+<<<<<<< HEAD
+=======
 		main.newUser("Brageej","passord","Brage E Jarhen",main );
 		main.setUser(new User("brageej","passord","Brage E Jahren"));
 >>>>>>> master
@@ -91,6 +93,7 @@ public class Main {
 =======
 
 
+>>>>>>> master
 		main.newUser("Torgerhaa","passord","Torgeir",main );
 
 		main.newUser("torgeha","lol","Torgeir",main );
@@ -105,6 +108,8 @@ public class Main {
 		frame.pack();
 		frame.setVisible(true);
 		System.out.println(frame.getPreferredSize());
+<<<<<<< HEAD
+=======
 
 		main.newUser("Brageej","passord","Brage E Jarhen",main );
 		main.setUser(new User("brageej","passord","Brage E Jahren"));
@@ -117,6 +122,7 @@ public class Main {
 //		frame.pack();
 //		frame.setVisible(true);
 
+>>>>>>> master
 >>>>>>> master
 	}
 

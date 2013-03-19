@@ -6,6 +6,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -18,8 +21,9 @@ import javax.swing.JScrollPane;
 import com.toedter.calendar.JCalendar;
 
 import data.Main;
+import data.User;
 
-public class WeekPanel extends JPanel {
+public class WeekPanel extends JPanel implements PropertyChangeListener {
 	
 	private JPanel personListPanel;
 	private JPanel groupListPanel;
@@ -39,9 +43,13 @@ public class WeekPanel extends JPanel {
 	private DefaultListSelectionModel personSelectionModel;
 	private DefaultListSelectionModel groupSelectionModel;
 	private JList list;
+	private User thisUser;
+	private Date date;
+	private JCalendar calendar;
 	
 	public WeekPanel(Main main){
 		this.main = main; 
+		this.thisUser = main.getUser();
 		setLayout(new GridBagLayout());
 		GridBagConstraints mainC = new GridBagConstraints();
 		
@@ -90,8 +98,10 @@ public class WeekPanel extends JPanel {
 		
 		JPanel listAndCalendarPanel = new JPanel();
 		JPanel dateChooser = new JPanel();
-		JCalendar calendar = new JCalendar();
+		calendar = new JCalendar();
 		calendar.setPreferredSize(new Dimension(150,150));
+		calendar.addPropertyChangeListener(this);
+		date = calendar.getDate();
 		dateChooser.add(calendar);	
 		personListPanel = new JPanel();
 		personListPanel.setLayout(new GridBagLayout());
@@ -194,6 +204,19 @@ public class WeekPanel extends JPanel {
 		for(int i = 0; i<main.getGroups().size(); i++){
 			groupListModel.addElement(main.getGroups().get(i));
 		}
+	}
+	
+	public void addAppointments(){
+		
+		for (int i = 0; i< thisUser.getAppointments().size();i++){
+			//if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().)
+		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		date = calendar.getDate();
+		System.out.println(date);
 	}
 	
 

@@ -34,7 +34,7 @@ import data.Main;
 import data.Participant;
 import data.User;
 
-public class DayCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener{
+public class DayCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener, MouseListener{
 	
 	private GridBagConstraints mainC;
 	private Main main;
@@ -104,7 +104,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		listAndCalendarPanel = new JPanel();
 		dateChooser = new JPanel();
 		calendar = new JCalendar();
-		calendar.addMouseListener(new myMouseListener());
 		date = calendar.getDate();
 		System.out.println(date);
 		calendar.getDayChooser().addPropertyChangeListener(this);
@@ -245,17 +244,18 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	}
 	
 	private void testAddAppointments(DayPanel dayPanel, User user){
-		for(int j=0; j<4;j++){
+		for(int j=0; j<7;j++){
 			JPanel appPanel = new JPanel();
 			appPanel.setBackground(Color.WHITE);
 			dayPanel.addPanel(appPanel);
 		}
 		for(int k = 0; k<2; k++){
 			JPanel appPanel2 = new JPanel();
+			appPanel2.addMouseListener(this);
 			appPanel2.setBackground(Color.BLUE);
 			dayPanel.addPanel(appPanel2);
 		}
-		for(int l = 0; l<7; l++){
+		for(int l = 0; l<4; l++){
 			JPanel appPanel3 = new JPanel();
 			appPanel3.setBackground(Color.WHITE);
 			dayPanel.addPanel(appPanel3);
@@ -289,41 +289,9 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 
 
 	}
-	public class myMouseListener implements MouseListener{
 
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-			System.out.println("noe skjer");
-			date = calendar.getDate();
-			System.out.println(date);
-			
-		}
 		
-	}
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		date = calendar.getDate();
@@ -333,6 +301,36 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("mouse was clicked");
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
