@@ -1,7 +1,7 @@
 package gui;
 
 import gui.DayCalendarPanel.SelectionListener;
-import gui.DayCalendarPanel.myMouseListener;
+
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,7 +32,7 @@ import data.Main;
 import data.Participant;
 import data.User;
 
-public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener {
+public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener, MouseListener {
 	private GridBagConstraints mainC;
 	private Main main;
 	private Date date;
@@ -82,16 +82,12 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		users = new JPanel();
 		setLayout(new GridBagLayout());
 		userC = new GridBagConstraints();
-		thisUser = new DayPanel(main.getUser());
 		timePanel = new TimePanel();
 		
 		userC.gridx = 0;
 		userC.gridy = 1;
 		users.add(timePanel,userC);
 		
-		userC.gridx = 1;
-		userC.gridy = 1;
-		users.add(thisUser,userC);
 
 		userPane = new JScrollPane(users);
 		userPane.setPreferredSize(new Dimension(650,500));
@@ -248,6 +244,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		}
 		for(int k = 0; k<2; k++){
 			JPanel appPanel2 = new JPanel();
+			appPanel2.addMouseListener(this);
 			appPanel2.setBackground(Color.BLUE);
 			dayPanel.addPanel(appPanel2);
 		}
@@ -271,7 +268,11 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 				else{
 					Group group = (Group) groupList.getSelectedValue(); 
 					for(int j = 0; j<group.getMembers().size(); j++){
+<<<<<<< HEAD
+						//addDayPanel(group.getMembers().get(j).getUser());
+=======
 						addDayPanel(group.getMembers().get(j).getUser());
+>>>>>>> master
 					}
 				}
 
@@ -283,6 +284,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		}
 
 
+<<<<<<< HEAD
 		
 	}
 
@@ -295,6 +297,45 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		date = calendar.getDate();
+=======
+>>>>>>> master
+		
+	}
+	
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("mouse was clicked");
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+<<<<<<< HEAD
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+=======
+	public void propertyChange(PropertyChangeEvent arg0) {
+		date = calendar.getDate();
+>>>>>>> master
 		
 	}
 }
