@@ -33,21 +33,21 @@ public class Server implements Runnable {
 		rooms = new HashMap<String, Room>();
 		subgroups = new ArrayList<Subgroup>();
 		users = new HashMap<String, User>();
-		try {
-			socket = new Socket("127.0.0.1", 50039);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writer = new PrintWriter(socket.getOutputStream(), true);
-			new Thread(this).run();
-			writer.println("select");
-		} catch (Exception e) {
-			try {
-				socket.close();
-			} catch (Exception f) {
-				f.printStackTrace();
-			}
-			main.connectionLost();
-			e.printStackTrace();
-		}
+//		try {
+//			socket = new Socket("127.0.0.1", 50039);
+//			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			writer = new PrintWriter(socket.getOutputStream(), true);
+//			new Thread(this).run();
+//			writer.println("select");
+//		} catch (Exception e) {
+//			try {
+//				socket.close();
+//			} catch (Exception f) {
+//				f.printStackTrace();
+//			}
+//			main.connectionLost();
+//			e.printStackTrace();
+//		}
 	}
 	
 	public void run() {

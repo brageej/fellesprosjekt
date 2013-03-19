@@ -36,8 +36,21 @@ public class Main {
 		this.user = user;
 	}
 	
-	void connectionLost() {
+	public boolean authenticateUser(String userName, String password) {
+		User user = server.getUsers().get(userName);
+		if (user == null) {
+			return false;
+		}
 		
+		if (user.correctPassword(password)) {
+			this.user = user;
+			return true;
+		}
+		return false;
+	}
+	
+	void connectionLost() {
+		System.out.println("lost");
 	}
 	
 //	//public ArrayList<Appointment> getMyAppointments(){
@@ -65,6 +78,7 @@ public class Main {
 //		frame.setVisible(true);
 
 		main.newUser("Torgerhaa","passord","Torgeir",main );
+		main.newUser("torgeha","lol","Torgeir",main );
 		main.newUser("Erikgu","passord","Erik",main );
 		main.setUser(new User("Brageej","passord","Brage E Jahren"));
 		JFrame.setDefaultLookAndFeelDecorated(true);

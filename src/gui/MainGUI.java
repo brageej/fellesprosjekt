@@ -23,7 +23,7 @@ public class MainGUI {
 	
 	public void showLoginPanel() {
 		loginFrame = new JFrame("CalFifty - Login");
-		loginFrame.getContentPane().add(new LoginPanel());
+		loginFrame.getContentPane().add(new LoginPanel(this.main, this));
 		establishFrame(loginFrame);
 	}
 	
