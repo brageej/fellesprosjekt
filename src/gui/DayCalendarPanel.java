@@ -6,9 +6,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -27,94 +31,114 @@ import data.Group;
 import data.Main;
 import data.User;
 
-public class DayCalendarPanel extends JPanel{
+public class DayCalendarPanel extends JPanel implements PropertyChangeListener{
 	
-	private TimePanel timePanel;
-	private JScrollPane calendarPane;;
-	private User thisUser;
-	private GridBagConstraints paneC;
 	private GridBagConstraints mainC;
 	private Main main;
-	private JPanel userDayPanel;
-	private JList list;
-	private DefaultListModel personListModel;
-	private DefaultListModel groupListModel;
+	private Date date;
+	
+	private JPanel calendarPanePanel;
+	private TimePanel timePanel;
+	private DayPanel thisUser;
+	private JScrollPane userPane;
+	private JPanel users;
+	private GridBagConstraints userC;
+		
+	private JPanel listAndCalendarPanel;
+	private GridBagConstraints listAndCalendarC;
+	
+	private JPanel dateChooser;
+	private JCalendar calendar;
+	
 	private JPanel personListPanel;
-	private JPanel groupListPanel;
+	private GridBagConstraints personC;
+	private JList personList;
+	private DefaultListModel personListModel;
 	private DefaultListSelectionModel personSelectionModel;
+	private JScrollPane personPane;
+	private JLabel userLabel;
+	
+	private JPanel groupListPanel;
+	private DefaultListModel groupListModel;
+	private GridBagConstraints groupC;
+	private JList groupList;
 	private DefaultListSelectionModel groupSelectionModel;
-	private JPanel dayCalendarPanel;
+	private JLabel groups;
+	private JScrollPane groupPane;
+	
 	private ArrayList<Object> selectedUsers;
 	private ArrayList<DayPanel> dayPanels;
 	
 	
-	
 	public DayCalendarPanel(Main main){
-		this.main = main;
+		this.main = main; 
 		selectedUsers = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
-		System.out.println(this.main);
-
-		userDayPanel = new JPanel();
+		
+		setLayout(new GridBagLayout());
+		mainC = new GridBagConstraints();
+		
+		calendarPanePanel = new JPanel();
+		users = new JPanel();
+		setLayout(new GridBagLayout());
+		userC = new GridBagConstraints();
+		thisUser = new DayPanel(main.getUser());
 		timePanel = new TimePanel();
 		
-		paneC = new GridBagConstraints();
-		paneC.gridx = 0;
-		paneC.gridy = 1;
-		userDayPanel.add(this.timePanel,paneC);
-		DayPanel user = new DayPanel(main.getUser());
-		//addDayPanel(main.getUser());
-		paneC.gridx=1;
-		paneC.gridy=1;
-		userDayPanel.add(user,paneC);
+		userC.gridx = 0;
+		userC.gridy = 1;
+		users.add(timePanel,userC);
+		
+		userC.gridx = 1;
+		userC.gridy = 1;
+		users.add(thisUser,userC);
 
-		calendarPane = new JScrollPane(userDayPanel);
-		calendarPane.setPreferredSize(new Dimension(650,500));
-		dayCalendarPanel = new JPanel();
-		dayCalendarPanel.add(calendarPane);
+		userPane = new JScrollPane(users);
+		userPane.setPreferredSize(new Dimension(650,500));
+		calendarPanePanel.add(userPane);
 		
-		JPanel listAndCalendarPanel = new JPanel();
-		JPanel dateChooser = new JPanel();
-		JCalendar calendar = new JCalendar();
+		
+		listAndCalendarPanel = new JPanel();
+		dateChooser = new JPanel();
+		calendar = new JCalendar();
+		calendar.addMouseListener(new myMouseListener());
+		date = calendar.getDate();
+		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendar.setPreferredSize(new Dimension(150,150));
-		dateChooser.add(calendar);
-		
+		dateChooser.add(calendar);	
 		personListPanel = new JPanel();
 		personListPanel.setLayout(new GridBagLayout());
-		GridBagConstraints personC = new GridBagConstraints();
+		personC = new GridBagConstraints();
 		personListModel = new DefaultListModel();
 		personSelectionModel = new DefaultListSelectionModel();
-		
-		list = new JList(personListModel);
-		list.setSelectionModel(personSelectionModel);
-		list.addListSelectionListener(new SelectionListener());
-		JScrollPane pane = new JScrollPane(list);
-		pane.setPreferredSize(new Dimension(150,150));
+		personList = new JList(personListModel);
+		personList.setSelectionModel(personSelectionModel);
+		personList.addListSelectionListener(new SelectionListener());
+		personPane = new JScrollPane(personList);
+		personPane.setPreferredSize(new Dimension(150,150));
+		userLabel = new JLabel("Users");
 		addPersons();
-		JLabel users = new JLabel("Users");
-
 		
 		personC.gridx = 0;
 		personC.gridy = 0;
-		personListPanel.add(users,personC);
+		personListPanel.add(userLabel,personC);
 		
 		personC.gridx = 0;
 		personC.gridy = 1;
-		personListPanel.add(pane,personC);
+		personListPanel.add(personPane,personC);
 		
 		
 		groupListPanel = new JPanel();
 		groupListPanel.setLayout(new GridBagLayout());
-		GridBagConstraints groupC = new GridBagConstraints();
+		groupC = new GridBagConstraints();
 		groupListModel = new DefaultListModel();
 		groupSelectionModel = new DefaultListSelectionModel();
-		JList groupList = new JList(groupListModel);
-		list.setSelectionModel(groupSelectionModel);
-		JScrollPane groupPane = new JScrollPane(groupList);
+		groupList = new JList(groupListModel);
+		groupList.setSelectionModel(groupSelectionModel);
+		groupPane = new JScrollPane(groupList);
 		groupPane.setPreferredSize(new Dimension(150,150));
+		groups = new JLabel("Groups");
 		addGroups();
-		JLabel groups = new JLabel("Groups");
-
 		
 		groupC.gridx = 0;
 		groupC.gridy = 0;
@@ -126,26 +150,26 @@ public class DayCalendarPanel extends JPanel{
 		
 		
 		listAndCalendarPanel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		listAndCalendarPanel.add(dateChooser, c);
-		c.gridx = 0;
-		c.gridy = 1;
-		listAndCalendarPanel.add(personListPanel, c);
-		c.gridx = 0;
-		c.gridy = 2;
-		listAndCalendarPanel.add(groupListPanel, c);
+		listAndCalendarC = new GridBagConstraints();
+		listAndCalendarC.gridx = 0;
+		listAndCalendarC.gridy = 0;
+		listAndCalendarPanel.add(dateChooser, listAndCalendarC);
+		listAndCalendarC.gridx = 0;
+		listAndCalendarC.gridy = 1;
+		listAndCalendarPanel.add(personListPanel, listAndCalendarC);
+		listAndCalendarC.gridx = 0;
+		listAndCalendarC.gridy = 2;
+		listAndCalendarPanel.add(groupListPanel, listAndCalendarC);
 		
-		mainC = new GridBagConstraints();
+
+		
 		mainC.gridx = 0;
-		mainC.gridy = 1;
+		mainC.gridy = 0;
 		add(listAndCalendarPanel,mainC);
 		
 		mainC.gridx = 1;
-		mainC.gridy = 1;
-		add(dayCalendarPanel,mainC);
-		
+		mainC.gridy = 0;
+		add(calendarPanePanel,mainC);
 	}
 	
 	public void addDayPanel(Object object){
@@ -157,27 +181,11 @@ public class DayCalendarPanel extends JPanel{
 		if(object != null){
 			if(object instanceof User){
 				DayPanel dayPanel = new DayPanel((User) object);
+				addAppointments(dayPanel,(User)object);
 				dayPanels.add(dayPanel);
-				paneC.gridx ++;
-				paneC.gridy = 0;
-				userDayPanel.add(dayPanel,paneC);
-//				JPanel dayPanel = new JPanel();
-//				setLayout(new GridBagLayout());
-//				GridBagConstraints dayC = new GridBagConstraints();
-//				JPanel mainPanel = new JPanel();
-//				mainPanel.setPreferredSize(new Dimension(75,600));
-//				dayPanel.setPreferredSize(new Dimension(75,650));
-//				mainPanel.setBackground(Color.WHITE);
-//				mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//				dayC.gridx = 0;
-//				dayC.gridy = 0;
-//				dayPanel.add(new JLabel(((User) object).getUserName()),dayC);
-//				dayC.gridx = 0;
-//				dayC.gridy = 1;
-//				dayPanel.add(mainPanel,dayC);
-//				paneC.gridx ++;
-//				paneC.gridy = 0;
-//				userDayPanel.add(dayPanel,paneC);
+				userC.gridx ++;
+				userC.gridy = 0;
+				users.add(dayPanel,userC);
 				validate();
 
 			}
@@ -200,11 +208,19 @@ public class DayCalendarPanel extends JPanel{
 		}
 	}
 	
+	public Date getDate(){
+		return this.date;
+	}
+	
+	private void addAppointments(DayPanel dayPanel, User user){
+		
+	}
+	
 	public class SelectionListener implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent evt) {
 			
 			if(evt.getValueIsAdjusting()){
-				addDayPanel(list.getSelectedValue());
+				addDayPanel(personList.getSelectedValue());
 
 
 				
@@ -214,6 +230,46 @@ public class DayCalendarPanel extends JPanel{
 		}
 
 
+	}
+	public class myMouseListener implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {
+			System.out.println("noe skjer");
+			date = calendar.getDate();
+			System.out.println(date);
+			
+		}
+		
+	}
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		System.out.println("something");
+		
 	}
 
 
