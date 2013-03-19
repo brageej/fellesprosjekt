@@ -31,6 +31,7 @@ import com.toedter.calendar.JCalendar;
 
 import data.Group;
 import data.Main;
+import data.Participant;
 import data.User;
 
 public class DayCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener{
@@ -216,7 +217,12 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	}
 	
 	private void addAppointments(DayPanel dayPanel, User user){
-		
+		ArrayList<Participant> appointments = user.getAppointments();
+		for(int i = 0; i< appointments.size();i++){
+			if(appointments.get(i).getAppointment().getStartTime().getTime() == date){
+				
+			}
+		}
 	}
 	
 	public class SelectionListener implements ListSelectionListener{
@@ -272,7 +278,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		date = calendar.getDate();
-		System.out.println(date);
+		System.out.println(calendar.getCalendar().getTime());
 		
 	}
 
