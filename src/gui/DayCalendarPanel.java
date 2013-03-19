@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -31,7 +33,7 @@ import data.Group;
 import data.Main;
 import data.User;
 
-public class DayCalendarPanel extends JPanel implements PropertyChangeListener{
+public class DayCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener{
 	
 	private GridBagConstraints mainC;
 	private Main main;
@@ -103,6 +105,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener{
 		calendar = new JCalendar();
 		calendar.addMouseListener(new myMouseListener());
 		date = calendar.getDate();
+		System.out.println(date);
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendar.setPreferredSize(new Dimension(150,150));
 		dateChooser.add(calendar);	
@@ -268,7 +271,14 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener{
 	}
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
-		System.out.println("something");
+		date = calendar.getDate();
+		System.out.println(date);
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 
