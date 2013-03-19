@@ -1,6 +1,7 @@
 package gui;
 
-import gui.ListPanel.listListener;
+import gui.DayCalendarPanel.SelectionListener;
+import gui.DayCalendarPanel.myMouseListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,17 +14,14 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -34,8 +32,7 @@ import data.Main;
 import data.Participant;
 import data.User;
 
-public class DayCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener{
-	
+public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener {
 	private GridBagConstraints mainC;
 	private Main main;
 	private Date date;
@@ -69,13 +66,13 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	private JLabel groups;
 	private JScrollPane groupPane;
 	
-	private ArrayList<Object> selectedUsers;
+	private ArrayList<Object> selectedGroups;
 	private ArrayList<DayPanel> dayPanels;
 	
 	
-	public DayCalendarPanel(Main main){
+	public GroupCalendarPanel(Main main){
 		this.main = main; 
-		selectedUsers = new ArrayList<Object>();
+		selectedGroups = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
 		
 		setLayout(new GridBagLayout());
@@ -104,7 +101,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		listAndCalendarPanel = new JPanel();
 		dateChooser = new JPanel();
 		calendar = new JCalendar();
-		calendar.addMouseListener(new myMouseListener());
 		date = calendar.getDate();
 		System.out.println(date);
 		calendar.getDayChooser().addPropertyChangeListener(this);
@@ -117,7 +113,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		personSelectionModel = new DefaultListSelectionModel();
 		personList = new JList(personListModel);
 		personList.setSelectionModel(personSelectionModel);
-		personList.addListSelectionListener(new SelectionListener());
 		personPane = new JScrollPane(personList);
 		personPane.setPreferredSize(new Dimension(150,150));
 		userLabel = new JLabel("Users");
@@ -139,6 +134,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		groupSelectionModel = new DefaultListSelectionModel();
 		groupList = new JList(groupListModel);
 		groupList.setSelectionModel(groupSelectionModel);
+		groupList.addListSelectionListener(new SelectionListener());
 		groupPane = new JScrollPane(groupList);
 		groupPane.setPreferredSize(new Dimension(150,150));
 		groups = new JLabel("Groups");
@@ -178,7 +174,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	
 	public void addDayPanel(Object object){
 		if(object != main.getUser()){
-			selectedUsers.add(object);
+			selectedGroups.add(object);
 		}		
 		if(object != null){
 			if(object instanceof User){
@@ -265,19 +261,18 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	public class SelectionListener implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent evt) {
 			if(evt.getValueIsAdjusting()){
-				if(selectedUsers.contains(personList.getSelectedValue())){
-					for(int i = 0; i<selectedUsers.size();i++){
-						if(personList.getSelectedValue() == selectedUsers.get(i)){
-							selectedUsers.remove(i);
-							users.remove(i+2);
-							userC.gridx--;
-							users.validate();
-							users.repaint();
-						}
-					}	
+				if(selectedGroups.contains(groupList.getSelectedValue())){
+					for(int i = 0; i<users.getComponentCount();i++){
+						users.remove(i+1);
+						users.validate();
+						users.repaint();
+					}
 				}
 				else{
-					addDayPanel(personList.getSelectedValue());
+					Group group = (Group) groupList.getSelectedValue(); 
+					for(int j = 0; j<group.getMembers().size(); j++){
+						addDayPanel(group.getMembers().get(j).getUser());
+					}
 				}
 
 
@@ -288,46 +283,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		}
 
 
-	}
-	public class myMouseListener implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-			System.out.println("noe skjer");
-			date = calendar.getDate();
-			System.out.println(date);
-			
-		}
-		
-	}
-	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		date = calendar.getDate();
-		System.out.println(calendar.getCalendar().getTime());
 		
 	}
 
@@ -337,5 +292,9 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		
 	}
 
-
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		date = calendar.getDate();
+		
+	}
 }

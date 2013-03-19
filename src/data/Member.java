@@ -28,13 +28,9 @@ public class Member {
 		group.removeMember(this);
 		user.removeGroup(this);
 	}
-	
+
 	public Group getGroup() {
 		return group;
-	}
-	
-	public User getUser() {
-		return user;
 	}
 
 }

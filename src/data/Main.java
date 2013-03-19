@@ -17,7 +17,7 @@ public class Main {
 	}
 	
 	public ArrayList<User> getPersons(){
-		return server.getPersons();		
+		return new ArrayList<User>(server.getUsers().values());		
 	}
 	
 	public User getUser() {
@@ -25,19 +25,32 @@ public class Main {
 	}
 	
 	public ArrayList<Group> getGroups(){
-		return server.getGroups();
+		return new ArrayList<Group>(server.getGroups().values());
 	}
 	
 	public void newUser(String username, String password, String name,Main main){
-		server.addUser(new User(username, password, name, main));
+		server.addUser(new User(username, password, name));
 	}
 	
 	public void setUser(User user){
 		this.user = user;
 	}
 	
-	void connectionLost() {
+	public boolean authenticateUser(String userName, String password) {
+		User user = server.getUsers().get(userName);
+		if (user == null) {
+			return false;
+		}
 		
+		if (user.correctPassword(password)) {
+			this.user = user;
+			return true;
+		}
+		return false;
+	}
+	
+	void connectionLost() {
+		System.out.println("lost");
 	}
 	
 //	//public ArrayList<Appointment> getMyAppointments(){
@@ -50,11 +63,18 @@ public class Main {
 	
 
 	
+<<<<<<< HEAD
 //	public static void main(String[] args){
 //		Main main= new Main();
 //		main.newUser("Torgerhaa","passord","Torgeir",main );
 //		main.newUser("Erikgu","passord","Erik",main );
 //		main.setUser(new User("Brageej","passord","Brage E Jahren",main));
+=======
+	public static void main(String[] args){
+		Main main= new Main();
+		main.newUser("Brageej","passord","Brage E Jarhen",main );
+		main.setUser(new User("brageej","passord","Brage E Jahren"));
+>>>>>>> master
 //		JFrame.setDefaultLookAndFeelDecorated(true);
 //		JFrame frame = new JFrame("CalFifty");
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,10 +83,41 @@ public class Main {
 //		frame.getContentPane().add(contentPane);
 //		frame.pack();
 //		frame.setVisible(true);
+<<<<<<< HEAD
 //	}
 	
 	public static void main(String[] args) {
 		new Main();
+=======
+
+
+		main.newUser("Torgerhaa","passord","Torgeir",main );
+
+		main.newUser("torgeha","lol","Torgeir",main );
+		main.newUser("Erikgu","passord","Erik",main );
+		main.setUser(new User("Brageej","passord","Brage E Jahren"));
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		JFrame frame = new JFrame("CalFifty");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JComponent contentPane = new TabPanel(main);
+		contentPane.setOpaque(true);
+		frame.getContentPane().add(contentPane);
+		frame.pack();
+		frame.setVisible(true);
+		System.out.println(frame.getPreferredSize());
+
+		main.newUser("Brageej","passord","Brage E Jarhen",main );
+		main.setUser(new User("brageej","passord","Brage E Jahren"));
+//		JFrame.setDefaultLookAndFeelDecorated(true);
+//		JFrame frame = new JFrame("CalFifty");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		JComponent contentPane = new TabPanel(main);
+//		contentPane.setOpaque(true);
+//		frame.getContentPane().add(contentPane);
+//		frame.pack();
+//		frame.setVisible(true);
+
+>>>>>>> master
 	}
 
 	

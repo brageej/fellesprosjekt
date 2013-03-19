@@ -11,7 +11,7 @@ import java.util.Map;
 public class Server implements Runnable {
 	
 	private Map<Integer, Appointment> appointments;
-	private Map<String, Group> groups;
+	private Map<String, Group> groups = new HashMap<String,Group>();
 	private ArrayList<Member> members;
 	private ArrayList<Participant> participants;
 	private Map<String, Room> rooms;
@@ -24,7 +24,7 @@ public class Server implements Runnable {
 	private BufferedReader reader;
 	private PrintWriter writer;
 	
-	Server(Main main) {
+	public Server(Main main) {
 		this.main = main;
 		appointments = new HashMap<Integer, Appointment>();
 		groups = new HashMap<String, Group>();
@@ -33,6 +33,7 @@ public class Server implements Runnable {
 		rooms = new HashMap<String, Room>();
 		subgroups = new ArrayList<Subgroup>();
 		users = new HashMap<String, User>();
+<<<<<<< HEAD
 		try {
 			socket = new Socket("127.0.0.1", 50039);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -52,6 +53,27 @@ public class Server implements Runnable {
 			main.connectionLost();
 			e.printStackTrace();
 		}
+=======
+		
+//		bare test!
+		users.put("torgeha", new User("torgeha", "lol", "Torgeir"));
+		
+//		try {
+//			socket = new Socket("127.0.0.1", 50039);
+//			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			writer = new PrintWriter(socket.getOutputStream(), true);
+//			new Thread(this).run();
+//			writer.println("select");
+//		} catch (Exception e) {
+//			try {
+//				socket.close();
+//			} catch (Exception f) {
+//				f.printStackTrace();
+//			}
+//			main.connectionLost();
+//			e.printStackTrace();
+//		}
+>>>>>>> master
 	}
 	
 	public void run() {
@@ -195,6 +217,10 @@ public class Server implements Runnable {
 	
 	Map<String, User> getUsers() {
 		return users;
+	}
+	
+	void addUser(User user){
+		users.put(user.getUserName(), user);
 	}
 
 }
