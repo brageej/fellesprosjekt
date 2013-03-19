@@ -87,6 +87,7 @@ public class WeekPanel extends JPanel {
 		calendarPane.setPreferredSize(new Dimension(650,500));
 		calendarPanePanel.add(calendarPane);
 		
+		
 		JPanel listAndCalendarPanel = new JPanel();
 		JPanel dateChooser = new JPanel();
 		JCalendar calendar = new JCalendar();
