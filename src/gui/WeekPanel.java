@@ -52,12 +52,12 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	private Calendar cal;
 	private JCalendar calendar;
 	private ArrayList<DayPanel> weekdays;
-	private ArrayList<AppPanel> appPanels;
+	private ArrayList<String> appPanels;
 	
 	public WeekPanel(Main main){
 		this.main = main; 
 		this.thisUser = this.main.getUser();
-		appPanels = new ArrayList<AppPanel>();
+		appPanels = new ArrayList<String>();
 		weekdays = new ArrayList<DayPanel>();
 		makeAppPanels();
 		setLayout(new GridBagLayout());
@@ -248,10 +248,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	private void addAppointments(Date date, ArrayList<DayPanel> weekdays){
 		for(int k = 0; k<weekdays.size(); k++){
 			for(int i=0; i<thisUser.getAppointments().size();i++){
-				System.out.println("jeg kommer hit");
-				System.out.println(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime());
-				System.out.println(date);
-				if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime() == date){
+				if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getYear() == date.getYear() && thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getMonth() == date.getMonth() && thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getDate() == date.getDate()){
 					System.out.println("hei");
 					int startHour = thisUser.getAppointments().get(i).getAppointment().getStartHour()-7;
 					int startMinute = thisUser.getAppointments().get(i).getAppointment().getStartMinute()/30;
@@ -264,24 +261,31 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 						duration = 1;
 					}
 					for(int j=0; j<duration; j++){
-						AppPanel appPanel = new AppPanel(Color.BLUE);
-						appPanel.addMouseListener(this);
-						appPanels.set(distanceFromTopStart+j, appPanel);
+						appPanels.set(distanceFromTopStart+j, "BLUE");
+					}
+					for(int h=0; h<appPanels.size(); h++){
+						JPanel panel = new JPanel();
+						if(appPanels.get(h).equals("WHITE")){
+							panel.setBackground(Color.WHITE);
+						}
+						else{
+							panel.setBackground(Color.BLUE);
+						}
+						weekdays.get(k).addPanel(panel);
 					}
 				}
-			
+
 			}
-			for(int h=0; h<appPanels.size(); h++){
-				weekdays.get(k).addPanel(appPanels.get(h));
-			}
+
 			makeAppPanels();
 			date.setDate(date.getDate()+1);
 		}
 	}
 	
 	private void makeAppPanels(){
+		appPanels.clear();
 		for (int i = 0; i< 14; i++){
-			appPanels.add(new AppPanel(Color.WHITE));
+			appPanels.add("WHITE");
 		}
 	}
 
