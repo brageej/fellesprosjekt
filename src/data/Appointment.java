@@ -196,6 +196,10 @@ public class Appointment {
 		return owner;
 	}
 	
+	public ArrayList<Participant> getParticipants() {
+		return participants;
+	}
+	
 	public void remove() {
 		if (owner != null) {
 			owner.removeOwnership(this);

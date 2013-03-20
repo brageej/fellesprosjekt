@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 public class Main {
 	
 	private Server server;
-	private User user;
+	private User user; 
 	
 	public Main() {
 		server = new Server(this);
