@@ -15,7 +15,13 @@ public class Participant {
 	
 	public Participant(Appointment appointment, User user) {
 		this.appointment = appointment;
+		if (appointment != null) {
+			appointment.addParticipant(this);
+		}
 		this.user = user;
+		if (user != null) {
+			user.addAppointment(this);
+		}
 		this.alarmTime = new GregorianCalendar();
 		this.alarmTime.setTimeInMillis(0);
 		this.status = "No answer";
@@ -23,7 +29,13 @@ public class Participant {
 	
 	public Participant(Appointment appointment, User user, long alarm, String status) {
 		this.appointment = appointment;
+		if (appointment != null) {
+			appointment.addParticipant(this);
+		}
 		this.user = user;
+		if (user != null) {
+			user.addAppointment(this);
+		}
 		this.alarmTime = new GregorianCalendar();
 		this.alarmTime.setTimeInMillis(alarm);
 		this.status = status;
@@ -48,14 +60,8 @@ public class Participant {
 	public Appointment getAppointment() {
 		return appointment;
 	}
-	public void setAppointment(Appointment appointment) {
-		this.appointment = appointment;
-	}
 	public User getUser() {
 		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
 	}
 	public Calendar getAlarmTime() {
 		return alarmTime;
@@ -76,6 +82,15 @@ public class Participant {
 	
 	public Calendar getAlarm() {
 		return alarmTime;
+	}
+	
+	public void remove() {
+		if (appointment != null) {
+			appointment.removeParticipant(this);
+		}
+		if (user != null) {
+			user.removeAppointment(this);
+		}
 	}
 
 }
