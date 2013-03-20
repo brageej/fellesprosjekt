@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import com.toedter.calendar.JCalendar;
 import data.Main;
 import data.User;
 
-public class WeekPanel extends JPanel implements PropertyChangeListener {
+public class WeekPanel extends JPanel implements PropertyChangeListener, MouseListener {
 	
 	private JPanel personListPanel;
 	private JPanel groupListPanel;
@@ -254,7 +256,9 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 						duration = 1;
 					}
 					for(int j=0; j<duration; j++){
-						appPanels.set(distanceFromTopStart+j, new AppPanel(Color.BLUE));
+						AppPanel appPanel = new AppPanel(Color.BLUE);
+						appPanel.addMouseListener(this);
+						appPanels.set(distanceFromTopStart+j, appPanel);
 					}
 				}
 			
@@ -271,6 +275,46 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		for (int i = 0; i< 14; i++){
 			appPanels.add(new AppPanel(Color.WHITE));
 		}
+	}
+
+
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		System.out.println("Mouse was clicked");
+		
+	}
+
+
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

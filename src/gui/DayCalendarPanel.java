@@ -232,7 +232,9 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 					duration = 1;
 				}
 				for(int j=0; j<duration; j++){
-					appPanels.set(distanceFromTopStart+j, new AppPanel(Color.BLUE));
+					AppPanel appPanel = new AppPanel(Color.BLUE);
+					appPanel.addMouseListener(this);
+					appPanels.set(distanceFromTopStart+j, appPanel);
 				}
 			}
 		}
