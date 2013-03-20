@@ -130,7 +130,7 @@ public class NewAppointmentPanel extends JPanel{
 	private void createAppointmentModel(Appointment oldApp) {
 		if (oldApp == null) {
 			this.isNull = true;
-			Appointment newApp = new Appointment("",null, null, main.getUser());
+			Appointment newApp = new Appointment(0, "",null, null, main.getUser());
 		}
 		else if (oldApp != null) {
 			this.isNull = false;
@@ -597,7 +597,6 @@ public class NewAppointmentPanel extends JPanel{
 		Room r = (Room) roomList.getSelectedValue();
 		Appointment saveApp;
 		
-//		FIKSFIKSFIKSFIKSFIKSFIKSFIKSFIKSFIKS
 		if (isNull) {
 			saveApp = new Appointment(0, title, start, finish, owner);
 		}else {
@@ -628,11 +627,6 @@ public class NewAppointmentPanel extends JPanel{
 		saveApp.setRoom(r);
 		saveApp.setDescription(descr);
 		main.getServer().insertAppointment(saveApp);
-		
-		
-		else {
-			
-		}
 		
 	}
 	
@@ -671,30 +665,5 @@ public class NewAppointmentPanel extends JPanel{
 			removeGroupFromAppointment();
 		}
 	}
-	
-//	public static void main(String[] args) {
-//		Date start = new Date(2013, 4, 02, 12, 41);
-//		Date end = new Date(2013, 10, 30, 9, 00);
-//		
-//		Calendar s = GregorianCalendar.getInstance();
-//		s.setTime(start);
-//		
-//		Calendar e = GregorianCalendar.getInstance();
-//		e.setTime(end);
-//		
-//		User t = new User("u", "pass", "Torgeir");
-//		
-//		Appointment m = new Appointment("Tittle", s, e, t);
-//		m.setDescription("Description babyasdffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd!");
-//		m.addParticipant(new Participant(m, t));
-//		
-//		JFrame frame = new JFrame("Fabuloussss!");
-//		frame.getContentPane().add(new NewAppointmentPanel(m, new Main()));
-//		System.out.println(frame.getContentPane().getHeight());
-//		frame.pack();
-//		frame.setResizable(false);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setVisible(true);
-//	}
 	
 }
