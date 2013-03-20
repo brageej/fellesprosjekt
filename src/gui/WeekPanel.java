@@ -30,8 +30,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 	private JPanel groupListPanel;
 	private JScrollPane calendarPane;
 	private Main main;
-	private CalendarPanel dateChooser;
-	private DayCalendarPanel dayCalendarPanel;
+	private JPanel dateChooser;
 	private JPanel mon;
 	private JPanel tue;
 	private JPanel wed;
@@ -112,7 +111,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		
 		
 		JPanel listAndCalendarPanel = new JPanel();
-		JPanel dateChooser = new JPanel();
+		dateChooser = new JPanel();
 		calendar = new JCalendar();
 		calendar.setPreferredSize(new Dimension(150,150));
 		calendar.addPropertyChangeListener(this);
@@ -146,7 +145,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		groupListPanel.setLayout(new GridBagLayout());
 		GridBagConstraints groupC = new GridBagConstraints();
 		groupListModel = new DefaultListModel();
-		DefaultListSelectionModel groupSelectionModel = new DefaultListSelectionModel();
+		groupSelectionModel = new DefaultListSelectionModel();
 		JList groupList = new JList(groupListModel);
 		list.setSelectionModel(groupSelectionModel);
 		JScrollPane groupPane = new JScrollPane(groupList);
@@ -189,9 +188,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 
 	}
 	
-//	private void addAppointments(){
-//		for(int i = 0; i<main.getUser().get)
-//	}
+
 	
 	public JPanel addDayPanel(String string){
 		JPanel dayPanel = new JPanel();
@@ -265,6 +262,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 			for(int h=0; h<appPanels.size(); h++){
 				weekdays.get(k).addPanel(appPanels.get(h));
 			}
+			makeAppPanels();
 			date.setDate(date.getDate()+1);
 		}
 	}
