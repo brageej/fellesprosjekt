@@ -72,9 +72,13 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	private ArrayList<Object> selectedUsers;
 	private ArrayList<DayPanel> dayPanels;
 	
+	private ArrayList<AppPanel> appPanels;
+	
 	
 	public DayCalendarPanel(Main main){
-		this.main = main; 
+		this.main = main;
+		appPanels = new ArrayList<AppPanel>();
+		makeAppPanels();
 		selectedUsers = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
 		
@@ -214,11 +218,9 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	}
 	
 	private void addAppointments(DayPanel dayPanel, User user){
-		System.out.println("add");
 		ArrayList<Participant> appointments = user.getAppointments();
-		System.out.println(appointments);
 		for(int i = 0; i< appointments.size();i++){
-			if(appointments.get(i).getAppointment().getStartTime().getTime().getDay() == date.getDay()){
+			if(appointments.get(i).getAppointment().getStartTime().getTime() == date){
 				int startHour = appointments.get(i).getAppointment().getStartHour()-7;
 				int startMinute = appointments.get(i).getAppointment().getStartMinute()/30;
 				int distanceFromTopStart = startHour + startMinute;
@@ -229,24 +231,17 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 				if(duration == 0){
 					duration = 1;
 				}
-				System.out.println(duration);
-				for(int j=0; j<distanceFromTopStart;j++){
-					JPanel appPanel = new JPanel();
-					appPanel.setBackground(Color.WHITE);
-					dayPanel.addPanel(appPanel);
-				}
-				for(int k = 0; k<duration; k++){
-					JPanel appPanel2 = new JPanel();
-					appPanel2.setBackground(Color.BLUE);
-					dayPanel.addPanel(appPanel2);
-				}
-				for(int l = 0; l<distanceFromTopStart+duration; l++){
-					JPanel appPanel3 = new JPanel();
-					appPanel3.setBackground(Color.WHITE);
-					dayPanel.addPanel(appPanel3);
+				for(int j=0; j<duration; j++){
+					AppPanel appPanel = new AppPanel(Color.BLUE);
+					appPanel.addMouseListener(this);
+					appPanels.set(distanceFromTopStart+j, appPanel);
 				}
 			}
 		}
+		for(int h=0; h<appPanels.size(); h++){
+			dayPanel.addPanel(appPanels.get(h));
+		}
+		makeAppPanels();
 	}
 	
 	private void testAddAppointments(DayPanel dayPanel, User user){
@@ -339,6 +334,12 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void makeAppPanels(){
+		for (int i = 0; i< 14; i++){
+			appPanels.add(new AppPanel(Color.WHITE));
+		}
 	}
 
 

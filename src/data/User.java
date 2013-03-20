@@ -10,7 +10,7 @@ public class User {
 	private String password;
 	private String name;
 	
-	private ArrayList<Appointment> myAppointments;
+
 	private ArrayList<Appointment> owner;
 	private ArrayList<Group> leader;
 	private ArrayList<Participant> appointments;
@@ -22,7 +22,6 @@ public class User {
 		this.username = username;
 		this.name = name;
 		this.password = password;
-		//setMyAppointments();
 		
 		this.groups = new ArrayList<Member>();
 		this.leader = new ArrayList<Group>();
@@ -46,10 +45,18 @@ public class User {
 		}
 	}
 	
+	public void removeLeadership(Group leaderGroup){
+		this.leader.remove(leaderGroup);
+	}
+	
 	public void addOwnership(Appointment ownerAppointment){
 		if (!this.owner.contains(ownerAppointment)){
 			this.owner.add(ownerAppointment);
 		}
+	}
+	
+	public void removeOwnership(Appointment ownerAppointment){
+		this.owner.remove(ownerAppointment);
 	}
 	
 	public void addAppointment(Participant newAppointment){
@@ -60,11 +67,7 @@ public class User {
 	public void removeAppointment(Participant delAppointment){
 		this.appointments.remove(delAppointment);
 	}
-	
-	
-//	private void setMyAppointments(){
-//		myAppointments = main.getMyAppointments();
-//	}
+		
 	
 	@Override
 	public String toString() {
@@ -75,10 +78,6 @@ public class User {
 		return this.username;
 	}
 	
-//	public ArrayList<Appointment> getOwner(){
-//		return;
-//		
-//	}
 	
 	public boolean correctPassword(String checkPassword){
 		if (this.password.equals(checkPassword)) return true;

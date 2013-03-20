@@ -20,15 +20,25 @@ public class Subgroup {
 		
 		// legge relasjonen i liste over subgrupper og parentgrupper
 		// add- og sub- metodene i Group bør sørge for at dette ikke skjer gjentagende
-		subGroup.addParentGroup(this);
-		parentGroup.addSubGroup(this);
+		if(subGroup != null){
+			subGroup.addParentGroup(this);
+		}
+		if(parentGroup != null){
+			parentGroup.addSubGroup(this);
+		}
 		
 	}
 	
-	public void removeSubgroupRelation(){
-		parentGroup.removeSubGroup(this);
-		subGroup.removeParentGroup(this);
+	public void remove(){
+		if(parentGroup != null){
+			parentGroup.removeSubGroup(this);
+		}
+		if(subGroup != null){
+			subGroup.removeParentGroup(this);
+		}
+		
 	}
+	
 	
 	public Group getParentGroup() {
 		return parentGroup;

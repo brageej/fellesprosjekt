@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -24,14 +26,13 @@ import com.toedter.calendar.JCalendar;
 import data.Main;
 import data.User;
 
-public class WeekPanel extends JPanel implements PropertyChangeListener {
+public class WeekPanel extends JPanel implements PropertyChangeListener, MouseListener {
 	
 	private JPanel personListPanel;
 	private JPanel groupListPanel;
 	private JScrollPane calendarPane;
 	private Main main;
-	private CalendarPanel dateChooser;
-	private DayCalendarPanel dayCalendarPanel;
+	private JPanel dateChooser;
 	private JPanel mon;
 	private JPanel tue;
 	private JPanel wed;
@@ -112,7 +113,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		
 		
 		JPanel listAndCalendarPanel = new JPanel();
-		JPanel dateChooser = new JPanel();
+		dateChooser = new JPanel();
 		calendar = new JCalendar();
 		calendar.setPreferredSize(new Dimension(150,150));
 		calendar.addPropertyChangeListener(this);
@@ -146,7 +147,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		groupListPanel.setLayout(new GridBagLayout());
 		GridBagConstraints groupC = new GridBagConstraints();
 		groupListModel = new DefaultListModel();
-		DefaultListSelectionModel groupSelectionModel = new DefaultListSelectionModel();
+		groupSelectionModel = new DefaultListSelectionModel();
 		JList groupList = new JList(groupListModel);
 		list.setSelectionModel(groupSelectionModel);
 		JScrollPane groupPane = new JScrollPane(groupList);
@@ -189,9 +190,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 
 	}
 	
-//	private void addAppointments(){
-//		for(int i = 0; i<main.getUser().get)
-//	}
+
 	
 	public JPanel addDayPanel(String string){
 		JPanel dayPanel = new JPanel();
@@ -257,7 +256,9 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 						duration = 1;
 					}
 					for(int j=0; j<duration; j++){
-						appPanels.set(distanceFromTopStart+j, new AppPanel(Color.BLUE));
+						AppPanel appPanel = new AppPanel(Color.BLUE);
+						appPanel.addMouseListener(this);
+						appPanels.set(distanceFromTopStart+j, appPanel);
 					}
 				}
 			
@@ -265,6 +266,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 			for(int h=0; h<appPanels.size(); h++){
 				weekdays.get(k).addPanel(appPanels.get(h));
 			}
+			makeAppPanels();
 			date.setDate(date.getDate()+1);
 		}
 	}
@@ -273,6 +275,46 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		for (int i = 0; i< 14; i++){
 			appPanels.add(new AppPanel(Color.WHITE));
 		}
+	}
+
+
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		System.out.println("Mouse was clicked");
+		
+	}
+
+
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

@@ -68,12 +68,15 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	
 	private ArrayList<Object> selectedGroups;
 	private ArrayList<DayPanel> dayPanels;
+	private ArrayList<AppPanel> appPanels;
 	
 	
 	public GroupCalendarPanel(Main main){
 		this.main = main; 
 		selectedGroups = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
+		appPanels = new ArrayList<AppPanel>();
+		makeAppPanels();
 		
 		setLayout(new GridBagLayout());
 		mainC = new GridBagConstraints();
@@ -175,7 +178,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		if(object != null){
 			if(object instanceof User){
 				DayPanel dayPanel = new DayPanel((User) object);
-				testAddAppointments(dayPanel,(User)object);
+				addAppointments(dayPanel,(User)object);
 				dayPanels.add(dayPanel);
 				userC.gridx ++;
 				userC.gridy = 0;
@@ -209,51 +212,48 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	private void addAppointments(DayPanel dayPanel, User user){
 		ArrayList<Participant> appointments = user.getAppointments();
 		for(int i = 0; i< appointments.size();i++){
-			if(appointments.get(i).getAppointment().getStartTime().getTime().getDay() == date.getDay()){
+			if(appointments.get(i).getAppointment().getStartTime().getTime() == date){
 				int startHour = appointments.get(i).getAppointment().getStartHour()-7;
-				int startMinute = appointments.get(i).getAppointment().getStartMinute()/60;
+				int startMinute = appointments.get(i).getAppointment().getStartMinute()/30;
 				int distanceFromTopStart = startHour + startMinute;
 				int finishHour = appointments.get(i).getAppointment().getFinishedHour()-7;
-				int finishMinute = appointments.get(i).getAppointment().getFinishedMinute()/60;
+				int finishMinute = appointments.get(i).getAppointment().getFinishedMinute()/30;
 				int distanceFromTopEnd = finishHour + finishMinute;
 				int duration = distanceFromTopEnd - distanceFromTopStart;
-				for(int j=0; j<distanceFromTopStart;j++){
-					JPanel appPanel = new JPanel();
-					appPanel.setBackground(Color.WHITE);
-					dayPanel.addPanel(appPanel);
+				if(duration == 0){
+					duration = 1;
 				}
-				for(int k = 0; k<duration; k++){
-					JPanel appPanel2 = new JPanel();
-					appPanel2.setBackground(Color.BLUE);
-					dayPanel.addPanel(appPanel2);
-				}
-				for(int l = 0; l<distanceFromTopStart+duration; l++){
-					JPanel appPanel3 = new JPanel();
-					appPanel3.setBackground(Color.WHITE);
-					dayPanel.addPanel(appPanel3);
+				for(int j=0; j<duration; j++){
+					AppPanel appPanel = new AppPanel(Color.BLUE);
+					appPanel.addMouseListener(this);
+					appPanels.set(distanceFromTopStart+j, appPanel);
 				}
 			}
 		}
+		for(int h=0; h<appPanels.size(); h++){
+			dayPanel.addPanel(appPanels.get(h));
+		}
+		makeAppPanels();
 	}
 	
-	private void testAddAppointments(DayPanel dayPanel, User user){
-		for(int j=0; j<4;j++){
-			JPanel appPanel = new JPanel();
-			appPanel.setBackground(Color.WHITE);
-			dayPanel.addPanel(appPanel);
-		}
-		for(int k = 0; k<2; k++){
-			JPanel appPanel2 = new JPanel();
-			appPanel2.addMouseListener(this);
-			appPanel2.setBackground(Color.BLUE);
-			dayPanel.addPanel(appPanel2);
-		}
-		for(int l = 0; l<7; l++){
-			JPanel appPanel3 = new JPanel();
-			appPanel3.setBackground(Color.WHITE);
-			dayPanel.addPanel(appPanel3);
-		}
-	}
+//	private void testAddAppointments(DayPanel dayPanel, User user){
+//		for(int j=0; j<4;j++){
+//			JPanel appPanel = new JPanel();
+//			appPanel.setBackground(Color.WHITE);
+//			dayPanel.addPanel(appPanel);
+//		}
+//		for(int k = 0; k<2; k++){
+//			JPanel appPanel2 = new JPanel();
+//			appPanel2.addMouseListener(this);
+//			appPanel2.setBackground(Color.BLUE);
+//			dayPanel.addPanel(appPanel2);
+//		}
+//		for(int l = 0; l<7; l++){
+//			JPanel appPanel3 = new JPanel();
+//			appPanel3.setBackground(Color.WHITE);
+//			dayPanel.addPanel(appPanel3);
+//		}
+//	}
 	
 	public class SelectionListener implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent evt) {
@@ -268,9 +268,6 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 				else{
 					Group group = (Group) groupList.getSelectedValue(); 
 					for(int j = 0; j<group.getMembers().size(); j++){
-
-						//addDayPanel(group.getMembers().get(j).getUser());
-
 						addDayPanel(group.getMembers().get(j).getUser());
 
 					}
@@ -330,5 +327,11 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
+	}
+	
+	private void makeAppPanels(){
+		for (int i = 0; i< 14; i++){
+			appPanels.add(new AppPanel(Color.WHITE));
+		}
 	}
 }
