@@ -2,7 +2,6 @@ package data;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -16,7 +15,7 @@ public class Appointment {
 	private String title;
 	private String description;
 	private Calendar startTime;
-	private Calendar finishTime; 
+	private Calendar finishTime;
 	private Room room;
 	private User owner;
 	
@@ -35,16 +34,30 @@ public class Appointment {
 		this.startTime = startTime;
 		this.finishTime = finishTime;
 		this.owner = owner;
+		if (owner != null) {
+			owner.addOwnership(this);
+		}
 		participants = new ArrayList<Participant>();
 		pcs = new PropertyChangeSupport(this);
 	}
 	
-	public Appointment(String title, Calendar startTime, Calendar finishTime, User owner, ArrayList<Participant> participants) {
+	public Appointment(int appointmentId, String title, String description, long startTime, long finishTime, Room room, User owner) {
+		this.appointmentId = appointmentId;
 		this.title = title;
-		this.startTime = startTime;
-		this.finishTime = finishTime;
+		this.description = description;
+		this.startTime = new GregorianCalendar();
+		this.startTime.setTimeInMillis(startTime);
+		this.finishTime = new GregorianCalendar();
+		this.finishTime.setTimeInMillis(finishTime);
+		this.room = room;
+		if (room != null) {
+			room.addAppointment(this);
+		}
 		this.owner = owner;
-		this.participants = participants;
+		if (owner != null) {
+			owner.addOwnership(this);
+		}
+		participants = new ArrayList<Participant>();
 		pcs = new PropertyChangeSupport(this);
 	}
 	
@@ -56,18 +69,18 @@ public class Appointment {
 		return participants.size();
 	}
 	
-	public void setParticipants(ArrayList<Participant> participants) {
-		this.participants = participants;
-	}
-	
 	public void removeParticipant(Participant p) {
-		participants.remove(p);
-		pcs.firePropertyChange(PARTICIPANT_PROP, p, null);
+		if (participants.contains(p)) {
+			participants.remove(p);
+			pcs.firePropertyChange(PARTICIPANT_PROP, p, null);
+		}
 	}
 	
 	public void addParticipant(Participant p) {
-		participants.add(p);
-		pcs.firePropertyChange(PARTICIPANT_PROP, null, p);
+		if (!participants.contains(p)) {
+			participants.add(p);
+			pcs.firePropertyChange(PARTICIPANT_PROP, null, p);
+		}
 	}
 	
 	public Participant getParticipant(int index) {
@@ -113,6 +126,12 @@ public class Appointment {
 	public void setRoom(Room room) {
 		Room oldRoom = this.room;
 		this.room = room;
+		if (oldRoom != null) {
+			oldRoom.removeAppointment(this);
+		}
+		if (room != null) {
+			room.addAppointment(this);
+		}
 		pcs.firePropertyChange(ROOM_PROP, oldRoom, room);
 	}
 	
@@ -148,26 +167,6 @@ public class Appointment {
 		return minute;
 	}
 	
-//	public static void main(String[] args) {
-//		Appointment a = new Appointment();
-//		a.setAlarmTime(1045);
-//		System.out.println(a.getAlarmMinute());
-//	}
-	
-	public Appointment(int appointmentId, String title, String description, long startTime, long finishTime, Room room, User owner) {
-		this.appointmentId = appointmentId;
-		this.title = title;
-		this.description = description;
-		this.startTime = new GregorianCalendar();
-		this.startTime.setTimeInMillis(startTime);
-		this.finishTime = new GregorianCalendar();
-		this.finishTime.setTimeInMillis(finishTime);
-		this.room = room;
-		this.owner = owner;
-		participants = new ArrayList<Participant>();
-		pcs = new PropertyChangeSupport(this);
-	}
-	
 	public int getAppointmentId() {
 		return appointmentId;
 	}
@@ -194,6 +193,15 @@ public class Appointment {
 	
 	public User getOwner() {
 		return owner;
+	}
+	
+	public void remove() {
+		if (owner != null) {
+			owner.removeOwnership(this);
+		}
+		if (room != null) {
+			room.removeAppointment(this);
+		}
 	}
 
 }

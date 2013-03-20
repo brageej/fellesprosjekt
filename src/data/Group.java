@@ -17,6 +17,10 @@ public class Group {
 		this.groupName = groupName;
 		this.leader = leader;
 		
+		if (leader != null) {
+			leader.addLeadership(this);
+		}
+		
 		members = new ArrayList<Member>();
 		subGroups = new ArrayList<Subgroup>();
 		parentGroups = new ArrayList<Subgroup>();
@@ -29,7 +33,9 @@ public class Group {
 	}
 	
 	public void removeMember(Member delMember){
-		this.members.remove(delMember);
+		if (this.members.contains(delMember)){
+			this.members.remove(delMember);
+		}
 	}
 	
 	public ArrayList<Member> getMembers(){
@@ -43,7 +49,9 @@ public class Group {
 	}
 	
 	public void removeSubGroup(Subgroup delSubGroup){
-		this.subGroups.remove(delSubGroup);
+		if (this.subGroups.contains(delSubGroup)){
+			this.subGroups.remove(delSubGroup);
+		}
 	}
 
 	public ArrayList<Subgroup> getSubGroups(){
@@ -57,7 +65,9 @@ public class Group {
 	}
 	
 	public void removeParentGroup(Subgroup delParentGroup){
-		this.parentGroups.remove(delParentGroup);
+		if (this.parentGroups.contains(delParentGroup)){
+			this.parentGroups.remove(delParentGroup);
+		}
 	}
 
 	public ArrayList<Subgroup> getParentGroups(){
@@ -74,6 +84,12 @@ public class Group {
 	
 	public String toString() {
 		return this.groupName;
+	}
+	
+	public void remove() {
+		if (leader != null) {
+			leader.removeLeadership(this);
+		}
 	}
 
 }

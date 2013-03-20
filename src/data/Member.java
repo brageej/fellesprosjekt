@@ -18,15 +18,21 @@ public class Member {
 		this.group = memberGroup;
 		this.user = memberUser;
 		
-		
-		//add'ers bør sørge for at dette ikke skjer om og om igjen
-		memberGroup.addMember(this);
-		memberUser.addGroup(this);
+		if (memberGroup != null) {
+			memberGroup.addMember(this);
+		}
+		if (memberUser != null) {
+			memberUser.addGroup(this);
+		}
 	}
 	
-	public void removeMemberRelation(){
-		group.removeMember(this);
-		user.removeGroup(this);
+	public void remove(){
+		if (group != null) {
+			group.removeMember(this);
+		}
+		if (user != null) {
+			user.removeGroup(this);
+		}
 	}
 
 	public Group getGroup() {
