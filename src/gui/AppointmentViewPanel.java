@@ -78,9 +78,7 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 		if (this.model != null) {
 			updateComponents();
 			model.addPropertyChangeListener(this);
-		}
-		
-		
+		}	
 	}
 	
 	private void createPanels() {

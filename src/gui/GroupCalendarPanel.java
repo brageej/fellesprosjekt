@@ -268,11 +268,11 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 				else{
 					Group group = (Group) groupList.getSelectedValue(); 
 					for(int j = 0; j<group.getMembers().size(); j++){
-<<<<<<< HEAD
+
 						//addDayPanel(group.getMembers().get(j).getUser());
-=======
+
 						addDayPanel(group.getMembers().get(j).getUser());
->>>>>>> master
+
 					}
 				}
 
@@ -284,7 +284,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		}
 
 
-<<<<<<< HEAD
+
 		
 	}
 
@@ -297,8 +297,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		date = calendar.getDate();
-=======
->>>>>>> master
+
 		
 	}
 	
@@ -317,7 +316,6 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	}
 
 	@Override
-<<<<<<< HEAD
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
@@ -332,10 +330,5 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-=======
-	public void propertyChange(PropertyChangeEvent arg0) {
-		date = calendar.getDate();
->>>>>>> master
-		
 	}
 }

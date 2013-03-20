@@ -25,6 +25,10 @@ public class Main {
 		return this.user;
 	}
 	
+	public ArrayList<Room> getRooms() {
+		return new ArrayList<Room>(server.getRooms().values());
+	}
+	
 	public ArrayList<Group> getGroups(){
 		return new ArrayList<Group>(server.getGroups().values());
 	}
@@ -54,17 +58,8 @@ public class Main {
 		System.out.println("lost");
 	}
 	
-
-	
-
-	
-
-
-	
 	public static void main(String[] args) {
 		new Main();
 
 	}
-
-	
 }

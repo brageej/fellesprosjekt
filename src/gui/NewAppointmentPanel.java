@@ -101,31 +101,56 @@ public class NewAppointmentPanel extends JPanel{
 	
 	private boolean isNull = true;
 	private Main main;
+	private MainGUI mainGui;
 	
-	public NewAppointmentPanel(Main main) {
-		this(null, main);
+	public NewAppointmentPanel(Main main, MainGUI mainGui) {
+		this(null, main, mainGui);
 	}
 	
-	public NewAppointmentPanel(Appointment appointment, Main main) {
+	public NewAppointmentPanel(Appointment appointment, Main main, MainGUI mainGui) {
 		createPanels();
 		this.main = main;
-		if (appointment != null) {
-			this.isNull = false;
-			this.model = appointment;
-			updateGUI();
+		this.mainGui = mainGui;
+		
+		createAppointmentModel(appointment);
+		
+		if (!isNull) {
+			updateNotNullGUI();
+		}
+		else if (isNull) {
+			updateNullGUI();
 		}
 	}
 	
-	private void updateGUI() {
+	private void createAppointmentModel(Appointment oldApp) {
+		if (oldApp == null) {
+			this.isNull = true;
+			
+			Appointment newApp = new Appointment("",null, null, main.getUser());
+		}
+		else if (oldApp != null) {
+			this.isNull = false;
+			this.model = oldApp;
+		}
+	}
+	
+	private void updateNullGUI() {
+		setSpinnerModelsNull();
+		setComboBoxModels();
+		setButtonListeners();
+		addListModelsNull();
+	}
+	
+	private void updateNotNullGUI() {
 		if (!isNull) {
 			titleField.setText(model.getTitle());
 			descriptionField.setText(model.getDescription());
 			startTime.setDate(model.getStartTime().getTime());
 			endTime.setDate(model.getFinishTime().getTime());
 			setSpinnerModelsNotNull();
-			setComboBoxModelNotNull();
+			setComboBoxModels();
 			setButtonListeners();
-			addListModels();
+			addListModelsNotNull();
 		}
 		
 	}
@@ -150,7 +175,24 @@ public class NewAppointmentPanel extends JPanel{
 		personListModel.addElement(new Participant(model, selected));
 	}
 	
-	private void addListModels() {
+	private void addListModelsNull() {
+		personListModel = new DefaultListModel();
+		groupListModel = new DefaultListModel();
+		roomListModel = new DefaultListModel();
+		
+		personsList.setModel(personListModel);
+		groupList.setModel(groupListModel);
+		roomList.setModel(roomListModel);
+		
+		ArrayList<Room> rooms = main.getRooms();
+//		fyll inn romlisten med rom
+		for (int i = 0; i < rooms.size(); i++) {
+			roomListModel.addElement(rooms.get(i));
+		}
+		
+	}
+	
+	private void addListModelsNotNull() {
 		personListModel = new DefaultListModel();
 		groupListModel = new DefaultListModel();
 		roomListModel = new DefaultListModel();
@@ -164,17 +206,13 @@ public class NewAppointmentPanel extends JPanel{
 			personListModel.addElement(model.getParticipant(i));
 		}
 		
-//		ArrayList<Room> rooms = server.getRooms();
-		ArrayList<Room> rooms = new ArrayList<Room>();
-		rooms.add(new Room("8008"));
-		rooms.add(new Room("9876"));
-		rooms.add(new Room("1337"));
-		rooms.add(new Room("7654"));
-		rooms.add(new Room("3erg5"));
-		
+		ArrayList<Room> rooms = main.getRooms();
+//		fyll inn romlisten med rom
 		for (int i = 0; i < rooms.size(); i++) {
 			roomListModel.addElement(rooms.get(i));
 		}
+		
+		roomList.setSelectedValue(model.getRoom(), true);
 		
 	}
 	
@@ -185,25 +223,24 @@ public class NewAppointmentPanel extends JPanel{
 		minusGroup.addActionListener(new minusGroupListener());
 	}
 	
-	private void setComboBoxModelNotNull() {
-//		for testing
-		ArrayList<User> users = new ArrayList<User>();
-		users.add(new User("username", "pass", "navnleif"));
-		users.add(new User("sdf¿lj", "pass", "lolstein"));
-		users.add(new User("ahhaa", "pass", "torger"));
-		users.add(new User("asdf", "pass", "fdssa"));
-		users.add(new User("qwerty", "pass", "ytrewq"));
-		ArrayList<Group> groups = new ArrayList<Group>();
+	private void setComboBoxModels() {
 		
-		
-//		ArrayList<User> users = server.getPersons();
+		ArrayList<User> users = main.getPersons();
 		userComboModel = new UserComboBoxModel(users);
 		personsCombo.setModel(userComboModel);
 		
-//		ArrayList<Group> groups = server.getGroups();
+		ArrayList<Group> groups = main.getGroups();
 		groupComboModel = new GroupComboBoxModel(groups);
 		groupCombo.setModel(groupComboModel);
 		
+	}
+	
+	private void setSpinnerModelsNull() {
+		startHourSpinner.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+		startMinuteSpinner.setModel(new SpinnerNumberModel(0, 0, 59, 1));
+		
+		endHourSpinner.setModel(new SpinnerNumberModel(0, 0, 23, 1));
+		endMinuteSpinner.setModel(new SpinnerNumberModel(0, 0, 59, 1));
 	}
 	
 	private void setSpinnerModelsNotNull() {
@@ -524,6 +561,56 @@ public class NewAppointmentPanel extends JPanel{
 		
 	}
 	
+	private void saveAppointment() {
+		if (isNull) {
+			String title = titleField.getText();
+			String descr = descriptionField.getText();
+			
+			Calendar start = new GregorianCalendar();
+			start.setTime(startTime.getDate());
+			
+			Calendar finish = new GregorianCalendar();
+			finish.setTime(endTime.getDate());
+			
+			User owner = main.getUser();
+			
+			Room r = (Room) roomList.getSelectedValue();
+			
+			ArrayList<Participant> participants = new ArrayList<Participant>();
+			for (int i = 0; i < personListModel.getSize(); i++) {
+				participants.set(i, (Participant) personListModel.getElementAt(i));
+			}
+			
+			Appointment saveApp = new Appointment(title, start, finish, owner);
+			participants.add(new Participant(saveApp, owner));
+			
+//			legg til gruppe
+			
+			saveApp.setParticipants(participants);
+			saveApp.setRoom(r);
+			saveApp.setDescription(descr);
+			
+//			main.server.lagreNyAppointment
+			
+		}
+		else {
+			
+		}
+	}
+	
+	private ArrayList<Participant> convertGroupToParticipantList() {
+		ArrayList<Participant> groups = new ArrayList<Participant>();
+//		
+//		for (int i = 0; i < groupListModel.getSize(); i++) {
+//			for (int j = 0; j < ( groupListModel.get(i)).getMember().size(); j++ ) {
+//				
+//			}
+//		}
+		
+		return groups;
+		
+	}
+	
 	private class saveButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Save");
@@ -532,7 +619,7 @@ public class NewAppointmentPanel extends JPanel{
 	
 	private class cancelButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Cancel");
+			mainGui.newAppointmentFrame.dispose();
 		}
 	}
 	
@@ -560,29 +647,29 @@ public class NewAppointmentPanel extends JPanel{
 		}
 	}
 	
-	public static void main(String[] args) {
-		Date start = new Date(2013, 4, 02, 12, 41);
-		Date end = new Date(2013, 10, 30, 9, 00);
-		
-		Calendar s = GregorianCalendar.getInstance();
-		s.setTime(start);
-		
-		Calendar e = GregorianCalendar.getInstance();
-		e.setTime(end);
-		
-		User t = new User("u", "pass", "Torgeir");
-		
-		Appointment m = new Appointment("Tittle", s, e, t);
-		m.setDescription("Description babyasdffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd!");
-		m.addParticipant(new Participant(m, t));
-		
-		JFrame frame = new JFrame("Fabuloussss!");
-		frame.getContentPane().add(new NewAppointmentPanel(m, new Main()));
-		System.out.println(frame.getContentPane().getHeight());
-		frame.pack();
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		Date start = new Date(2013, 4, 02, 12, 41);
+//		Date end = new Date(2013, 10, 30, 9, 00);
+//		
+//		Calendar s = GregorianCalendar.getInstance();
+//		s.setTime(start);
+//		
+//		Calendar e = GregorianCalendar.getInstance();
+//		e.setTime(end);
+//		
+//		User t = new User("u", "pass", "Torgeir");
+//		
+//		Appointment m = new Appointment("Tittle", s, e, t);
+//		m.setDescription("Description babyasdffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd!");
+//		m.addParticipant(new Participant(m, t));
+//		
+//		JFrame frame = new JFrame("Fabuloussss!");
+//		frame.getContentPane().add(new NewAppointmentPanel(m, new Main()));
+//		System.out.println(frame.getContentPane().getHeight());
+//		frame.pack();
+//		frame.setResizable(false);
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setVisible(true);
+//	}
 	
 }

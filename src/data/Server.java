@@ -53,6 +53,7 @@ public class Server implements Runnable {
 			main.connectionLost();
 			e.printStackTrace();
 		}
+
 //=======
 //		
 ////		bare test!
@@ -74,6 +75,17 @@ public class Server implements Runnable {
 ////			e.printStackTrace();
 ////		}
 //>>>>>>> master
+
+
+		
+//		bare for offline testing!
+
+//		User t = new User("torgeha", "lol", "Torgeir");
+//		users.put("torgeha", t);
+//		rooms.put("rom1", new Room("rom1"));
+//		groups.put("gr1", new Group("gr1", t));
+
+
 	}
 	
 	public void run() {
