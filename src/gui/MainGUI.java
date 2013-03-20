@@ -62,7 +62,7 @@ public class MainGUI {
 	
 	public void showAppointmentViewPanel(Appointment model, Participant participant) {
 		appointmentViewFrame = new JFrame("CalFifty - Appointment");
-		appointmentViewFrame.getContentPane().add(new AppointmentViewPanel(model, participant));
+		appointmentViewFrame.getContentPane().add(new AppointmentViewPanel(model, participant, this.main, this));
 		establishFrame(appointmentViewFrame);
 	}
 	
