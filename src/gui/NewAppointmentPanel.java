@@ -123,14 +123,12 @@ public class NewAppointmentPanel extends JPanel{
 		else if (isNull) {
 			updateNullGUI();
 		}
-		saveAppointment();
-		
 	}
 	
 	private void createAppointmentModel(Appointment oldApp) {
 		if (oldApp == null) {
 			this.isNull = true;
-			Appointment newApp = new Appointment(0, "",null, null, main.getUser());
+//			Appointment newApp = new Appointment(0, "",null, null, main.getUser());
 		}
 		else if (oldApp != null) {
 			this.isNull = false;
@@ -605,7 +603,9 @@ public class NewAppointmentPanel extends JPanel{
 		
 		
 		//legg til participants
-		new Participant(saveApp, owner);
+		ArrayList<Participant> deletablePart = new ArrayList<Participant>();
+		
+		deletablePart.add(new Participant(saveApp, owner));
 		Map<String, User> userMap = new HashMap<String, User>();
 		for (int i = 0; i < personListModel.getSize(); i++) {
 			userMap.put(((User) personListModel.get(i)).getUsername(), ((User) personListModel.get(i)));
@@ -620,19 +620,28 @@ public class NewAppointmentPanel extends JPanel{
 		}
 		
 		ArrayList<User> allPart = new ArrayList<User>(userMap.values());
+		
 		for (int i = 0; i < allPart.size(); i++) {
-			new Participant(saveApp, allPart.get(i));
+			deletablePart.add(new Participant(saveApp, allPart.get(i)));
 		}
 
 		saveApp.setRoom(r);
 		saveApp.setDescription(descr);
 		main.getServer().insertAppointment(saveApp);
 		
+		//delete participants
+		for (int i = 0; i < deletablePart.size(); i++) {
+			deletablePart.get(i).remove();
+		}
+		saveApp.remove();
+		
+		
 	}
 	
 	private class saveButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			saveAppointment();
+			mainGui.newAppointmentFrame.dispose();
 		}
 	}
 	
