@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -32,7 +33,8 @@ public class WeekCalendarPanel extends JPanel {
 	private JPanel fri;
 	private JPanel sat;
 	private JPanel sun;
-	Main main;
+	private Main main;
+	
 	
 	
 	public WeekCalendarPanel(Main main){
@@ -97,6 +99,12 @@ public class WeekCalendarPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy = 1;
 		dayPanel.add(mainPanel,c);
+	}
+	
+	private void makeAppPanels(){
+		for (int i = 0; i< 14; i++){
+			appPanels.add(new AppPanel(Color.WHITE));
+		}
 	}
 
 }

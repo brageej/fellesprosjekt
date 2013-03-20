@@ -11,7 +11,9 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -47,6 +49,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	private JList list;
 	private User thisUser;
 	private Date date;
+	private Calendar cal;
 	private JCalendar calendar;
 	private ArrayList<DayPanel> weekdays;
 	private ArrayList<AppPanel> appPanels;
@@ -118,6 +121,8 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 		calendar.setPreferredSize(new Dimension(150,150));
 		calendar.addPropertyChangeListener(this);
 		date = calendar.getDate();
+		cal = new GregorianCalendar();
+		cal.setTime(date);
 		addAppointments(getStartDate(),weekdays);
 		dateChooser.add(calendar);	
 		personListPanel = new JPanel();
@@ -223,13 +228,13 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	
 	public Date getStartDate(){
 		Date startDate;
-		int dayOfMonth = date.getDate();
-		int day = date.getDay();
+		int dayOfMonth = cal.getTime().getDate();
+		int day = cal.getTime().getDay();
 		if(day!=0){
-			startDate = new Date(date.getYear(),date.getMonth(),dayOfMonth-(day-1));
+			startDate = new Date(cal.getTime().getYear(),cal.getTime().getMonth(),dayOfMonth-(day-1));
 		}
 		else{
-			startDate = new Date(date.getYear(),date.getMonth(),dayOfMonth-6);
+			startDate = new Date(cal.getTime().getYear(),cal.getTime().getMonth(),dayOfMonth-6);
 		}
 		return startDate;
 	}
@@ -237,14 +242,17 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		date = calendar.getDate();
-		addAppointments(getStartDate(), weekdays);
+		//addAppointments(getStartDate(), weekdays);
 	}
 	
 	private void addAppointments(Date date, ArrayList<DayPanel> weekdays){
 		for(int k = 0; k<weekdays.size(); k++){
-			System.out.println(weekdays.get(k));
 			for(int i=0; i<thisUser.getAppointments().size();i++){
+				System.out.println("jeg kommer hit");
+				System.out.println(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime());
+				System.out.println(date);
 				if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime() == date){
+					System.out.println("hei");
 					int startHour = thisUser.getAppointments().get(i).getAppointment().getStartHour()-7;
 					int startMinute = thisUser.getAppointments().get(i).getAppointment().getStartMinute()/30;
 					int distanceFromTopStart = startHour + startMinute;
