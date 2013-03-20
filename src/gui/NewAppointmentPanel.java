@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -35,6 +37,7 @@ import customModels.UserComboBoxModel;
 import data.Appointment;
 import data.Group;
 import data.Main;
+import data.Member;
 import data.Participant;
 import data.Room;
 import data.Server;
@@ -120,12 +123,13 @@ public class NewAppointmentPanel extends JPanel{
 		else if (isNull) {
 			updateNullGUI();
 		}
+		saveAppointment();
+		
 	}
 	
 	private void createAppointmentModel(Appointment oldApp) {
 		if (oldApp == null) {
 			this.isNull = true;
-			
 			Appointment newApp = new Appointment("",null, null, main.getUser());
 		}
 		else if (oldApp != null) {
@@ -172,7 +176,7 @@ public class NewAppointmentPanel extends JPanel{
 	
 	private void addPersonToAppointment() {
 		User selected = (User) userComboModel.getSelectedItem();
-		personListModel.addElement(new Participant(model, selected));
+		personListModel.addElement(selected);
 	}
 	
 	private void addListModelsNull() {
@@ -562,58 +566,79 @@ public class NewAppointmentPanel extends JPanel{
 	}
 	
 	private void saveAppointment() {
+		String title = titleField.getText();
+		String descr = descriptionField.getText();
+		
+		//construct starttime
+		int syear = startTime.getDate().getYear();
+		int smonth = startTime.getDate().getMonth();
+		int sddate = startTime.getDate().getDate();
+		int sh = (Integer) startHourSpinner.getValue();
+		int sm = (Integer) startMinuteSpinner.getValue();
+		Date sDate = new Date(syear, smonth, sddate, sh, sm);
+		
+		//set startTime
+		Calendar start = new GregorianCalendar();
+		start.setTime(sDate);
+		
+		//construct endTime
+		int eyear = endTime.getDate().getYear();
+		int emonth = endTime.getDate().getMonth();
+		int eddate = endTime.getDate().getDate();
+		int eh = (Integer) endHourSpinner.getValue();
+		int em = (Integer) endMinuteSpinner.getValue();
+		Date eDate = new Date(eyear, emonth, eddate, eh, em);
+		
+		//set endTime
+		Calendar finish = new GregorianCalendar();
+		finish.setTime(eDate);
+		
+		User owner = main.getUser();
+		Room r = (Room) roomList.getSelectedValue();
+		Appointment saveApp;
+		
+//		FIKSFIKSFIKSFIKSFIKSFIKSFIKSFIKSFIKS
 		if (isNull) {
-			String title = titleField.getText();
-			String descr = descriptionField.getText();
-			
-			Calendar start = new GregorianCalendar();
-			start.setTime(startTime.getDate());
-			
-			Calendar finish = new GregorianCalendar();
-			finish.setTime(endTime.getDate());
-			
-			User owner = main.getUser();
-			
-			Room r = (Room) roomList.getSelectedValue();
-			
-			ArrayList<Participant> participants = new ArrayList<Participant>();
-			for (int i = 0; i < personListModel.getSize(); i++) {
-				participants.set(i, (Participant) personListModel.getElementAt(i));
-			}
-			
-			Appointment saveApp = new Appointment(title, start, finish, owner);
-			participants.add(new Participant(saveApp, owner));
-			
-//			legg til gruppe
-			
-			saveApp.setParticipants(participants);
-			saveApp.setRoom(r);
-			saveApp.setDescription(descr);
-			
-//			main.server.lagreNyAppointment
-			
+			saveApp = new Appointment(0, title, start, finish, owner);
+		}else {
+			saveApp = new Appointment(model.getAppointmentId(), title, start, finish, owner);
 		}
+		
+		
+		//legg til participants
+		new Participant(saveApp, owner);
+		Map<String, User> userMap = new HashMap<String, User>();
+		for (int i = 0; i < personListModel.getSize(); i++) {
+			userMap.put(((User) personListModel.get(i)).getUsername(), ((User) personListModel.get(i)));
+		}
+		
+		//fra gruppe
+		for (int i = 0; i < groupListModel.getSize(); i++) {
+			ArrayList<Member> members = ((Group) groupListModel.get(i)).getMembers();
+			for (int j = 0; j < members.size(); j++) {
+				userMap.put(members.get(j).getUser().getUserName(), members.get(j).getUser());
+			}
+		}
+		
+		ArrayList<User> allPart = new ArrayList<User>(userMap.values());
+		for (int i = 0; i < allPart.size(); i++) {
+			new Participant(saveApp, allPart.get(i));
+		}
+
+		saveApp.setRoom(r);
+		saveApp.setDescription(descr);
+		main.getServer().insertAppointment(saveApp);
+		
+		
 		else {
 			
 		}
-	}
-	
-	private ArrayList<Participant> convertGroupToParticipantList() {
-		ArrayList<Participant> groups = new ArrayList<Participant>();
-//		
-//		for (int i = 0; i < groupListModel.getSize(); i++) {
-//			for (int j = 0; j < ( groupListModel.get(i)).getMember().size(); j++ ) {
-//				
-//			}
-//		}
-		
-		return groups;
 		
 	}
 	
 	private class saveButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Save");
+			saveAppointment();
 		}
 	}
 	

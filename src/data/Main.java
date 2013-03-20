@@ -16,6 +16,10 @@ public class Main {
 		server = new Server(this);
 	}
 	
+	public Server getServer() {
+		return this.server;
+	}
+	
 	public ArrayList<User> getPersons(){
 		return new ArrayList<User>(server.getUsers().values());		
 	}

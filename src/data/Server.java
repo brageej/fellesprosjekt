@@ -34,33 +34,33 @@ public class Server implements Runnable {
 		subgroups = new ArrayList<Subgroup>();
 		users = new HashMap<String, User>();
 
-		try {
-			socket = new Socket("192.168.1.2", 50039);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			int port = Integer.parseInt(reader.readLine());
-			socket.close();
-			socket = new Socket("192.168.1.2", port);
-			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writer = new PrintWriter(socket.getOutputStream(), true);
-			new Thread(this).start();
-			writer.println("select");
-		} catch (Exception e) {
-			try {
-				socket.close();
-			} catch (Exception f) {
-				f.printStackTrace();
-			}
-			main.connectionLost();
-			e.printStackTrace();
-		}
+//		try {
+//			socket = new Socket("192.168.1.2", 50039);
+//			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			int port = Integer.parseInt(reader.readLine());
+//			socket.close();
+//			socket = new Socket("192.168.1.2", port);
+//			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			writer = new PrintWriter(socket.getOutputStream(), true);
+//			new Thread(this).start();
+//			writer.println("select");
+//		} catch (Exception e) {
+//			try {
+//				socket.close();
+//			} catch (Exception f) {
+//				f.printStackTrace();
+//			}
+//			main.connectionLost();
+//			e.printStackTrace();
+//		}
 
 		
 //		bare for offline testing!
 
-//		User t = new User("torgeha", "lol", "Torgeir");
-//		users.put("torgeha", t);
-//		rooms.put("rom1", new Room("rom1"));
-//		groups.put("gr1", new Group("gr1", t));
+		User t = new User("torgeha", "lol", "Torgeir");
+		users.put("torgeha", t);
+		rooms.put("rom1", new Room("rom1"));
+		groups.put("gr1", new Group("gr1", t));
 
 	}
 	
@@ -167,15 +167,15 @@ public class Server implements Runnable {
 		return appointments;
 	}
 	
-	void insertAppointment(Appointment appointment) {
+	public void insertAppointment(Appointment appointment) {
 		
 	}
 	
-	void updateAppointment(Appointment appointment) {
+	public void updateAppointment(Appointment appointment) {
 		
 	}
 	
-	void deleteAppointment(Appointment appointment) {
+	public void deleteAppointment(Appointment appointment) {
 		
 	}
 	
