@@ -182,7 +182,7 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		if(object != null){
 			if(object instanceof User){
 				DayPanel dayPanel = new DayPanel((User) object);
-				testAddAppointments(dayPanel,(User)object);
+				addAppointments(dayPanel,(User)object);
 				dayPanels.add(dayPanel);
 				userC.gridx ++;
 				userC.gridy = 0;
@@ -214,16 +214,22 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	}
 	
 	private void addAppointments(DayPanel dayPanel, User user){
+		System.out.println("add");
 		ArrayList<Participant> appointments = user.getAppointments();
+		System.out.println(appointments);
 		for(int i = 0; i< appointments.size();i++){
 			if(appointments.get(i).getAppointment().getStartTime().getTime().getDay() == date.getDay()){
 				int startHour = appointments.get(i).getAppointment().getStartHour()-7;
-				int startMinute = appointments.get(i).getAppointment().getStartMinute()/60;
+				int startMinute = appointments.get(i).getAppointment().getStartMinute()/30;
 				int distanceFromTopStart = startHour + startMinute;
 				int finishHour = appointments.get(i).getAppointment().getFinishedHour()-7;
-				int finishMinute = appointments.get(i).getAppointment().getFinishedMinute()/60;
+				int finishMinute = appointments.get(i).getAppointment().getFinishedMinute()/30;
 				int distanceFromTopEnd = finishHour + finishMinute;
 				int duration = distanceFromTopEnd - distanceFromTopStart;
+				if(duration == 0){
+					duration = 1;
+				}
+				System.out.println(duration);
 				for(int j=0; j<distanceFromTopStart;j++){
 					JPanel appPanel = new JPanel();
 					appPanel.setBackground(Color.WHITE);

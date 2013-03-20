@@ -14,6 +14,7 @@ public class Main {
 	
 	public Main() {
 		server = new Server(this);
+		
 	}
 	
 	public ArrayList<User> getPersons(){
@@ -57,12 +58,8 @@ public class Main {
 		System.out.println("lost");
 	}
 	
-//	//public ArrayList<Appointment> getMyAppointments(){
-//		ArrayList<Appointment> appointments = server.getAppointments();
-//		ArrayList<Appointment> myAppointments = new ArrayList<Appointment>();
-//		for(int i = 0; i<appointments.size();i++){
-//			//if(appointment)
-//		}
-//	}
-	
+	public static void main(String[] args) {
+		new Main();
+
+	}
 }
