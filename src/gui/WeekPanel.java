@@ -48,10 +48,14 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 	private Date date;
 	private JCalendar calendar;
 	private ArrayList<DayPanel> weekdays;
+	private ArrayList<AppPanel> appPanels;
 	
 	public WeekPanel(Main main){
 		this.main = main; 
-		this.thisUser = main.getUser();
+		this.thisUser = this.main.getUser();
+		appPanels = new ArrayList<AppPanel>();
+		weekdays = new ArrayList<DayPanel>();
+		makeAppPanels();
 		setLayout(new GridBagLayout());
 		GridBagConstraints mainC = new GridBagConstraints();
 		
@@ -73,6 +77,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		weekdays.add((DayPanel) sat);
 		sun = new DayPanel("Sun");
 		weekdays.add((DayPanel) sun);
+		
 		
 		TimePanel time = new TimePanel();
 		
@@ -237,11 +242,36 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	private void addAppointments(Date date, ArrayList<DayPanel> weekdays){
-		for(int i=0; i<thisUser.getAppointments().size();i++){
-			if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime() == date){
-				
-			}
+		for(int k = 0; k<weekdays.size(); k++){
+			System.out.println(weekdays.get(k));
+			for(int i=0; i<thisUser.getAppointments().size();i++){
+				if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime() == date){
+					int startHour = thisUser.getAppointments().get(i).getAppointment().getStartHour()-7;
+					int startMinute = thisUser.getAppointments().get(i).getAppointment().getStartMinute()/30;
+					int distanceFromTopStart = startHour + startMinute;
+					int finishHour = thisUser.getAppointments().get(i).getAppointment().getFinishedHour()-7;
+					int finishMinute = thisUser.getAppointments().get(i).getAppointment().getFinishedMinute()/30;
+					int distanceFromTopEnd = finishHour + finishMinute;
+					int duration = distanceFromTopEnd - distanceFromTopStart;
+					if(duration == 0){
+						duration = 1;
+					}
+					for(int j=0; j<duration; j++){
+						appPanels.set(distanceFromTopStart+j, new AppPanel(Color.BLUE));
+					}
+				}
 			
+			}
+			for(int h=0; h<appPanels.size(); h++){
+				weekdays.get(k).addPanel(appPanels.get(h));
+			}
+			date.setDate(date.getDate()+1);
+		}
+	}
+	
+	private void makeAppPanels(){
+		for (int i = 0; i< 14; i++){
+			appPanels.add(new AppPanel(Color.WHITE));
 		}
 	}
 	
