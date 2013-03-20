@@ -29,7 +29,8 @@ public class Appointment {
 	private ArrayList<Participant> participants;
 	private PropertyChangeSupport pcs;
 	
-	public Appointment(String title, Calendar startTime, Calendar finishTime, User owner) {
+	public Appointment(int appointmentId, String title, Calendar startTime, Calendar finishTime, User owner) {
+		this.appointmentId = appointmentId;
 		this.title = title;
 		this.startTime = startTime;
 		this.finishTime = finishTime;
