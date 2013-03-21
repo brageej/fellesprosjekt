@@ -14,7 +14,9 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
@@ -32,10 +34,11 @@ import data.Main;
 import data.Participant;
 import data.User;
 
-public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener, MouseListener {
+public class GroupCalendarPanel extends JPanel implements PropertyChangeListener, ActionListener {
 	private GridBagConstraints mainC;
 	private Main main;
 	private Date date;
+	private Calendar cal;
 	
 	private JPanel calendarPanePanel;
 	private TimePanel timePanel;
@@ -68,14 +71,14 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	
 	private ArrayList<Object> selectedGroups;
 	private ArrayList<DayPanel> dayPanels;
-	private ArrayList<AppPanel> appPanels;
+	private ArrayList<String> appPanels;
 	
 	
 	public GroupCalendarPanel(Main main){
 		this.main = main; 
 		selectedGroups = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
-		appPanels = new ArrayList<AppPanel>();
+		appPanels = new ArrayList<String>();
 		makeAppPanels();
 		
 		setLayout(new GridBagLayout());
@@ -101,6 +104,8 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		dateChooser = new JPanel();
 		calendar = new JCalendar();
 		date = calendar.getDate();
+		cal = new GregorianCalendar();
+		cal.setTime(date);
 		System.out.println(date);
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendar.setPreferredSize(new Dimension(150,150));
@@ -178,7 +183,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		if(object != null){
 			if(object instanceof User){
 				DayPanel dayPanel = new DayPanel((User) object);
-				addAppointments(dayPanel,(User)object);
+				addAppointments(dayPanel,(User)object,getStartDate());
 				dayPanels.add(dayPanel);
 				userC.gridx ++;
 				userC.gridy = 0;
@@ -209,10 +214,11 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		return this.date;
 	}
 	
-	private void addAppointments(DayPanel dayPanel, User user){
+	private void addAppointments(DayPanel dayPanel, User user,Date date){
+		dayPanel.getMainPanel().removeAll();
 		ArrayList<Participant> appointments = user.getAppointments();
 		for(int i = 0; i< appointments.size();i++){
-			if(appointments.get(i).getAppointment().getStartTime().getTime() == date){
+			if(user.getAppointments().get(i).getAppointment().getStartTime().getTime().getYear() == date.getYear() && user.getAppointments().get(i).getAppointment().getStartTime().getTime().getMonth() == date.getMonth() && user.getAppointments().get(i).getAppointment().getStartTime().getTime().getDate() == date.getDate()){
 				int startHour = appointments.get(i).getAppointment().getStartHour()-7;
 				int startMinute = appointments.get(i).getAppointment().getStartMinute()/30;
 				int distanceFromTopStart = startHour + startMinute;
@@ -224,16 +230,25 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 					duration = 1;
 				}
 				for(int j=0; j<duration; j++){
-					AppPanel appPanel = new AppPanel(Color.BLUE);
-					appPanel.addMouseListener(this);
-					appPanels.set(distanceFromTopStart+j, appPanel);
+					appPanels.set(distanceFromTopStart+j, "BLUE");
 				}
 			}
 		}
 		for(int h=0; h<appPanels.size(); h++){
-			dayPanel.addPanel(appPanels.get(h));
+			JPanel panel = new JPanel();
+			panel.addMouseListener(new myMouseListener());
+			if(appPanels.get(h).equals("WHITE")){
+				panel.setBackground(Color.WHITE);
+			}
+			else{
+				panel.setBackground(Color.BLUE);
+			}
+			dayPanel.addPanel(panel);
 		}
+		dayPanel.validate();
+		dayPanel.repaint();
 		makeAppPanels();
+
 	}
 	
 //	private void testAddAppointments(DayPanel dayPanel, User user){
@@ -294,44 +309,60 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		date = calendar.getDate();
+		cal.setTime(date);
+		for(int i=0; i<dayPanels.size();i++){
+			addAppointments(dayPanels.get(i),dayPanels.get(i).getUser(),getStartDate());
+		}
 
 		
 	}
 	
-
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		System.out.println("mouse was clicked");
-		
+	public Date getStartDate(){
+		Date startDate;
+		int dayOfMonth = cal.getTime().getDate();
+		startDate = new Date(cal.getTime().getYear(),cal.getTime().getMonth(),dayOfMonth);
+		return startDate;
 	}
+	
 
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+
+	private class myMouseListener implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			System.out.println("Something happend");
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 	}
 	
 	private void makeAppPanels(){
 		for (int i = 0; i< 14; i++){
-			appPanels.add(new AppPanel(Color.WHITE));
+			appPanels.add("WHITE");
 		}
 	}
 }

@@ -1,12 +1,18 @@
 package gui;
 
+import gui.DayCalendarPanel.SelectionListener;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -17,18 +23,42 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.omg.CORBA.Bounds;
+
+import data.Appointment;
+import data.Main;
+import data.Participant;
 
 public class NotificationPanel extends JPanel {
 	
 	private GridBagLayout mainLayout;
 	private GridBagConstraints mainC;
+	private Main main;
+	private Participant SelectedAppointment;
+	private JList appointmentList;
+	private DefaultListModel appointmentListModel;
+	private DefaultListSelectionModel appointmentSelectionModel;
 	
-	public NotificationPanel(){
+	private JLabel titleLable;
+	private JTextField titleText;
+	
+	private JLabel descrLabel;
+	private JTextPane descrText;
+	
+	private JLabel timeLabel;
+	private JTextField timeText;
+	
+	private JLabel roomLabel;
+	private JTextField roomText;
+	
+	public NotificationPanel(Main main){
 		mainLayout = new GridBagLayout();
 		setLayout(mainLayout);
 		mainC = new GridBagConstraints();
+		this.main = main;
 		
 		JPanel Panel1 = new JPanel(false);
 		Panel1.setLayout(new GridBagLayout());
@@ -39,35 +69,40 @@ public class NotificationPanel extends JPanel {
 		Panel1C.gridy=0;
 		Panel1.add(appointments,Panel1C);
 		
-		JList appointmentList = new JList();
+		appointmentListModel = new DefaultListModel();
+		appointmentSelectionModel = new DefaultListSelectionModel();
+		appointmentList = new JList(appointmentListModel);
+		appointmentList.setSelectionModel(appointmentSelectionModel);
+		appointmentList.addListSelectionListener(new SelectionListener());
 		JScrollPane scrollPane = new JScrollPane(appointmentList);
 		scrollPane.setPreferredSize(new Dimension(100,150));
 		Panel1C.gridx=0;
 		Panel1C.gridy=1;
 		Panel1.add(scrollPane,Panel1C);
+		addAppointments();
 		
 		
 		JPanel Panel2 = new JPanel(false);
 		Panel2.setLayout(new GridBagLayout());
 		GridBagConstraints Panel2C = new GridBagConstraints();
 		
-		JLabel titleLable = new JLabel("Title: ");
+		titleLable = new JLabel("Title: ");
 		Panel2C.gridx=0;
 		Panel2C.gridy=0;
 		Panel2.add(titleLable, Panel2C);
 		
-		JTextField titleText = new JTextField();
+		titleText = new JTextField();
 		titleText.setColumns(20);
 		Panel2C.gridx=1;
 		Panel2C.gridy=0;
 		Panel2.add(titleText,Panel2C);
 		
-		JLabel descrLabel = new JLabel("Description: ");
+		descrLabel = new JLabel("Description: ");
 		Panel2C.gridx=0;
 		Panel2C.gridy=2;
 		Panel2.add(descrLabel, Panel2C);
 		
-		JTextPane descrText = new JTextPane();
+		descrText = new JTextPane();
 		JScrollPane descrPane = new JScrollPane(descrText);
 		descrPane.setBorder(new LineBorder(Color.GRAY));
 		descrPane.setPreferredSize(new Dimension(223,75));
@@ -76,23 +111,23 @@ public class NotificationPanel extends JPanel {
 		Panel2C.insets = new Insets(5,0,0,0);
 		Panel2.add(descrPane,Panel2C);
 		
-		JLabel timeLabel = new JLabel("Time");
+		timeLabel = new JLabel("Time");
 		Panel2C.gridx = 0;
 		Panel2C.gridy = 3;
 		Panel2.add(timeLabel,Panel2C);
 		
-		JTextField timeText = new JTextField();
+		timeText = new JTextField();
 		timeText.setColumns(20);
 		Panel2C.gridx = 1;
 		Panel2C.gridy = 3;
 		Panel2.add(timeText, Panel2C);
 		
-		JLabel roomLabel = new JLabel("Room");
+		roomLabel = new JLabel("Room");
 		Panel2C.gridx = 0;
 		Panel2C.gridy = 4;
 		Panel2.add(roomLabel,Panel2C);
 		
-		JTextField roomText = new JTextField();
+		roomText = new JTextField();
 		roomText.setColumns(20);
 		Panel2C.gridx = 1;
 		Panel2C.gridy = 4;
@@ -103,11 +138,15 @@ public class NotificationPanel extends JPanel {
 		GridBagConstraints Panel3C = new GridBagConstraints();
 		
 		JButton decline = new JButton("Decline");
+		decline.setName("Decline");
+		decline.addActionListener(new declineAction());
 		Panel3C.gridx = 1;
 		Panel3C.gridy = 0;
 		Panel3.add(decline,Panel3C);
 		
 		JButton accept = new JButton("Accept");
+		accept.setName("Accept");
+		accept.addActionListener(new acceptAction());
 		Panel3C.gridx = 2;
 		Panel3C.gridy = 0;
 		Panel3.add(accept,Panel3C);
@@ -126,6 +165,53 @@ public class NotificationPanel extends JPanel {
 		add(Panel3,mainC);
 
 
+		
+	}
+	
+	private void addAppointments(){
+		for(int i = 0; i<main.getUser().getAppointments().size();i++){
+			if(this.main.getUser().getAppointments().get(i).getStatus()== "No answer"){
+				appointmentListModel.addElement(this.main.getUser().getAppointments().get(i));
+			}
+		}
+	}
+	
+	private class declineAction implements ActionListener{
+		public void actionPerformed(ActionEvent arg0) {
+			if(SelectedAppointment != null){
+				SelectedAppointment.setStatus("Declined");
+				System.out.println(SelectedAppointment.getStatus());
+			}
+			
+		}
+		
+	}
+	
+	private class acceptAction implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			if(SelectedAppointment != null){
+				SelectedAppointment.setStatus("Accepted");
+				System.out.println(SelectedAppointment.getStatus());
+			}
+			
+		}
+		
+	}
+	
+	private class SelectionListener implements ListSelectionListener{
+		public void valueChanged(ListSelectionEvent arg0) {		
+			SelectedAppointment = (Participant) appointmentList.getSelectedValue();
+			titleText.setText(SelectedAppointment.getAppointment().getTitle());
+			descrText.setText(SelectedAppointment.getAppointment().getDescription());
+			String startHour = Integer.toString((SelectedAppointment.getAppointment().getStartHour()));
+			String startMinute = Integer.toString((SelectedAppointment.getAppointment().getStartMinute()));
+			String finishHour = Integer.toString((SelectedAppointment.getAppointment().getFinishedHour()));
+			String finishMinute = Integer.toString((SelectedAppointment.getAppointment().getFinishedMinute()));
+			String time = startHour + ":" + startMinute + "-" + finishHour + ":" + finishMinute;
+			timeText.setText(time);
+			roomText.setText(SelectedAppointment.getAppointment().getRoom().getRoomNumber());
+			
+		}
 		
 	}
 

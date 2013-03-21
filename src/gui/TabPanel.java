@@ -52,11 +52,11 @@ public class TabPanel extends JPanel {
 		tabbedPane.addTab("Group", panel3);
 		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 		
-		JComponent panel4 = new NotificationPanel();
+		JComponent panel4 = new NotificationPanel(this.main);
 		tabbedPane.addTab("Groups", panel4);
 		tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 		
-		JComponent panel5 = new NotificationPanel();
+		JComponent panel5 = new NotificationPanel(this.main);
 		tabbedPane.addTab("Notifications", panel5);
 		tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
 		

@@ -28,7 +28,7 @@ import com.toedter.calendar.JCalendar;
 import data.Main;
 import data.User;
 
-public class WeekPanel extends JPanel implements PropertyChangeListener, MouseListener {
+public class WeekPanel extends JPanel implements PropertyChangeListener {
 	
 	private JPanel personListPanel;
 	private JPanel groupListPanel;
@@ -123,7 +123,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 		date = calendar.getDate();
 		cal = new GregorianCalendar();
 		cal.setTime(date);
-		addAppointments(getStartDate(),weekdays);
+		//addAppointments(getStartDate(),weekdays);
 		dateChooser.add(calendar);	
 		personListPanel = new JPanel();
 		personListPanel.setLayout(new GridBagLayout());
@@ -242,14 +242,15 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		date = calendar.getDate();
-		//addAppointments(getStartDate(), weekdays);
+		cal.setTime(date);
+		addAppointments(getStartDate(), weekdays);
 	}
 	
 	private void addAppointments(Date date, ArrayList<DayPanel> weekdays){
 		for(int k = 0; k<weekdays.size(); k++){
+			weekdays.get(k).getMainPanel().removeAll();
 			for(int i=0; i<thisUser.getAppointments().size();i++){
 				if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getYear() == date.getYear() && thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getMonth() == date.getMonth() && thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getDate() == date.getDate()){
-					System.out.println("hei");
 					int startHour = thisUser.getAppointments().get(i).getAppointment().getStartHour()-7;
 					int startMinute = thisUser.getAppointments().get(i).getAppointment().getStartMinute()/30;
 					int distanceFromTopStart = startHour + startMinute;
@@ -263,20 +264,23 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 					for(int j=0; j<duration; j++){
 						appPanels.set(distanceFromTopStart+j, "BLUE");
 					}
-					for(int h=0; h<appPanels.size(); h++){
-						JPanel panel = new JPanel();
-						if(appPanels.get(h).equals("WHITE")){
-							panel.setBackground(Color.WHITE);
-						}
-						else{
-							panel.setBackground(Color.BLUE);
-						}
-						weekdays.get(k).addPanel(panel);
-					}
+
 				}
 
 			}
-
+			for(int h=0; h<appPanels.size(); h++){
+				JPanel panel = new JPanel();
+				panel.addMouseListener(new myMouseListener());
+				if(appPanels.get(h).equals("WHITE")){
+					panel.setBackground(Color.WHITE);
+				}
+				else{
+					panel.setBackground(Color.BLUE);
+				}
+				weekdays.get(k).addPanel(panel);
+			}
+			weekdays.get(k).validate();
+			weekdays.get(k).repaint();
 			makeAppPanels();
 			date.setDate(date.getDate()+1);
 		}
@@ -291,41 +295,38 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 
 
 
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		System.out.println("Mouse was clicked");
-		
-	}
 
+	private class myMouseListener implements MouseListener{
 
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			System.out.println("Something happend");
+			
+		}
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 		
 	}
 	
