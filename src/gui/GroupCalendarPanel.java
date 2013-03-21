@@ -1,6 +1,7 @@
 package gui;
 
 import gui.DayCalendarPanel.SelectionListener;
+import gui.DayCalendarPanel.myMouseListener;
 
 
 import java.awt.Color;
@@ -72,6 +73,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	private ArrayList<Object> selectedGroups;
 	private ArrayList<DayPanel> dayPanels;
 	private ArrayList<String> appPanels;
+	private ArrayList<AppPanel> Jpanels;
 	
 	
 	public GroupCalendarPanel(Main main){
@@ -79,6 +81,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		selectedGroups = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
 		appPanels = new ArrayList<String>();
+		Jpanels = new ArrayList<AppPanel>();
 		makeAppPanels();
 		
 		setLayout(new GridBagLayout());
@@ -230,20 +233,16 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 					duration = 1;
 				}
 				for(int j=0; j<duration; j++){
+					AppPanel panel = new AppPanel(user.getAppointments().get(i).getAppointment(),user.getAppointments().get(i));
+					panel.setBackground(Color.BLUE);
+					panel.addMouseListener(new myMouseListener());
+					Jpanels.set(distanceFromTopStart+j, panel);
 					appPanels.set(distanceFromTopStart+j, "BLUE");
 				}
 			}
 		}
-		for(int h=0; h<appPanels.size(); h++){
-			JPanel panel = new JPanel();
-			panel.addMouseListener(new myMouseListener());
-			if(appPanels.get(h).equals("WHITE")){
-				panel.setBackground(Color.WHITE);
-			}
-			else{
-				panel.setBackground(Color.BLUE);
-			}
-			dayPanel.addPanel(panel);
+		for(int h=0; h<Jpanels.size(); h++){
+			dayPanel.addPanel(Jpanels.get(h));
 		}
 		dayPanel.validate();
 		dayPanel.repaint();
@@ -346,6 +345,12 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		appPanels.clear();
 		for (int i = 0; i< 14; i++){
 			appPanels.add("WHITE");
+		}
+		Jpanels.clear();
+		for(int j = 0; j<14; j++){
+			AppPanel panel = new AppPanel(null,null);
+			panel.setBackground(Color.WHITE);
+			Jpanels.add(panel);
 		}
 	}
 }

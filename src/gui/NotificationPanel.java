@@ -53,12 +53,14 @@ public class NotificationPanel extends JPanel {
 	
 	private JLabel roomLabel;
 	private JTextField roomText;
+	private MainGUI mainGui;
 	
-	public NotificationPanel(Main main){
+	public NotificationPanel(Main main, MainGUI mainGui){
 		mainLayout = new GridBagLayout();
 		setLayout(mainLayout);
 		mainC = new GridBagConstraints();
 		this.main = main;
+		this.mainGui = mainGui;
 		
 		JPanel Panel1 = new JPanel(false);
 		Panel1.setLayout(new GridBagLayout());
@@ -169,8 +171,11 @@ public class NotificationPanel extends JPanel {
 	}
 	
 	private void addAppointments(){
+		appointmentListModel.removeAllElements();
 		for(int i = 0; i<main.getUser().getAppointments().size();i++){
-			if(this.main.getUser().getAppointments().get(i).getStatus()== "No answer"){
+			System.out.println(this.main.getUser().getAppointments().get(i).getStatus());
+			if(this.main.getUser().getAppointments().get(i).getStatus().equals("No answer")){
+				System.out.println("heidu");
 				appointmentListModel.addElement(this.main.getUser().getAppointments().get(i));
 			}
 		}
@@ -180,8 +185,9 @@ public class NotificationPanel extends JPanel {
 		public void actionPerformed(ActionEvent arg0) {
 			if(SelectedAppointment != null){
 				SelectedAppointment.setStatus("Declined");
-				System.out.println(SelectedAppointment.getStatus());
 			}
+			clear();
+			addAppointments();
 			
 		}
 		
@@ -191,28 +197,38 @@ public class NotificationPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if(SelectedAppointment != null){
 				SelectedAppointment.setStatus("Accepted");
-				System.out.println(SelectedAppointment.getStatus());
 			}
+			clear();
+			addAppointments();
 			
 		}
 		
 	}
 	
 	private class SelectionListener implements ListSelectionListener{
-		public void valueChanged(ListSelectionEvent arg0) {		
-			SelectedAppointment = (Participant) appointmentList.getSelectedValue();
-			titleText.setText(SelectedAppointment.getAppointment().getTitle());
-			descrText.setText(SelectedAppointment.getAppointment().getDescription());
-			String startHour = Integer.toString((SelectedAppointment.getAppointment().getStartHour()));
-			String startMinute = Integer.toString((SelectedAppointment.getAppointment().getStartMinute()));
-			String finishHour = Integer.toString((SelectedAppointment.getAppointment().getFinishedHour()));
-			String finishMinute = Integer.toString((SelectedAppointment.getAppointment().getFinishedMinute()));
-			String time = startHour + ":" + startMinute + "-" + finishHour + ":" + finishMinute;
-			timeText.setText(time);
-			roomText.setText(SelectedAppointment.getAppointment().getRoom().getRoomNumber());
-			
+		public void valueChanged(ListSelectionEvent arg0) {	
+			if(!appointmentSelectionModel.isSelectionEmpty()){
+				SelectedAppointment = (Participant) appointmentList.getSelectedValue();
+				titleText.setText(SelectedAppointment.getAppointment().getTitle());
+				descrText.setText(SelectedAppointment.getAppointment().getDescription());
+				String startHour = Integer.toString((SelectedAppointment.getAppointment().getStartHour()));
+				String startMinute = Integer.toString((SelectedAppointment.getAppointment().getStartMinute()));
+				String finishHour = Integer.toString((SelectedAppointment.getAppointment().getFinishedHour()));
+				String finishMinute = Integer.toString((SelectedAppointment.getAppointment().getFinishedMinute()));
+				String time = startHour + ":" + startMinute + "-" + finishHour + ":" + finishMinute;
+				timeText.setText(time);
+				roomText.setText(SelectedAppointment.getAppointment().getRoom().getRoomNumber());
+			}
 		}
 		
+	}
+	
+	private void clear(){
+		
+		titleText.setText("");
+		descrText.setText("");
+		timeText.setText("");
+		roomText.setText("");
 	}
 
 }

@@ -1,6 +1,7 @@
 package gui;
 
 import gui.ListPanel.listListener;
+import gui.WeekPanel.myMouseListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -75,11 +76,13 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 	private ArrayList<DayPanel> dayPanels;
 	
 	private ArrayList<String> appPanels;
+	private ArrayList<AppPanel> Jpanels;
 	
 	
 	public DayCalendarPanel(Main main){
 		this.main = main;
 		appPanels = new ArrayList<String>();
+		Jpanels = new ArrayList<AppPanel>();
 		makeAppPanels();
 		selectedUsers = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
@@ -240,20 +243,17 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 					duration = 1;
 				}
 				for(int j=0; j<duration; j++){
+					AppPanel panel = new AppPanel(user.getAppointments().get(i).getAppointment(),user.getAppointments().get(i));
+					panel.setBackground(Color.BLUE);
+					panel.addMouseListener(new myMouseListener());
+					Jpanels.set(distanceFromTopStart+j, panel);
 					appPanels.set(distanceFromTopStart+j, "BLUE");
 				}
-				for(int h=0; h<appPanels.size(); h++){
-					JPanel panel = new JPanel();
-					panel.addMouseListener(new myMouseListener());
-					if(appPanels.get(h).equals("WHITE")){
-						panel.setBackground(Color.WHITE);
-					}
-					else{
-						panel.setBackground(Color.BLUE);
-					}
-					dayPanel.addPanel(panel);
-				}
+
 			}
+		}
+		for(int h=0; h<Jpanels.size(); h++){
+			dayPanel.addPanel(Jpanels.get(h));
 		}
 		dayPanel.validate();
 		dayPanel.repaint();
@@ -344,9 +344,15 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		for (int i = 0; i< 14; i++){
 			appPanels.add("WHITE");
 		}
+		Jpanels.clear();
+		for(int j = 0; j<14; j++){
+			AppPanel panel = new AppPanel(null,null);
+			panel.setBackground(Color.WHITE);
+			Jpanels.add(panel);
+		}
 	}
 	
-	private class myMouseListener implements MouseListener{
+	public class myMouseListener implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {

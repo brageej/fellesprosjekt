@@ -53,12 +53,17 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 	private JCalendar calendar;
 	private ArrayList<DayPanel> weekdays;
 	private ArrayList<String> appPanels;
+	private ArrayList<AppPanel> Jpanels;
 	
-	public WeekPanel(Main main){
+	private MainGUI mainGui;
+	
+	public WeekPanel(Main main, MainGUI mainGui){
 		this.main = main; 
+		this.mainGui = mainGui;
 		this.thisUser = this.main.getUser();
 		appPanels = new ArrayList<String>();
 		weekdays = new ArrayList<DayPanel>();
+		Jpanels = new ArrayList<AppPanel>();
 		makeAppPanels();
 		setLayout(new GridBagLayout());
 		GridBagConstraints mainC = new GridBagConstraints();
@@ -262,22 +267,18 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 						duration = 1;
 					}
 					for(int j=0; j<duration; j++){
-						appPanels.set(distanceFromTopStart+j, "BLUE");
+						AppPanel panel = new AppPanel(thisUser.getAppointments().get(i).getAppointment(),thisUser.getAppointments().get(i));
+						panel.setBackground(Color.BLUE);
+						panel.addMouseListener(new myMouseListener());
+						Jpanels.set(distanceFromTopStart+j, panel);
+						//appPanels.set(distanceFromTopStart+j, "BLUE");
 					}
 
 				}
 
 			}
-			for(int h=0; h<appPanels.size(); h++){
-				JPanel panel = new JPanel();
-				panel.addMouseListener(new myMouseListener());
-				if(appPanels.get(h).equals("WHITE")){
-					panel.setBackground(Color.WHITE);
-				}
-				else{
-					panel.setBackground(Color.BLUE);
-				}
-				weekdays.get(k).addPanel(panel);
+			for(int h=0; h<Jpanels.size(); h++){
+				weekdays.get(k).addPanel(Jpanels.get(h));
 			}
 			weekdays.get(k).validate();
 			weekdays.get(k).repaint();
@@ -287,19 +288,26 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 	}
 	
 	private void makeAppPanels(){
-		appPanels.clear();
-		for (int i = 0; i< 14; i++){
-			appPanels.add("WHITE");
+//		appPanels.clear();
+//		for (int i = 0; i< 14; i++){
+//			appPanels.add("WHITE");
+//		}
+		Jpanels.clear();
+		for(int j = 0; j<14; j++){
+			AppPanel panel = new AppPanel(null,null);
+			panel.setBackground(Color.WHITE);
+			Jpanels.add(panel);
 		}
 	}
 
 
 
 
-	private class myMouseListener implements MouseListener{
+	public class myMouseListener implements MouseListener{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			mainGui.showAppointmentViewPanel(((AppPanel) e.getComponent()).getAppointment(), ((AppPanel) e.getComponent()).getParticipant());
 			System.out.println("Something happend");
 			
 		}

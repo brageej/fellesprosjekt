@@ -38,7 +38,7 @@ public class TabPanel extends JPanel {
 		//Lager alle faner med tilhørende panels
 		tabbedPane = new JTabbedPane();
 		
-		JComponent panel = new WeekPanel(this.main);
+		JComponent panel = new WeekPanel(this.main, this.mainGui);
 		tabbedPane.addTab("Week", panel);
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 		
@@ -52,11 +52,11 @@ public class TabPanel extends JPanel {
 		tabbedPane.addTab("Group", panel3);
 		tabbedPane.setMnemonicAt(2, KeyEvent.VK_3);
 		
-		JComponent panel4 = new NotificationPanel(this.main);
+		JComponent panel4 = new JPanel();
 		tabbedPane.addTab("Groups", panel4);
 		tabbedPane.setMnemonicAt(3, KeyEvent.VK_4);
 		
-		JComponent panel5 = new NotificationPanel(this.main);
+		JComponent panel5 = new NotificationPanel(this.main,this.mainGui);
 		tabbedPane.addTab("Notifications", panel5);
 		tabbedPane.setMnemonicAt(4, KeyEvent.VK_5);
 		
