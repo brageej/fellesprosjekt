@@ -19,6 +19,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import data.Appointment;
+import data.Main;
 import data.Participant;
 import data.Room;
 import data.User;
@@ -67,11 +68,16 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 	private Appointment model;
 	private Participant participant;
 	
+	private Main main;
+	private MainGUI mainGui;
+	
 	private DecimalFormat df = new DecimalFormat("00");
 	
-	public AppointmentViewPanel(Appointment model, Participant participant) {
+	public AppointmentViewPanel(Appointment model, Participant participant, Main main, MainGUI mainGui) {
 		this.model = model;
 		this.participant = participant;
+		this.main = main;
+		this.mainGui = mainGui;
 		
 		createPanels();
 		
@@ -313,7 +319,8 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 			    options[1]); //default button title
 		
 		if (answer == JOptionPane.YES_OPTION) {
-			System.out.println("delete this!");
+			main.getServer().deleteAppointment(model);
+			mainGui.appointmentViewFrame.dispose();
 		}
 	}
 	
@@ -325,20 +332,41 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 	
 	private class editListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Edit!");
+			mainGui.showNewAppointmentEditPanel(model);
+			mainGui.appointmentViewFrame.dispose();
 		}		
 	}
 	
 	private class cancelListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Cancel!");
+			mainGui.appointmentViewFrame.dispose();
 		}
 	}
 	
 	private class okListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Ok!");
+			updateParticipantWithNewAlarmTime();
+			mainGui.appointmentViewFrame.dispose();
 		}
+	}
+	
+	private void updateParticipantWithNewAlarmTime() {
+		Participant p = new Participant(model, main.getUser());
+		
+		//construct calendar from date
+		int ye = alarmTime.getDate().getYear();
+		int mo = alarmTime.getDate().getMonth();
+		int d = alarmTime.getDate().getDate();
+		int h = (Integer) alarmHour.getValue();
+		int mi =(Integer) alarmMinute.getValue();
+		Date newDate = new Date(ye, mo, d, h, mi);
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(newDate);
+		
+		p.setAlarmTime(cal);
+		main.getServer().updateParticipant(p);
+		p.remove();
+		
 	}
 	
 	private void updateComponents() {
@@ -444,7 +472,7 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 //		User l = new User("p", "pass", "Bjarne");
 //		User o = new User("a", "pass", "Lol");
 //		User q = new User("c", "pass", "asfadsf");
-//		Appointment m = new Appointment("Tittle", s, e, t);
+//		Appointment m = new Appointment(0, "Tittle", s, e, t);
 //		Participant pa = new Participant(m, t);
 //		Participant pl = new Participant(m, l);
 //		Participant po = new Participant(m, o);
@@ -458,9 +486,11 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 //		
 //		m.setDescription("Dette er en description! ¾¿lpdlfaŒsodjfn¾ksndv¿jkabnsd¿jvbas¿¾odjb");
 //		pa.setAlarmTime(a);
-//		m.setRoom(new Room("345"));
+//		m.setRoom(new Room("345", 50));
 //		JFrame frame = new JFrame("TestYo!");
-//		frame.getContentPane().add(new AppointmentViewPanel(m, pa));
+//		Main main = new Main();
+//		
+//		frame.getContentPane().add(new AppointmentViewPanel(m, pa, main, new MainGUI(main)));
 //		frame.pack();
 //		frame.setResizable(false);
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

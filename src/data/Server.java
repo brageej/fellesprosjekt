@@ -53,36 +53,12 @@ public class Server implements Runnable {
 			main.connectionLost();
 			e.printStackTrace();
 		}
-
-//=======
-//		
-////		bare test!
-//		users.put("torgeha", new User("torgeha", "lol", "Torgeir"));
-//		
-////		try {
-////			socket = new Socket("127.0.0.1", 50039);
-////			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-////			writer = new PrintWriter(socket.getOutputStream(), true);
-////			new Thread(this).run();
-////			writer.println("select");
-////		} catch (Exception e) {
-////			try {
-////				socket.close();
-////			} catch (Exception f) {
-////				f.printStackTrace();
-////			}
-////			main.connectionLost();
-////			e.printStackTrace();
-////		}
-//>>>>>>> master
-
-
 		
 //		bare for offline testing!
 
 //		User t = new User("torgeha", "lol", "Torgeir");
 //		users.put("torgeha", t);
-//		rooms.put("rom1", new Room("rom1"));
+//		rooms.put("rom1", new Room("rom1", 50));
 //		groups.put("gr1", new Group("gr1", t));
 
 
@@ -191,7 +167,8 @@ public class Server implements Runnable {
 		return appointments;
 	}
 	
-	void insertAppointment(Appointment appointment) {
+
+	public void insertAppointment(Appointment appointment) {
 		ArrayList<Object> objects = new ArrayList<Object>();
 		objects.add(appointment);
 		writer.println("insert" + ConvertXML.ObjectsToXml(objects));
@@ -199,7 +176,7 @@ public class Server implements Runnable {
 		writer.println("insert" + ConvertXML.ObjectsToXml(objects));
 	}
 	
-	void updateAppointment(Appointment newAppointment, Appointment oldAppointment) {
+	public void updateAppointment(Appointment newAppointment, Appointment oldAppointment) {
 		ArrayList<Object> objects = new ArrayList<Object>();
 		objects.add(newAppointment);
 		writer.println("update" + ConvertXML.ObjectsToXml(objects));
@@ -219,14 +196,14 @@ public class Server implements Runnable {
 		writer.println("insert" + ConvertXML.ObjectsToXml(objects));
 	}
 	
-	void deleteAppointment(Appointment appointment) {
+	public void deleteAppointment(Appointment appointment) {
 		ArrayList<Object> objects = new ArrayList<Object>(appointment.getParticipants());
 		writer.println("delete" + ConvertXML.ObjectsToXml(objects));
 		objects = new ArrayList<Object>();
 		objects.add(appointment);
 		writer.println("delete" + ConvertXML.ObjectsToXml(objects));
+
 	}
-	
 	Map<String, Group> getGroups() {
 		return groups;
 	}
@@ -239,10 +216,12 @@ public class Server implements Runnable {
 		return participants;
 	}
 	
-	void updateParticipant(Participant participant) {
+
+	public void updateParticipant(Participant participant) {
 		ArrayList<Object> objects = new ArrayList<Object>();
 		objects.add(participant);
 		writer.println("update" + ConvertXML.ObjectsToXml(objects));
+
 	}
 	
 	Map<String, Room> getRooms() {
