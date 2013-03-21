@@ -150,6 +150,7 @@ public class Server implements Runnable {
 						}
 					}
 				}
+				main.newData();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
