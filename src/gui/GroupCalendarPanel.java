@@ -40,6 +40,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	private Main main;
 	private Date date;
 	private Calendar cal;
+	private MainGUI mainGui;
 	
 	private JPanel calendarPanePanel;
 	private TimePanel timePanel;
@@ -76,8 +77,9 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	private ArrayList<AppPanel> Jpanels;
 	
 	
-	public GroupCalendarPanel(Main main){
+	public GroupCalendarPanel(Main main, MainGUI mainGui){
 		this.main = main; 
+		this.mainGui = mainGui;
 		selectedGroups = new ArrayList<Object>();
 		dayPanels = new ArrayList<DayPanel>();
 		appPanels = new ArrayList<String>();
@@ -313,6 +315,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			mainGui.showAppointmentViewPanel(((AppPanel) e.getComponent()).getAppointment(), ((AppPanel) e.getComponent()).getParticipant());
 			System.out.println("Something happend");
 			
 		}

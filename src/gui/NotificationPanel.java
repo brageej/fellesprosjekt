@@ -10,6 +10,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
@@ -32,7 +35,7 @@ import data.Appointment;
 import data.Main;
 import data.Participant;
 
-public class NotificationPanel extends JPanel {
+public class NotificationPanel extends JPanel implements PropertyChangeListener {
 	
 	private GridBagLayout mainLayout;
 	private GridBagConstraints mainC;
@@ -166,7 +169,7 @@ public class NotificationPanel extends JPanel {
 		mainC.gridy = 1;
 		add(Panel3,mainC);
 
-
+		main.getServer().addPropertyChangeListener(this);
 		
 	}
 	
@@ -184,7 +187,9 @@ public class NotificationPanel extends JPanel {
 	private class declineAction implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
 			if(SelectedAppointment != null){
-				SelectedAppointment.setStatus("Declined");
+				Participant participant = new Participant(SelectedAppointment.getAppointment(), SelectedAppointment.getUser(), SelectedAppointment.getAlarm().getTimeInMillis(), "Declined");
+				main.getServer().updateParticipant(participant);
+				participant.remove();
 			}
 			clear();
 			addAppointments();
@@ -196,7 +201,9 @@ public class NotificationPanel extends JPanel {
 	private class acceptAction implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(SelectedAppointment != null){
-				SelectedAppointment.setStatus("Accepted");
+				Participant participant = new Participant(SelectedAppointment.getAppointment(), SelectedAppointment.getUser(), SelectedAppointment.getAlarm().getTimeInMillis(), "Accepted");
+				main.getServer().updateParticipant(participant);
+				participant.remove();
 			}
 			clear();
 			addAppointments();
@@ -229,6 +236,12 @@ public class NotificationPanel extends JPanel {
 		descrText.setText("");
 		timeText.setText("");
 		roomText.setText("");
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		addAppointments();
+		
 	}
 
 }
