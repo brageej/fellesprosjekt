@@ -168,7 +168,7 @@ public class NewAppointmentPanel extends JPanel{
 	}
 	
 	private void removePersonFromAppointment() {
-		Participant selected = (Participant) personsList.getSelectedValue();
+		User selected = (User) personsList.getSelectedValue();
 		personListModel.removeElement(selected);
 	}
 	

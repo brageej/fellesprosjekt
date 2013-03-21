@@ -208,7 +208,8 @@ public class Server implements Runnable {
 	
 	public void deleteAppointment(Appointment appointment) {
 		ArrayList<Object> objects = new ArrayList<Object>();
-		for (int i = 0; i < appointment.getParticipants().size(); i++) {
+		int n = appointment.getParticipants().size();
+		for (int i = 0; i < n; i++) {
 			Participant participant = appointment.getParticipants().get(i);
 			objects.add(new Participant(participant.getAppointment(), participant.getUser(), participant.getAlarm().getTimeInMillis(), "Canceled"));
 		}
