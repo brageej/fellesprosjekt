@@ -169,6 +169,11 @@ public class Server implements Runnable {
 	
 
 	public void insertAppointment(Appointment appointment) {
+		int appointmentId = 1;
+		while (appointments.get(appointmentId) != null) {
+			appointmentId++;
+		}
+		appointment.setAppointmentId(appointmentId);
 		ArrayList<Object> objects = new ArrayList<Object>();
 		objects.add(appointment);
 		writer.println("insert" + ConvertXML.ObjectsToXml(objects));
