@@ -9,11 +9,6 @@ public class Room {
 	private int size;
 	private ArrayList<Appointment> appointments;
 	
-	
-	public Room(String roomNumber) {
-		this.roomNumber = roomNumber;
-	}
-	
 	public String toString() {
 		return this.roomNumber;
 	}
@@ -22,12 +17,6 @@ public class Room {
 		this.roomNumber = roomNumber;
 		this.size = size;
 		this.appointments = new ArrayList<Appointment>();
-	}
-	//construct with appointment-list
-	public Room(String roomNumber, int size, ArrayList<Appointment> appointments){
-		this.roomNumber = roomNumber;
-		this.size = size;
-		this.appointments = appointments;
 	}
 	
 	public void addAppointment(Appointment newAppointment){

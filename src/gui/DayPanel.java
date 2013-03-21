@@ -19,8 +19,9 @@ public class DayPanel extends JPanel{
 	private GridBagConstraints mainC;
 	private User user;
 	
-	public DayPanel(User user){
-		this.user = user;
+
+	public DayPanel(User user) {
+
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		mainPanel = new JPanel();

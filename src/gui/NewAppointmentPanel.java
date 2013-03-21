@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -35,6 +37,7 @@ import customModels.UserComboBoxModel;
 import data.Appointment;
 import data.Group;
 import data.Main;
+import data.Member;
 import data.Participant;
 import data.Room;
 import data.Server;
@@ -125,8 +128,7 @@ public class NewAppointmentPanel extends JPanel{
 	private void createAppointmentModel(Appointment oldApp) {
 		if (oldApp == null) {
 			this.isNull = true;
-			
-			Appointment newApp = new Appointment("",null, null, main.getUser());
+//			Appointment newApp = new Appointment(0, "",null, null, main.getUser());
 		}
 		else if (oldApp != null) {
 			this.isNull = false;
@@ -172,7 +174,7 @@ public class NewAppointmentPanel extends JPanel{
 	
 	private void addPersonToAppointment() {
 		User selected = (User) userComboModel.getSelectedItem();
-		personListModel.addElement(new Participant(model, selected));
+		personListModel.addElement(selected);
 	}
 	
 	private void addListModelsNull() {
@@ -562,58 +564,84 @@ public class NewAppointmentPanel extends JPanel{
 	}
 	
 	private void saveAppointment() {
-		if (isNull) {
-			String title = titleField.getText();
-			String descr = descriptionField.getText();
-			
-			Calendar start = new GregorianCalendar();
-			start.setTime(startTime.getDate());
-			
-			Calendar finish = new GregorianCalendar();
-			finish.setTime(endTime.getDate());
-			
-			User owner = main.getUser();
-			
-			Room r = (Room) roomList.getSelectedValue();
-			
-			ArrayList<Participant> participants = new ArrayList<Participant>();
-			for (int i = 0; i < personListModel.getSize(); i++) {
-				participants.set(i, (Participant) personListModel.getElementAt(i));
-			}
-			
-			Appointment saveApp = new Appointment(title, start, finish, owner);
-			participants.add(new Participant(saveApp, owner));
-			
-//			legg til gruppe
-			
-			saveApp.setParticipants(participants);
-			saveApp.setRoom(r);
-			saveApp.setDescription(descr);
-			
-//			main.server.lagreNyAppointment
-			
-		}
-		else {
-			
-		}
-	}
-	
-	private ArrayList<Participant> convertGroupToParticipantList() {
-		ArrayList<Participant> groups = new ArrayList<Participant>();
-//		
-//		for (int i = 0; i < groupListModel.getSize(); i++) {
-//			for (int j = 0; j < ( groupListModel.get(i)).getMember().size(); j++ ) {
-//				
-//			}
-//		}
+		String title = titleField.getText();
+		String descr = descriptionField.getText();
 		
-		return groups;
+		//construct starttime
+		int syear = startTime.getDate().getYear();
+		int smonth = startTime.getDate().getMonth();
+		int sddate = startTime.getDate().getDate();
+		int sh = (Integer) startHourSpinner.getValue();
+		int sm = (Integer) startMinuteSpinner.getValue();
+		Date sDate = new Date(syear, smonth, sddate, sh, sm);
+		
+		//set startTime
+		Calendar start = new GregorianCalendar();
+		start.setTime(sDate);
+		
+		//construct endTime
+		int eyear = endTime.getDate().getYear();
+		int emonth = endTime.getDate().getMonth();
+		int eddate = endTime.getDate().getDate();
+		int eh = (Integer) endHourSpinner.getValue();
+		int em = (Integer) endMinuteSpinner.getValue();
+		Date eDate = new Date(eyear, emonth, eddate, eh, em);
+		
+		//set endTime
+		Calendar finish = new GregorianCalendar();
+		finish.setTime(eDate);
+		
+		User owner = main.getUser();
+		Room r = (Room) roomList.getSelectedValue();
+		Appointment saveApp;
+		
+		if (isNull) {
+			saveApp = new Appointment(0, title, start, finish, owner);
+		}else {
+			saveApp = new Appointment(model.getAppointmentId(), title, start, finish, owner);
+		}
+		
+		
+		//legg til participants
+		ArrayList<Participant> deletablePart = new ArrayList<Participant>();
+		
+		deletablePart.add(new Participant(saveApp, owner));
+		Map<String, User> userMap = new HashMap<String, User>();
+		for (int i = 0; i < personListModel.getSize(); i++) {
+			userMap.put(((User) personListModel.get(i)).getUsername(), ((User) personListModel.get(i)));
+		}
+		
+		//fra gruppe
+		for (int i = 0; i < groupListModel.getSize(); i++) {
+			ArrayList<Member> members = ((Group) groupListModel.get(i)).getMembers();
+			for (int j = 0; j < members.size(); j++) {
+				userMap.put(members.get(j).getUser().getUserName(), members.get(j).getUser());
+			}
+		}
+		
+		ArrayList<User> allPart = new ArrayList<User>(userMap.values());
+		
+		for (int i = 0; i < allPart.size(); i++) {
+			deletablePart.add(new Participant(saveApp, allPart.get(i)));
+		}
+
+		saveApp.setRoom(r);
+		saveApp.setDescription(descr);
+		main.getServer().insertAppointment(saveApp);
+		
+		//delete participants
+		for (int i = 0; i < deletablePart.size(); i++) {
+			deletablePart.get(i).remove();
+		}
+		saveApp.remove();
+		
 		
 	}
 	
 	private class saveButtonListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Save");
+			saveAppointment();
+			mainGui.newAppointmentFrame.dispose();
 		}
 	}
 	
@@ -646,30 +674,5 @@ public class NewAppointmentPanel extends JPanel{
 			removeGroupFromAppointment();
 		}
 	}
-	
-//	public static void main(String[] args) {
-//		Date start = new Date(2013, 4, 02, 12, 41);
-//		Date end = new Date(2013, 10, 30, 9, 00);
-//		
-//		Calendar s = GregorianCalendar.getInstance();
-//		s.setTime(start);
-//		
-//		Calendar e = GregorianCalendar.getInstance();
-//		e.setTime(end);
-//		
-//		User t = new User("u", "pass", "Torgeir");
-//		
-//		Appointment m = new Appointment("Tittle", s, e, t);
-//		m.setDescription("Description babyasdffffffffffffffdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd!");
-//		m.addParticipant(new Participant(m, t));
-//		
-//		JFrame frame = new JFrame("Fabuloussss!");
-//		frame.getContentPane().add(new NewAppointmentPanel(m, new Main()));
-//		System.out.println(frame.getContentPane().getHeight());
-//		frame.pack();
-//		frame.setResizable(false);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setVisible(true);
-//	}
 	
 }
