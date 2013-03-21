@@ -627,7 +627,15 @@ public class NewAppointmentPanel extends JPanel{
 
 		saveApp.setRoom(r);
 		saveApp.setDescription(descr);
-		main.getServer().insertAppointment(saveApp);
+		
+		if (isNull) {
+			main.getServer().insertAppointment(saveApp);
+		}
+		else {
+			main.getServer().updateAppointment(saveApp, model);
+		}
+		
+		
 		
 		//delete participants
 		for (int i = 0; i < deletablePart.size(); i++) {

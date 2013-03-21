@@ -111,7 +111,7 @@ public class Server implements Runnable {
 							appointment.setStartTime(newAppointment.getStartTime());
 							appointment.setFinishTime(newAppointment.getFinishTime());
 							appointment.setRoom(newAppointment.getRoom());
-							//newAppointment.remove();
+							newAppointment.remove();
 						} else if (objects.get(i) instanceof Participant) {
 							Participant newParticipant = (Participant) objects.get(i);
 							Participant participant = null;
@@ -123,7 +123,7 @@ public class Server implements Runnable {
 							}
 							participant.setAlarmTime(newParticipant.getAlarm());
 							participant.setStatus(newParticipant.getStatus());
-							//newParticipant.remove();
+							newParticipant.remove();
 						}
 					}
 				} else if (cmd.equals("delete")) {
@@ -133,8 +133,8 @@ public class Server implements Runnable {
 							Appointment newAppointment = (Appointment) objects.get(i);
 							Appointment appointment = appointments.get(newAppointment.getAppointmentId());
 							appointments.remove(appointment.getAppointmentId());
-							//appointment.remove();
-							//newAppointment.remove();
+							appointment.remove();
+							newAppointment.remove();
 						} else if (objects.get(i) instanceof Participant) {
 							Participant newParticipant = (Participant) objects.get(i);
 							Participant participant = null;
@@ -145,8 +145,8 @@ public class Server implements Runnable {
 								}
 							}
 							participants.remove(participant);
-							//participant.remove();
-							//newParticipant.remove();
+							participant.remove();
+							newParticipant.remove();
 						}
 					}
 				}
@@ -167,18 +167,43 @@ public class Server implements Runnable {
 		return appointments;
 	}
 	
+
 	public void insertAppointment(Appointment appointment) {
-		
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.add(appointment);
+		writer.println("insert" + ConvertXML.ObjectsToXml(objects));
+		objects = new ArrayList<Object>(appointment.getParticipants());
+		writer.println("insert" + ConvertXML.ObjectsToXml(objects));
 	}
 	
-	public void updateAppointment(Appointment appointment) {
-		
+	public void updateAppointment(Appointment newAppointment, Appointment oldAppointment) {
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.add(newAppointment);
+		writer.println("update" + ConvertXML.ObjectsToXml(objects));
+		objects = new ArrayList<Object>();
+		for (int i = 0; i < oldAppointment.getParticipants().size(); i++) {
+			if (!newAppointment.getParticipants().contains(oldAppointment.getParticipants().get(i))) {
+				objects.add(oldAppointment.getParticipants().get(i));
+			}
+		}
+		writer.println("delete" + ConvertXML.ObjectsToXml(objects));
+		objects = new ArrayList<Object>();
+		for (int i = 0; i < newAppointment.getParticipants().size(); i++) {
+			if (!oldAppointment.getParticipants().contains(newAppointment.getParticipants().get(i))) {
+				objects.add(newAppointment.getParticipants().get(i));
+			}
+		}
+		writer.println("insert" + ConvertXML.ObjectsToXml(objects));
 	}
 	
 	public void deleteAppointment(Appointment appointment) {
-		
+		ArrayList<Object> objects = new ArrayList<Object>(appointment.getParticipants());
+		writer.println("delete" + ConvertXML.ObjectsToXml(objects));
+		objects = new ArrayList<Object>();
+		objects.add(appointment);
+		writer.println("delete" + ConvertXML.ObjectsToXml(objects));
+
 	}
-	
 	Map<String, Group> getGroups() {
 		return groups;
 	}
@@ -191,8 +216,12 @@ public class Server implements Runnable {
 		return participants;
 	}
 	
+
 	public void updateParticipant(Participant participant) {
-		
+		ArrayList<Object> objects = new ArrayList<Object>();
+		objects.add(participant);
+		writer.println("update" + ConvertXML.ObjectsToXml(objects));
+
 	}
 	
 	Map<String, Room> getRooms() {
