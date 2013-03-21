@@ -205,7 +205,7 @@ public class NewAppointmentPanel extends JPanel{
 		
 //		fyll inn personlisten med participants
 		for (int i = 0; i < model.getParticipantLength(); i ++) {
-			personListModel.addElement(model.getParticipant(i));
+			personListModel.addElement(model.getParticipant(i).getUser());
 		}
 		
 		ArrayList<Room> rooms = main.getRooms();
