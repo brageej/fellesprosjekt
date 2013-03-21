@@ -251,24 +251,6 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 
 	}
 	
-//	private void testAddAppointments(DayPanel dayPanel, User user){
-//		for(int j=0; j<4;j++){
-//			JPanel appPanel = new JPanel();
-//			appPanel.setBackground(Color.WHITE);
-//			dayPanel.addPanel(appPanel);
-//		}
-//		for(int k = 0; k<2; k++){
-//			JPanel appPanel2 = new JPanel();
-//			appPanel2.addMouseListener(this);
-//			appPanel2.setBackground(Color.BLUE);
-//			dayPanel.addPanel(appPanel2);
-//		}
-//		for(int l = 0; l<7; l++){
-//			JPanel appPanel3 = new JPanel();
-//			appPanel3.setBackground(Color.WHITE);
-//			dayPanel.addPanel(appPanel3);
-//		}
-//	}
 	
 	public class SelectionListener implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent evt) {
@@ -361,6 +343,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 	}
 	
 	private void makeAppPanels(){
+		appPanels.clear();
 		for (int i = 0; i< 14; i++){
 			appPanels.add("WHITE");
 		}
