@@ -1,5 +1,7 @@
 package data;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -23,6 +25,8 @@ public class Server implements Runnable {
 	
 	private BufferedReader reader;
 	private PrintWriter writer;
+	
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	public Server(Main main) {
 		this.main = main;
@@ -150,7 +154,7 @@ public class Server implements Runnable {
 						}
 					}
 				}
-				main.newData();
+				pcs.firePropertyChange("newData", false, true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -249,6 +253,14 @@ public class Server implements Runnable {
 	
 	void addUser(User user){
 		users.put(user.getUserName(), user);
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
+	}
+	
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(listener);
 	}
 
 }
