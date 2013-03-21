@@ -11,7 +11,9 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -26,7 +28,7 @@ import com.toedter.calendar.JCalendar;
 import data.Main;
 import data.User;
 
-public class WeekPanel extends JPanel implements PropertyChangeListener, MouseListener {
+public class WeekPanel extends JPanel implements PropertyChangeListener {
 	
 	private JPanel personListPanel;
 	private JPanel groupListPanel;
@@ -47,15 +49,21 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	private JList list;
 	private User thisUser;
 	private Date date;
+	private Calendar cal;
 	private JCalendar calendar;
 	private ArrayList<DayPanel> weekdays;
-	private ArrayList<AppPanel> appPanels;
+	private ArrayList<String> appPanels;
+	private ArrayList<AppPanel> Jpanels;
 	
-	public WeekPanel(Main main){
+	private MainGUI mainGui;
+	
+	public WeekPanel(Main main, MainGUI mainGui){
 		this.main = main; 
+		this.mainGui = mainGui;
 		this.thisUser = this.main.getUser();
-		appPanels = new ArrayList<AppPanel>();
+		appPanels = new ArrayList<String>();
 		weekdays = new ArrayList<DayPanel>();
+		Jpanels = new ArrayList<AppPanel>();
 		makeAppPanels();
 		setLayout(new GridBagLayout());
 		GridBagConstraints mainC = new GridBagConstraints();
@@ -118,7 +126,9 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 		calendar.setPreferredSize(new Dimension(150,150));
 		calendar.addPropertyChangeListener(this);
 		date = calendar.getDate();
-		addAppointments(getStartDate(),weekdays);
+		cal = new GregorianCalendar();
+		cal.setTime(date);
+		//addAppointments(getStartDate(),weekdays);
 		dateChooser.add(calendar);	
 		personListPanel = new JPanel();
 		personListPanel.setLayout(new GridBagLayout());
@@ -223,13 +233,13 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	
 	public Date getStartDate(){
 		Date startDate;
-		int dayOfMonth = date.getDate();
-		int day = date.getDay();
+		int dayOfMonth = cal.getTime().getDate();
+		int day = cal.getTime().getDay();
 		if(day!=0){
-			startDate = new Date(date.getYear(),date.getMonth(),dayOfMonth-(day-1));
+			startDate = new Date(cal.getTime().getYear(),cal.getTime().getMonth(),dayOfMonth-(day-1));
 		}
 		else{
-			startDate = new Date(date.getYear(),date.getMonth(),dayOfMonth-6);
+			startDate = new Date(cal.getTime().getYear(),cal.getTime().getMonth(),dayOfMonth-6);
 		}
 		return startDate;
 	}
@@ -237,14 +247,15 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		date = calendar.getDate();
+		cal.setTime(date);
 		addAppointments(getStartDate(), weekdays);
 	}
 	
 	private void addAppointments(Date date, ArrayList<DayPanel> weekdays){
 		for(int k = 0; k<weekdays.size(); k++){
-			System.out.println(weekdays.get(k));
+			weekdays.get(k).getMainPanel().removeAll();
 			for(int i=0; i<thisUser.getAppointments().size();i++){
-				if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime() == date){
+				if(thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getYear() == date.getYear() && thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getMonth() == date.getMonth() && thisUser.getAppointments().get(i).getAppointment().getStartTime().getTime().getDate() == date.getDate()){
 					int startHour = thisUser.getAppointments().get(i).getAppointment().getStartHour()-7;
 					int startMinute = thisUser.getAppointments().get(i).getAppointment().getStartMinute()/30;
 					int distanceFromTopStart = startHour + startMinute;
@@ -256,64 +267,74 @@ public class WeekPanel extends JPanel implements PropertyChangeListener, MouseLi
 						duration = 1;
 					}
 					for(int j=0; j<duration; j++){
-						AppPanel appPanel = new AppPanel(Color.BLUE);
-						appPanel.addMouseListener(this);
-						appPanels.set(distanceFromTopStart+j, appPanel);
+						AppPanel panel = new AppPanel(thisUser.getAppointments().get(i).getAppointment(),thisUser.getAppointments().get(i));
+						panel.setBackground(Color.BLUE);
+						panel.addMouseListener(new myMouseListener());
+						Jpanels.set(distanceFromTopStart+j, panel);
+						//appPanels.set(distanceFromTopStart+j, "BLUE");
 					}
+
 				}
-			
+
 			}
-			for(int h=0; h<appPanels.size(); h++){
-				weekdays.get(k).addPanel(appPanels.get(h));
+			for(int h=0; h<Jpanels.size(); h++){
+				weekdays.get(k).addPanel(Jpanels.get(h));
 			}
+			weekdays.get(k).validate();
+			weekdays.get(k).repaint();
 			makeAppPanels();
 			date.setDate(date.getDate()+1);
 		}
 	}
 	
 	private void makeAppPanels(){
-		for (int i = 0; i< 14; i++){
-			appPanels.add(new AppPanel(Color.WHITE));
+//		appPanels.clear();
+//		for (int i = 0; i< 14; i++){
+//			appPanels.add("WHITE");
+//		}
+		Jpanels.clear();
+		for(int j = 0; j<14; j++){
+			AppPanel panel = new AppPanel(null,null);
+			panel.setBackground(Color.WHITE);
+			Jpanels.add(panel);
 		}
 	}
 
 
 
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		System.out.println("Mouse was clicked");
-		
-	}
 
+	public class myMouseListener implements MouseListener{
 
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			mainGui.showAppointmentViewPanel(((AppPanel) e.getComponent()).getAppointment(), ((AppPanel) e.getComponent()).getParticipant());
+			System.out.println("Something happend");
+			
+		}
 
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
 		
 	}
 	

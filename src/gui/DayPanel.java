@@ -17,13 +17,16 @@ public class DayPanel extends JPanel{
 	
 	private JPanel mainPanel = new JPanel();
 	private GridBagConstraints mainC;
+	private User user;
 	
+
 	public DayPanel(User user) {
+
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(75,600));
-		mainPanel.setLayout(new GridLayout(13,0));
+		mainPanel.setLayout(new GridLayout(14,0));
 		setPreferredSize(new Dimension(75,650));
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -42,6 +45,7 @@ public class DayPanel extends JPanel{
 		GridBagConstraints c = new GridBagConstraints();
 		mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(75,600));
+		mainPanel.setLayout(new GridLayout(14,0));
 		setPreferredSize(new Dimension(75,650));
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -51,6 +55,8 @@ public class DayPanel extends JPanel{
 		c.gridx = 0;
 		c.gridy = 1;
 		add(mainPanel,c);
+		validate();
+		repaint();
 	}
 	
 	public JPanel getMainPanel(){
@@ -63,6 +69,10 @@ public class DayPanel extends JPanel{
 	
 	public void addPanel(JPanel panel){
 		mainPanel.add(panel);
+	}
+	
+	public User getUser(){
+		return this.user;
 	}
 	
 
