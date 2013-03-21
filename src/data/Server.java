@@ -197,13 +197,18 @@ public class Server implements Runnable {
 	}
 	
 	public void deleteAppointment(Appointment appointment) {
-		ArrayList<Object> objects = new ArrayList<Object>(appointment.getParticipants());
-		writer.println("delete" + ConvertXML.ObjectsToXml(objects));
-		objects = new ArrayList<Object>();
-		objects.add(appointment);
-		writer.println("delete" + ConvertXML.ObjectsToXml(objects));
+		ArrayList<Object> objects = new ArrayList<Object>();
+		for (int i = 0; i < appointment.getParticipants().size(); i++) {
+			Participant participant = appointment.getParticipants().get(i);
+			objects.add(new Participant(participant.getAppointment(), participant.getUser(), participant.getAlarm().getTimeInMillis(), "Canceled"));
+		}
+		writer.println("update" + ConvertXML.ObjectsToXml(objects));
+		for (int i = 0; i < objects.size(); i++) {
+			((Participant) objects.get(i)).remove();
+		}
 
 	}
+	
 	Map<String, Group> getGroups() {
 		return groups;
 	}
