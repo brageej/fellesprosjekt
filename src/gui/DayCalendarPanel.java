@@ -185,6 +185,8 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		mainC.gridx = 1;
 		mainC.gridy = 0;
 		add(calendarPanePanel,mainC);
+		
+		main.getServer().addPropertyChangeListener(this);
 	
 	}
 	

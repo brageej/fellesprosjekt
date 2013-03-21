@@ -177,6 +177,8 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		mainC.gridx = 1;
 		mainC.gridy = 0;
 		add(calendarPanePanel,mainC);
+		
+		main.getServer().addPropertyChangeListener(this);
 	}
 	
 	public void addDayPanel(Object object){

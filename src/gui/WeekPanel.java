@@ -197,7 +197,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		mainC.gridy = 0;
 		add(calendarPanePanel,mainC);
 		
-
+		main.getServer().addPropertyChangeListener(this);
 	}
 	
 
