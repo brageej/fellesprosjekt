@@ -605,8 +605,8 @@ public class NewAppointmentPanel extends JPanel{
 		//legg til participants
 		ArrayList<Participant> deletablePart = new ArrayList<Participant>();
 		
-		deletablePart.add(new Participant(saveApp, owner));
 		Map<String, User> userMap = new HashMap<String, User>();
+		userMap.put(owner.getUsername(), owner);
 		for (int i = 0; i < personListModel.getSize(); i++) {
 			userMap.put(((User) personListModel.get(i)).getUsername(), ((User) personListModel.get(i)));
 		}
