@@ -248,10 +248,24 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 				}
 				for(int j=0; j<duration; j++){
 					AppPanel panel = new AppPanel(user.getAppointments().get(i).getAppointment(),user.getAppointments().get(i));
-					panel.setBackground(Color.BLUE);
+					if(user.getAppointments().get(i).getStatus().equals("Accepted")){
+						panel.setBackground(Color.GREEN);
+					}
+					else if(user.getAppointments().get(i).getStatus().equals("Declined")){
+						panel.setBackground(Color.YELLOW);
+					}
+					else if(user.getAppointments().get(i).getStatus().equals("No answer")){
+						panel.setBackground(Color.RED);
+					}
+					else if(user.getAppointments().get(i).getStatus().equals("Canceled")){
+						panel.setBackground(Color.GRAY);
+					}
+					else{
+						panel.setBackground(Color.BLUE);
+					}
 					panel.addMouseListener(new myMouseListener());
 					Jpanels.set(distanceFromTopStart+j, panel);
-					appPanels.set(distanceFromTopStart+j, "BLUE");
+					//appPanels.set(distanceFromTopStart+j, "BLUE");
 				}
 
 			}
