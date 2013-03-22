@@ -384,7 +384,6 @@ public class AppointmentViewPanel extends JPanel implements PropertyChangeListen
 		for (int i = 0; i < model.getParticipantLength(); i++) {
 			listModel.addElement(model.getParticipant(i));
 		}
-		System.out.println(model.getParticipant(0));
 		
 	}
 	

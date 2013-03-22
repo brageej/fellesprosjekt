@@ -176,9 +176,7 @@ public class NotificationPanel extends JPanel implements PropertyChangeListener 
 	private void addAppointments(){
 		appointmentListModel.removeAllElements();
 		for(int i = 0; i<main.getUser().getAppointments().size();i++){
-			System.out.println(this.main.getUser().getAppointments().get(i).getStatus());
 			if(this.main.getUser().getAppointments().get(i).getStatus().equals("No answer")){
-				System.out.println("heidu");
 				appointmentListModel.addElement(this.main.getUser().getAppointments().get(i));
 			}
 		}

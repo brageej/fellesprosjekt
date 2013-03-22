@@ -322,7 +322,7 @@ public class WeekPanel extends JPanel implements PropertyChangeListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			mainGui.showAppointmentViewPanel(((AppPanel) e.getComponent()).getAppointment(), ((AppPanel) e.getComponent()).getParticipant());
-			System.out.println("Something happend");
+
 			
 		}
 

@@ -265,7 +265,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 					}
 					panel.addMouseListener(new myMouseListener());
 					Jpanels.set(distanceFromTopStart+j, panel);
-					//appPanels.set(distanceFromTopStart+j, "BLUE");
 				}
 
 			}
@@ -290,24 +289,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		return startDate;
 	}
 	
-//	private void testAddAppointments(DayPanel dayPanel, User user){
-//		for(int j=0; j<7;j++){
-//			JPanel appPanel = new JPanel();
-//			appPanel.setBackground(Color.WHITE);
-//			dayPanel.addPanel(appPanel);
-//		}
-//		for(int k = 0; k<2; k++){
-//			JPanel appPanel2 = new JPanel();
-//			appPanel2.addMouseListener(this);
-//			appPanel2.setBackground(Color.BLUE);
-//			dayPanel.addPanel(appPanel2);
-//		}
-//		for(int l = 0; l<4; l++){
-//			JPanel appPanel3 = new JPanel();
-//			appPanel3.setBackground(Color.WHITE);
-//			dayPanel.addPanel(appPanel3);
-//		}
-//	}
 	
 	public class SelectionListener implements ListSelectionListener{
 		public void valueChanged(ListSelectionEvent evt) {
@@ -346,7 +327,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		for(int i=0; i<dayPanels.size();i++){
 			addAppointments(dayPanels.get(i),dayPanels.get(i).getUser(),getStartDate());
 		}
-		System.out.println(calendar.getCalendar().getTime());
 		
 	}
 
@@ -375,7 +355,6 @@ public class DayCalendarPanel extends JPanel implements PropertyChangeListener, 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			mainGui.showAppointmentViewPanel(((AppPanel) e.getComponent()).getAppointment(), ((AppPanel) e.getComponent()).getParticipant());
-			System.out.println("Something happend");
 			
 		}
 

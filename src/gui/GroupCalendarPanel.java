@@ -111,7 +111,6 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		date = calendar.getDate();
 		cal = new GregorianCalendar();
 		cal.setTime(date);
-		System.out.println(date);
 		calendar.getDayChooser().addPropertyChangeListener(this);
 		calendar.setPreferredSize(new Dimension(150,150));
 		dateChooser.add(calendar);	
@@ -255,7 +254,6 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 					}
 					panel.addMouseListener(new myMouseListener());
 					Jpanels.set(distanceFromTopStart+j, panel);
-					//appPanels.set(distanceFromTopStart+j, "BLUE");
 				}
 			}
 		}
@@ -330,7 +328,7 @@ public class GroupCalendarPanel extends JPanel implements PropertyChangeListener
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			mainGui.showAppointmentViewPanel(((AppPanel) e.getComponent()).getAppointment(), ((AppPanel) e.getComponent()).getParticipant());
-			System.out.println("Something happend");
+			
 			
 		}
 
